@@ -5,9 +5,9 @@ from pathlib import Path
 # === CONFIGURATION ===
 BASE_DIR = Path(__file__).resolve().parent
 CONTENT_DIR = BASE_DIR / "content"
-TEMPLATE_FILE = BASE_DIR / "templates" / "gpt-skeleton.html"
-CSS_FILE = BASE_DIR / "assets" / "gpt-trip.css"
-JS_FILE = BASE_DIR / "assets" / "gpt-trip.js"
+TEMPLATE_FILE = BASE_DIR / "templates" / "gpt-template-skeleton.html"
+CSS_FILE = BASE_DIR / "assets" / "gpt-trip-style.css"
+JS_FILE = BASE_DIR / "assets" / "gpt-trip-script.js"
 BUILD_DIR = BASE_DIR / "build"
 
 # === MINIMAL MD TO HTML ===
@@ -57,7 +57,7 @@ def generate():
 
     # Save output file
     today = datetime.date.today().strftime("%Y%m%d")
-    out_path = BUILD_DIR / f"Tokyo-Trip-March-2026-update-{today}.html"
+    out_path = BUILD_DIR / f"Tokyo-Trip-March-2026-GPT-{today}.html"
     out_path.write_text(template, encoding="utf-8")
     print(f"✅ Generated: {out_path}")
 
