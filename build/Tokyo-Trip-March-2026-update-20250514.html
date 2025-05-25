@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</title>
+<style>
+        /* Base styles */
+        :root {
+            --primary-color: #ff6b8b;
+            --primary-light: #ffdfd0;
+            --primary-dark: #d6336c;
+            --background: #fff8f0;
+            --card-bg: #fff;
+            --text-color: #333;
+            --border-color: #ffc0cb;
+            --info-bg: #fff4f7;
+            --info-border: #ffa5ba;
+            --note-bg: #f9f3ff;
+            --note-border: #d4b8ff;
+            --table-alt: #fff5f7;
+            --table-header: #ffe0e9;
+            --table-border: #f2c8d9;
+            --shadow: rgba(255, 192, 203, 0.3);
+            --success: #28a745;
+            --warning: #ffc107;
+            --pending: #6c757d;
+            --danger: #dc3545;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+             /* Smooth scrolling for internal links */
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Noto Sans Thai", "Sarabun", sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 4rem; /* Space for back-to-top button */
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-light);
+            color: var(--text-color);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            /* Removed position: relative; as language switcher is now fixed */
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            padding-top: 2.5rem; /* Add padding to prevent overlap with fixed switcher */
+        }
+        header h2 {
+            font-size: 1.2rem; /* Slightly smaller date */
+            margin-top: 0.5rem;
+            border-bottom: none; /* Remove border from header h2 */
+            padding-bottom: 0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Headings */
+        h1,
+        h2,
+        h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Section Headings */
+        section > h1, section > h2 {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem; /* More space before sections */
+        }
+        section > h1 { font-size: 1.6rem; }
+        section > h2 { font-size: 1.4rem; }
+
+
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Paragraphs, Lists */
+        p,
+        ul,
+        ol {
+            margin-bottom: 1rem;
+        }
+        ul, ol {
+            padding-left: 1.5rem; /* Indent lists */
+        }
+        li ul, li ol {
+            margin-top: 0.5rem; /* Space before nested lists */
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tables */
+        .table-container {
+             /* Allows horizontal scrolling on small screens */
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        table {
+            width: 100%;
+            min-width: 600px; /* Prevent excessive squashing */
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 0.75rem;
+            border: 1px solid var(--table-border);
+            text-align: left;
+            vertical-align: top; /* Align content to top */
+        }
+
+        th {
+            background-color: var(--table-header);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--table-alt);
+        }
+
+        tr.total {
+            font-weight: bold;
+            background-color: var(--info-bg);
+        }
+
+        tr.remaining {
+            font-weight: bold;
+            background-color: var(--note-bg);
+        }
+
+        /* Status indicators */
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap; /* Prevent wrapping */
+        }
+
+        .status-complete { background-color: var(--success); color: white; }
+        .status-pending { background-color: var(--warning); color: var(--text-color); }
+        .status-planning { background-color: var(--pending); color: white; }
+        .status-urgent { background-color: var(--danger); color: white; }
+
+        /* Info/Note boxes */
+        .info-box, .note-box {
+            border-left: 5px solid var(--info-border);
+            padding: 0.8rem 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0; /* Rounded corners only on right */
+            transition: all 0.3s ease;
+        }
+        .info-box { background-color: var(--info-bg); border-left-color: var(--info-border); }
+        .note-box { background-color: var(--note-bg); border-left-color: var(--note-border); }
+
+
+        .info-toggle,
+        .note-toggle {
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .info-toggle::after,
+        .note-toggle::after {
+            content: "▼";
+            font-size: 0.7em;
+            transition: transform 0.3s;
+            margin-left: 0.5rem; /* Space before arrow */
+        }
+
+        .info-toggle.collapsed::after,
+        .note-toggle.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .info-detail,
+        .note-detail {
+            margin-top: 0.8rem; /* More space for detail */
+            overflow: hidden;
+            transition: max-height 0.4s ease-out; /* Smoother transition */
+            max-height: 1000px; /* Adjust if needed for very long content */
+        }
+
+        .info-detail.collapsed,
+        .note-detail.collapsed {
+            max-height: 0;
+            margin-top: 0; /* Remove margin when collapsed */
+        }
+
+        /* Ensure nested lists inside details have correct padding */
+        .info-detail ul, .info-detail ol,
+        .note-detail ul, .note-detail ol {
+            padding-left: 1.5rem;
+        }
+
+
+        /* Timeline */
+        .timeline {
+            list-style-type: none;
+            margin: 1.5rem 0;
+            padding: 0;
+            position: relative; /* For the main line */
+        }
+         /* The vertical line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: calc(1rem + 7px - 1px); /* Aligns with center of circle */
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .timeline li {
+            position: relative;
+            padding: 0.5rem 0 1rem 2.5rem; /* Increased left padding */
+            margin-bottom: 1rem; /* Space between items */
+        }
+         /* The circle */
+        .timeline li::before {
+            content: "";
+            position: absolute;
+            left: 1rem; /* Position circle relative to li */
+            top: 0.8rem; /* Align vertically better */
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            background-color: var(--primary-color);
+            border: 2px solid var(--background); /* Make circle stand out */
+            border-radius: 50%;
+            z-index: 1; /* Ensure circle is above the line */
+        }
+
+        .timeline strong {
+            font-weight: bold;
+            color: var(--primary-dark);
+            display: block; /* Time on its own line */
+            margin-bottom: 0.3rem;
+        }
+        .timeline .emoji {
+            margin-right: 8px;
+        }
+
+        /* Overview Section Flex Style */
+        #overview .day-overviews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem; /* Spacing between cards */
+        }
+
+        #overview .day-overview {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px var(--shadow);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            flex: 1 1 100%; /* Default: full width on small screens */
+        }
+
+        #overview .day-overview:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+
+        #overview .day-overview h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        #overview .day-overview h3 a {
+            color: var(--primary-dark);
+        }
+        #overview .day-overview p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+
+        /* Back to top */
+        .back-to-top {
+            display: none; /* Hidden by default, shown by JS */
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 50px; /* Pill shape */
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.2s, opacity 0.3s, visibility 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+        .back-to-top.visible {
+            display: inline-block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Emoji */
+        .emoji {
+            margin-right: 5px;
+            font-size: 1.1em;
+            vertical-align: middle; /* Align better with text */
+        }
+
+        /* Birthday badge */
+        .birthday-badge {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            vertical-align: middle;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        /* Language Switcher - Floating/Fixed */
+        .language-switcher {
+            position: fixed; /* Changed from absolute */
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque */
+            padding: 0.3rem;
+            border-radius: 20px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.2); /* Slightly stronger shadow */
+            z-index: 1001; /* Ensure it's above back-to-top */
+        }
+
+        .language-switcher button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 0.2rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .language-switcher button.active {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+        .language-switcher button:not(.active):hover {
+             background-color: var(--primary-light);
+        }
+
+        /* Language Specific Styles */
+        .lang-en .th,
+        .lang-th .en {
+            display: none;
+        }
+        .lang-en .en,
+        .lang-th .th {
+            display: inline; /* Use inline or block as appropriate */
+        }
+        /* Adjust display for block elements like p, h1, h2, h3, li */
+        .lang-en .th-block,
+        .lang-th .en-block {
+            display: none;
+        }
+        .lang-en .en-block,
+        .lang-th .th-block {
+            display: block;
+        }
+         /* Ensure list items display correctly */
+        .lang-en .th-li,
+        .lang-th .en-li {
+            display: none;
+        }
+        .lang-en .en-li,
+        .lang-th .th-li {
+            display: list-item; /* Correct display type for li */
+        }
+
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container { padding: 1.5rem; }
+            header h1 { font-size: 2.2rem; }
+            header h2 { font-size: 1.4rem; }
+            section > h1 { font-size: 1.8rem; }
+            section > h2 { font-size: 1.5rem; }
+
+            /* Overview Flex - 2 columns */
+            #overview .day-overview {
+                flex-basis: calc(50% - 0.5rem); /* 2 columns with gap */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container { padding: 2rem; }
+            header h1 { font-size: 2.5rem; }
+
+             /* Overview Flex - 3 columns */
+            #overview .day-overview {
+                 flex-basis: calc(33.333% - 0.67rem); /* 3 columns with gap */
+            }
+        }
+
+        @media (max-width: 767px) {
+            th, td { padding: 0.6rem; font-size: 0.9rem; }
+            .timeline li { padding-left: 2rem; } /* Adjust timeline padding */
+            .timeline::before { left: calc(0.5rem + 7px - 1px); } /* Adjust timeline line position */
+            .timeline li::before { left: 0.5rem; } /* Adjust timeline circle position */
+            header h1 { font-size: 1.6rem; padding-top: 3rem; /* More padding for smaller screens */ }
+            header h2 { font-size: 1.1rem; }
+            section > h1 { font-size: 1.4rem; }
+            section > h2 { font-size: 1.2rem; }
+            .back-to-top { bottom: 1rem; right: 1rem; padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+            .language-switcher { top: 0.5rem; right: 0.5rem; } /* Adjust fixed position */
+        }
+
+        /* Print styles */
+        @media print {
+            .day-overview, table, .info-box, .note-box, .timeline li {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .back-to-top, .language-switcher { display: none; }
+            body { background-color: white; padding-bottom: 0; }
+            header { box-shadow: none; padding-top: 1.5rem; /* Reset padding for print */ }
+            header h1 { padding-top: 0; }
+            .table-container { overflow-x: visible; }
+            table { min-width: auto; }
+            /* Optionally expand all details for print */
+            /*
+            .info-detail, .note-detail { max-height: none !important; }
+            .info-toggle::after, .note-toggle::after { display: none; }
+            */
+        }
+    </style>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- Collapsible Sections ---
+            document.querySelectorAll(".info-toggle, .note-toggle").forEach(button => {
+                const detail = button.nextElementSibling;
+                if (detail && (detail.classList.contains('info-detail') || detail.classList.contains('note-detail'))) {
+                    // Start collapsed
+                    button.classList.add("collapsed");
+                    detail.classList.add("collapsed");
+
+                    button.addEventListener("click", (e) => {
+                        // Prevent link clicks inside toggle from triggering collapse
+                        if (e.target.tagName === 'A') return;
+
+                        button.classList.toggle("collapsed");
+                        detail.classList.toggle("collapsed");
+                    });
+
+                    // Allow keyboard activation
+                    button.setAttribute('role', 'button');
+                    button.setAttribute('tabindex', '0');
+                    button.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault(); // Prevent page scroll on Space
+                            button.click();
+                        }
+                    });
+                } else {
+                    console.warn("Collapsible toggle found without a matching detail element:", button);
+                }
+            });
+
+            // --- Language Switching ---
+            const langButtons = document.querySelectorAll('.language-switcher button');
+            const body = document.body;
+            // Get saved language or default to Thai
+            let currentLang = localStorage.getItem('tripLanguage') || 'th';
+
+            function setLanguage(lang) {
+                if (lang !== 'th' && lang !== 'en') lang = 'th'; // Fallback
+                localStorage.setItem('tripLanguage', lang);
+                currentLang = lang;
+                body.className = `lang-${lang}`; // Set class on body
+
+                // Update button active state
+                langButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+
+                // Update Back-to-Top text
+                const backToTopBtn = document.querySelector('.back-to-top');
+                if (backToTopBtn) {
+                    // Find the correct span to update
+                    const textSpan = backToTopBtn.querySelector(lang === 'th' ? '.th' : '.en');
+                    if (textSpan) {
+                         // No need to set textContent here, CSS handles visibility
+                    }
+                }
+                 // Update page title
+                const titleTh = "เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026";
+                const titleEn = "Porjai's Japan Trip: Birthday Adventure 2026";
+                document.title = lang === 'th' ? titleTh : titleEn;
+            }
+
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    setLanguage(button.dataset.lang);
+                });
+            });
+
+            // Set initial language on load
+            setLanguage(currentLang);
+
+            // --- Currency Conversion (JPY to THB) ---
+            const jpyToThbRate = 0.2346; // 100 JPY ≈ 23.46 THB (Update as needed)
+
+            const convertCurrency = () => {
+                document.querySelectorAll('[data-jpy]').forEach(el => {
+                    const jpyString = el.dataset.jpy.replace(/,/g, ''); // Remove commas
+                    const jpy = parseFloat(jpyString);
+                    if (!isNaN(jpy)) {
+                        const thb = (jpy * jpyToThbRate).toFixed(0); // Calculate and round to nearest Baht
+                        // Display both JPY and THB
+                        const jpyFormatted = `¥${jpy.toLocaleString('en-US')}`;
+                        const thbFormatted = `฿${parseInt(thb).toLocaleString('en-US')}`;
+
+                        // Find the right place to display THB. If a span exists, use it.
+                        let thbSpan = el.querySelector('.thb-amount');
+                        if (!thbSpan) {
+                            // Check if the element itself should display the THB amount (e.g., in a table cell)
+                            if (el.tagName === 'TD' || el.tagName === 'STRONG') {
+                                el.innerHTML = `${thbFormatted}`; // Directly set THB if it's the main content
+                            } else {
+                                // Otherwise, append THB in parentheses after JPY
+                                thbSpan = document.createElement('span');
+                                thbSpan.className = 'thb-amount';
+                                el.innerHTML = `${jpyFormatted} <span class="thb-amount">(${thbFormatted})</span>`;
+                            }
+                        } else {
+                             // Update existing span if needed
+                             el.innerHTML = `${jpyFormatted} <span class="thb-amount">(${thbFormatted})</span>`;
+                        }
+
+                    } else {
+                        console.warn("Invalid JPY value found:", el.dataset.jpy);
+                    }
+                });
+                 // Update the rate display text
+                const rateDisplay = document.getElementById('exchange-rate-info');
+                if(rateDisplay) {
+                    const rateTextTh = `อัตราแลกเปลี่ยน: 100 เยน ≈ ${ (jpyToThbRate * 100).toFixed(2) } บาท (ตรวจสอบอัตราปัจจุบัน)`;
+                    const rateTextEn = `Exchange Rate: 100 Yen ≈ ${ (jpyToThbRate * 100).toFixed(2) } Baht (Check current rates)`;
+                    rateDisplay.querySelector('.th').textContent = rateTextTh;
+                    rateDisplay.querySelector('.en').textContent = rateTextEn;
+                }
+            };
+
+
+            convertCurrency(); // Run on load
+
+            // --- Back to Top Button Visibility ---
+            const backToTopBtn = document.querySelector('.back-to-top');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) { // Show after scrolling down 300px
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+            }
+
+        }); // End DOMContentLoaded
+    </script>
+</head>
+<body class="lang-th"> <!-- Default language class -->
+<!-- Language Switcher Moved Outside Header for Fixed Positioning -->
+<div class="language-switcher">
+<button data-lang="th">TH</button>
+<button data-lang="en">EN</button>
+</div>
+<header>
+<h1 id="toc">
+<span class="th">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+<span class="en">Porjai's Japan Trip: Birthday Adventure 2026</span>
+</h1>
+<!-- Language switcher removed from here -->
+<h2>
+<span class="th">📅 ศุกร์ 6 – ศุกร์ 13 มีนาคม 2026</span>
+<span class="en">📅 March 6th (Fri) – March 13th (Fri), 2026</span>
+</h2>
+</header>
+<div class="container">
+<p>
+<span class="th">✈️ ผู้เดินทาง: 🧍 Arilek (คุณพ่อ) 👧 Nuntnaphat (พอใจ)</span><span class="en">✈️ Travelers: 🧍 Arilek (Dad) 👧 Nuntnaphat (Porjai)</span><br/>
+<span class="th">🗺️ เส้นทาง: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</span><span class="en">🗺️ Itinerary: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</span>
+</p>
+<section id="overview">
+<h1>
+<span class="th th-block">ภาพรวมการเดินทางและกิจกรรม</span>
+<span class="en en-block">Trip Overview &amp; Activities</span>
+</h1>
+<!-- Flex container -->
+<div class="day-overviews">
+<!-- Day 1 Overview -->
+<div class="day-overview">
+<h3><a href="#day1"><span class="th">วันที่ 1: 6 มี.ค. (ศ) - นาริตะ &amp; ชินากาวะ</span><span class="en">Day 1: Mar 6 (Fri) - Arrival &amp; Shinagawa</span></a></h3>
+<p><span class="th">เดินทางถึงนาริตะ, เดินทางเข้าชินากาวะ, เช็คอินโรงแรม, ซื้อของขวัญ/อาหารเย็น.</span><span class="en">Arrive in Narita, travel to Shinagawa, check into hotel, gift shopping/dinner.</span></p>
+</div>
+<!-- Day 2 Overview -->
+<div class="day-overview">
+<h3><a href="#day2"><span class="th">วันที่ 2: 7 มี.ค. (ส) - อาซากุสะ, สกายทรี &amp; โอไดบะ</span><span class="en">Day 2: Mar 7 (Sat) - Asakusa, Skytree &amp; Odaiba</span></a></h3>
+<p><span class="th">เที่ยววัดเซ็นโซจิ, ชมวิวโตเกียวสกายทรี, ล่องเรือ, ชมกันดั้มที่โอไดบะ.</span><span class="en">Visit Senso-ji Temple, Tokyo Skytree view, cruise, see Gundam in Odaiba.</span></p>
+</div>
+<!-- Day 3 Overview -->
+<div class="day-overview">
+<h3><a href="#day3"><span class="th">วันที่ 3: 8 มี.ค. (อา) - คาวากุจิโกะ &amp; เจดีย์แดง</span><span class="en">Day 3: Mar 8 (Sun) - Kawaguchiko &amp; Chureito Pagoda</span></a></h3>
+<p><span class="th">เดินทางไปคาวากุจิโกะ, ชมเจดีย์แดงวิวฟูจิ, เช็คอิน, เดินเล่นริมทะเลสาบ, ขึ้นกระเช้า.</span><span class="en">Travel to Kawaguchiko, see Chureito Pagoda with Fuji view, check in, walk by the lake, take ropeway.</span></p>
+</div>
+<!-- Day 4 Overview -->
+<div class="day-overview">
+<h3><a href="#day4"><span class="th">วันที่ 4: 9 มี.ค. (จ) - วันเกิดพอใจที่คาวากุจิโกะ</span><span class="en">Day 4: Mar 9 (Mon) - Porjai's Birthday in Kawaguchiko</span></a></h3>
+<p><span class="th">เที่ยวหมู่บ้านน้ำใส, ชมวิวฟูจิจากกระเช้า/สวนโออิชิ, แช่ออนเซ็น, ฉลองวันเกิด.</span><span class="en">Visit Oshino Hakkai, enjoy Fuji views from ropeway/Oishi Park, relax in onsen, celebrate birthday.</span></p>
+</div>
+<!-- Day 5 Overview -->
+<div class="day-overview">
+<h3><a href="#day5"><span class="th">วันที่ 5: 10 มี.ค. (อ) - กลับโตเกียว &amp; ช้อปปิ้งอุเอโนะ</span><span class="en">Day 5: Mar 10 (Tue) - Return to Tokyo &amp; Ueno Shopping</span></a></h3>
+<p><span class="th">เดินทางกลับโตเกียว, เช็คอินอุเอโนะ, ช้อปปิ้ง GU, Sanrio, Ameyoko, Bic Camera, Donki.</span><span class="en">Return to Tokyo, check into Ueno, shopping at GU, Sanrio, Ameyoko, Bic Camera, Donki.</span></p>
+</div>
+<!-- Day 6 Overview -->
+<div class="day-overview">
+<h3><a href="#day6"><span class="th">วันที่ 6: 11 มี.ค. (พ) - สนุกกับหิมะที่ Gala Yuzawa</span><span class="en">Day 6: Mar 11 (Wed) - Fun with Snow at Gala Yuzawa</span></a></h3>
+<p><span class="th">นั่งชินคันเซ็นไป Gala Yuzawa, เล่นหิมะ, ขึ้นกระเช้าชมวิว, เดินทางกลับอุเอโนะ.</span><span class="en">Take Shinkansen to Gala Yuzawa, play in snow, enjoy gondola views, return to Ueno.</span></p>
+</div>
+<!-- Day 7 Overview -->
+<div class="day-overview">
+<h3><a href="#day7"><span class="th">วันที่ 7: 12 มี.ค. (พฤ) - ตามรอยอนิเมะ &amp; ชมวิวโตเกียว</span><span class="en">Day 7: Mar 12 (Thu) - Anime Pilgrimage &amp; Tokyo Views</span></a></h3>
+<p><span class="th">ตามรอย "Your Name" ที่ศาลเจ้า Suga, ชม Ghibli Clock, ชมวิว Tokyo Tower และ Roppongi Hills.</span><span class="en">Visit Suga Shrine ("Your Name"), see Ghibli Clock, enjoy views from Tokyo Tower and Roppongi Hills.</span></p>
+</div>
+<!-- Day 8 Overview -->
+<div class="day-overview">
+<h3><a href="#day8"><span class="th">วันที่ 8: 13 มี.ค. (ศ) - ช้อปปิ้ง &amp; เดินทางกลับไทย</span><span class="en">Day 8: Mar 13 (Fri) - Shopping &amp; Return to Thailand</span></a></h3>
+<p><span class="th">เดินเล่นสวนอุเอโนะ, ซื้อของฝาก Ameyoko, เดินทางไปสนามบินนาริตะ, กลับไทย.</span><span class="en">Walk in Ueno Park, buy souvenirs at Ameyoko, travel to Narita Airport, return to Thailand.</span></p>
+</div>
+<!-- Budget Overview -->
+<div class="day-overview">
+<h3><a href="#budget"><span class="th">ประมาณการค่าใช้จ่ายและสถานะ</span><span class="en">Budget Estimate and Status</span></a></h3>
+<p><span class="th">ข้อมูลการจอง และประมาณการค่าใช้จ่าย.</span><span class="en">Booking information and estimated expenses.</span></p>
+</div>
+</div> <!-- End .day-overviews -->
+<div class="note-box">
+<div class="note-toggle">
+<span class="th">ℹ️ วิธีการใช้งานแผนการเดินทาง</span>
+<span class="en">ℹ️ How to Use the Itinerary</span>
+</div>
+<div class="note-detail">
+<p class="th th-block">แผนการเดินทางรวมอยู่ในไฟล์เดียวเพื่อความสะดวกในการใช้งานออฟไลน์</p>
+<p class="en en-block">The itinerary is consolidated into a single file for easy offline use.</p>
+<p class="th th-block">คลิกที่หัวข้อ <span class="emoji">ℹ️</span> เพื่อขยายดูรายละเอียดเพิ่มเติม และใช้ปุ่ม "กลับไปหน้าหลัก" ด้านล่างขวาเพื่อไปยังสารบัญ</p>
+<p class="en en-block">Click on the <span class="emoji">ℹ️</span> headings to expand for more details, and use the "Back to Top" button at the bottom right to navigate to the table of contents.</p>
+<p class="th th-block">ใช้ปุ่ม TH/EN ที่มุมบนขวา (ลอยอยู่) เพื่อสลับภาษา</p>
+<p class="en en-block">Use the floating TH/EN buttons at the top right to switch languages.</p>
+</div>
+</div>
+</section>
+<!-- ==================== DAY 1 ==================== -->
+<section id="day1">
+<h1>
+<span class="th th-block">วันที่ 1: 6 มีนาคม 2569 (ศุกร์) - เดินทางถึงนาริตะ &amp; ชินากาวะ</span>
+<span class="en en-block">Day 1: March 6, 2026 (Fri) - Arrival in Narita &amp; Shinagawa</span>
+</h1>
+<ul class="timeline">
+<li>
+<strong>02:00</strong>: <span class="emoji">🚗</span> <span class="th">ออกเดินทางจากบ้านไปสนามบินดอนเมือง</span><span class="en">Depart from home to Don Mueang Airport</span>
+</li>
+<li>
+<strong>06:15</strong>: <span class="emoji">🛫</span> <span class="th">เที่ยวบิน SL394 (Thai Lion Air) ไปนาริตะ</span><span class="en">Flight SL394 (Thai Lion Air) to Narita</span>
+</li>
+<li>
+<strong>16:20</strong>: <span class="emoji">🛬</span> <span class="th">ถึงสนามบินนาริตะ (NRT)</span><span class="en">Arrive at Narita International Airport (NRT)</span>
+</li>
+<li>
+<strong>17:00-18:30</strong>: <span class="emoji">🚄</span> <span class="th">เดินทางโดย Narita Express (N'EX) ไปยังสถานีชินากาวะ</span><span class="en">Travel by Narita Express (N'EX) to Shinagawa Station</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียดการเดินทาง (N'EX)</span><span class="en">ℹ️ Travel Details (N'EX)</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ซื้อตั๋ว Narita Express ได้ที่ JR East Travel Service Center (Terminal 1 หรือ Terminal 2-3) หลังผ่าน ตม.</li>
+<li class="en en-li">Purchase Narita Express tickets at the JR East Travel Service Center (Terminal 1 or 2-3) after immigration.</li>
+<li class="th th-li">ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="3070"></span>, เด็ก <span data-jpy="1530"></span> (โดยประมาณ)</li>
+<li class="en en-li">Approximate cost: Adult <span data-jpy="3070"></span>, Child <span data-jpy="1530"></span></li>
+<li class="th th-li">เวลาเดินทาง: ประมาณ 70 นาที</li>
+<li class="en en-li">Travel time: Approximately 70 minutes</li>
+<li class="th th-li">ขึ้นรถไฟ: ตามป้าย "JR Line" ที่สถานี Narita Airport ลงไปชั้นใต้ดิน ขึ้นชานชาลา N'EX</li>
+<li class="en en-li">Boarding: Follow "JR Line" signs at Narita Airport Station to the basement N'EX platform.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>18:30</strong>: <span class="emoji">🏨</span> <span class="th">เช็คอินโรงแรม Shinagawa Tobu Hotel</span><span class="en">Check into Shinagawa Tobu Hotel</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ ข้อมูลโรงแรม</span><span class="en">ℹ️ Hotel Information</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ที่พัก: <a href="https://www.agoda.com/th-th/shinagawa-tobu-hotel/hotel/tokyo-jp.html?cid=1844104&amp;ds=PoSIgwEvEDvM0BpG" target="_blank">Shinagawa Tobu Hotel</a></li>
+<li class="en en-li">Accommodation: <a href="https://www.agoda.com/th-th/shinagawa-tobu-hotel/hotel/tokyo-jp.html?cid=1844104&amp;ds=PoSIgwEvEDvM0BpG" target="_blank">Shinagawa Tobu Hotel</a></li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>19:00</strong>: <span class="emoji">🍽️</span> <span class="th">กิจกรรมช่วงเย็น: ซื้อของขวัญ/อาหารเย็น</span><span class="en">Evening Activities: Gift Shopping/Dinner</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ แผนช่วงเย็น (Gotanda)</span><span class="en">ℹ️ Evening Plan (Gotanda)</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>18:45 – 19:30:</strong> เดินทางไป Bic Camera Gotanda ซื้อกล้อง (ของขวัญวันเกิดพอใจ)</li>
+<li class="en en-li"><strong>6:45 PM – 7:30 PM:</strong> Travel to Bic Camera Gotanda to purchase a compact camera (Porjai's birthday gift).</li>
+<li class="th th-li"><strong>19:30 – 20:00:</strong> เข้าร้าน GU Gotanda (Marui ชั้น 3) ดู/ซื้อเสื้อกันหนาว</li>
+<li class="en en-li"><strong>7:30 PM – 8:00 PM:</strong> Visit GU Gotanda (Marui 3rd floor) for additional winter clothing.</li>
+<li class="th th-li"><strong>20:00 – 20:45:</strong> ทานมื้อเย็นแถว Gotanda (เช่น Saizeriya, MOS Burger)</li>
+<li class="en en-li"><strong>8:00 PM – 8:45 PM:</strong> Have dinner around Gotanda area (e.g., Saizeriya, MOS Burger).</li>
+<li class="th th-li"><strong>~21:00:</strong> กลับที่พัก</li>
+<li class="en en-li"><strong>~9:00 PM:</strong> Return to accommodation.</li>
+</ul>
+<h4 class="th th-block" style="margin-top: 1rem;">การเดินทาง Shinagawa ↔ Gotanda</h4>
+<h4 class="en en-block" style="margin-top: 1rem;">Travel Shinagawa ↔ Gotanda</h4>
+<ul>
+<li class="th th-li">รถไฟ JR Yamanote Line (สายสีเขียว) 1 สถานี</li>
+<li class="en en-li">JR Yamanote Line (Green line) - 1 stop</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="140"></span> ต่อคน/เที่ยว</li>
+<li class="en en-li">Cost: <span data-jpy="140"></span> per person/trip</li>
+<li class="th th-li">ใช้ IC Card (Suica/Pasmo) หรือซื้อตั๋วเที่ยวเดียว</li>
+<li class="en en-li">Use IC Card (Suica/Pasmo) or buy single ticket</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>21:00</strong>: <span class="emoji">😴</span> <span class="th">กลับโรงแรมพักผ่อน</span><span class="en">Return to hotel to rest</span>
+</li>
+</ul>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายการเตรียมพร้อม</span><span class="en">ℹ️ Preparation Checklist</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">หนังสือเดินทาง (Passport) และสำเนา</li><li class="en en-li">Passport and copies</li>
+<li class="th th-li">ตั๋วเครื่องบิน E-ticket / Boarding Pass</li><li class="en en-li">E-ticket or Boarding Pass</li>
+<li class="th th-li">เอกสารยืนยันการจองโรงแรม</li><li class="en en-li">Hotel booking confirmation</li>
+<li class="th th-li">กระเป๋าเดินทาง (สัมภาระโหลด)</li><li class="en en-li">Checked luggage</li>
+<li class="th th-li">กระเป๋าถือขึ้นเครื่อง (Carry-on)</li><li class="en en-li">Carry-on luggage</li>
+<li class="th th-li">เงินเยน (แลกไปบางส่วน) และบัตรเครดิต</li><li class="en en-li">Japanese Yen (some pre-exchanged) and credit cards</li>
+<li class="th th-li">อุปกรณ์อิเล็กทรอนิกส์พร้อมที่ชาร์จ</li><li class="en en-li">Electronic devices with chargers</li>
+<li class="th th-li">ยาประจำตัวและยาสามัญ</li><li class="en en-li">Personal and general medications</li>
+<li class="th th-li">เสื้อผ้าสำหรับอากาศเย็น</li><li class="en en-li">Clothing for cool weather</li>
+</ul>
+</div>
+</div>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียด: ซื้อกล้องของขวัญ</span><span class="en">ℹ️ Details: Camera Gift Purchase</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>วัตถุประสงค์:</strong> ของขวัญวันเกิดล่วงหน้าให้พอใจ ใช้ถ่ายรูประหว่างทริป</li><li class="en en-li"><strong>Purpose:</strong> Early birthday gift for Porjai to use during the trip.</li>
+<li class="th th-li"><strong>งบประมาณ:</strong> ไม่เกิน 10,000 บาท (<span data-jpy="45000"></span>)</li><li class="en en-li"><strong>Budget:</strong> Up to ฿10,000 (<span data-jpy="45000"></span>)</li>
+<li class="th th-li"><strong>รุ่นกล้องที่แนะนำ:</strong></li><li class="en en-li"><strong>Recommended Camera Models:</strong></li>
+<ul>
+<li class="th th-li"><strong>Ricoh WG-80:</strong> กันน้ำ, กันกระแทก (<span data-jpy="35000"></span>–<span data-jpy="42000"></span>)</li><li class="en en-li"><strong>Ricoh WG-80:</strong> Waterproof, shockproof (<span data-jpy="35000"></span>–<span data-jpy="42000"></span>)</li>
+<li class="th th-li"><strong>Canon PowerShot SX740 HS:</strong> ซูม 40x, 4K, Wi-Fi (<span data-jpy="40000"></span>–<span data-jpy="45000"></span>)</li><li class="en en-li"><strong>Canon PowerShot SX740 HS:</strong> 40x zoom, 4K video, Wi-Fi (<span data-jpy="40000"></span>–<span data-jpy="45000"></span>)</li>
+<li class="th th-li"><strong>Sony Cyber-shot DSC-WX500:</strong> ซูม 30x, จอพับได้ (<span data-jpy="35000"></span>–<span data-jpy="40000"></span>)</li><li class="en en-li"><strong>Sony Cyber-shot DSC-WX500:</strong> 30x zoom, tilting screen (<span data-jpy="35000"></span>–<span data-jpy="40000"></span>)</li>
+<li class="th th-li"><strong>Fujifilm FinePix XP140:</strong> กันน้ำลึก 25ม. (<span data-jpy="30000"></span>–<span data-jpy="38000"></span>)</li><li class="en en-li"><strong>Fujifilm FinePix XP140:</strong> Waterproof to 25m (<span data-jpy="30000"></span>–<span data-jpy="38000"></span>)</li>
+</ul>
+</ul>
+<p class="th th-block"><strong>📍 สถานที่แนะนำ:</strong> Bic Camera Gotanda</p><p class="en en-block"><strong>📍 Recommended Place:</strong> Bic Camera Gotanda</p>
+<ul>
+<li class="th th-li">เวลาทำการ: 10:00 – 21:00</li><li class="en en-li">Opening Hours: 10:00 AM – 9:00 PM</li>
+<li class="th th-li">การเดินทางจากโรงแรม: เดิน 5 นาทีไป JR Shinagawa → JR Yamanote Line 1 สถานีไป Gotanda → ออก East Exit เดิน 1 นาที</li><li class="en en-li">Travel from Hotel: 5-min walk to JR Shinagawa → JR Yamanote Line 1 stop to Gotanda → East Exit, 1-min walk</li>
+</ul>
+<p class="th th-block"><strong>🍴 ร้านอาหารใกล้เคียง:</strong></p><p class="en en-block"><strong>🍴 Recommended Restaurants Nearby:</strong></p>
+<ul>
+<li class="th th-li"><strong>Saizeriya:</strong> อิตาเลียนราคาประหยัด, เหมาะกับเด็ก</li><li class="en en-li"><strong>Saizeriya:</strong> Affordable Italian, kid-friendly.</li>
+<li class="th th-li"><strong>Yoshinoya:</strong> ข้าวหน้าเนื้อญี่ปุ่น</li><li class="en en-li"><strong>Yoshinoya:</strong> Japanese beef bowl.</li>
+<li class="th th-li"><strong>MOS Burger:</strong> เบอร์เกอร์ญี่ปุ่น</li><li class="en en-li"><strong>MOS Burger:</strong> Japanese burger chain.</li>
+</ul>
+<p><span class="th"><strong>เคล็ดลับ:</strong> ขอ Tax-Free ได้เมื่อซื้อเกิน ¥5,000 (แสดงพาสปอร์ต)</span><span class="en"><strong>Tip:</strong> Tax-Free available for purchases over ¥5,000 (show passport).</span></p>
+</div>
+</div>
+</section>
+<!-- ==================== DAY 2 ==================== -->
+<section id="day2">
+<h1>
+<span class="th th-block">วันที่ 2: 7 มีนาคม 2569 (เสาร์) - อาซากุสะ, สกายทรี &amp; โอไดบะ</span>
+<span class="en en-block">Day 2: March 7, 2026 (Sat) - Asakusa, Skytree &amp; Odaiba</span>
+</h1>
+<ul class="timeline">
+<li>
+<strong>10:00</strong>: <span class="emoji">🚶‍♀️</span> <span class="th">เที่ยวอาซากุสะ &amp; วัดเซ็นโซจิ</span><span class="en">Visit Asakusa &amp; Senso-ji Temple</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางไปวัดเซ็นโซจิ</span><span class="en">ℹ️ Travel to Senso-ji Temple</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">จาก Shinagawa: JR Yamanote Line ไป Ueno (≈20 นาที) → Tokyo Metro Ginza Line ไป Asakusa (≈5 นาที)</li>
+<li class="en en-li">From Shinagawa: JR Yamanote Line to Ueno (≈20 mins) → Tokyo Metro Ginza Line to Asakusa (≈5 mins).</li>
+<li class="th th-li">ลงสถานี Asakusa (G19), ออก Exit 1, เดิน 5 นาที</li>
+<li class="en en-li">Alight at Asakusa Station (G19), take Exit 1, walk 5 mins.</li>
+<li class="th th-li">เวลาเดินทางรวม: ≈35 นาที</li>
+<li class="en en-li">Total travel time: ≈35 mins</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="330"></span> ต่อคน</li>
+<li class="en en-li">Approx. cost: <span data-jpy="330"></span> per person</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>11:30</strong>: <span class="emoji">🚢</span> <span class="th">ล่องเรือ Tokyo Cruise (Himiko/Emeraldas) จากอาซากุสะไปโอไดบะ</span><span class="en">Tokyo Cruise (Himiko/Emeraldas) from Asakusa to Odaiba</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียดการล่องเรือ</span><span class="en">ℹ️ Cruise Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ขึ้นเรือที่ท่าเรืออาซากุสะ (Asakusa Pier) ลงที่ Odaiba Seaside Park</li>
+<li class="en en-li">Board at Asakusa Pier, disembark at Odaiba Seaside Park.</li>
+<li class="th th-li">เวลาเดินทาง: ≈50 นาที</li>
+<li class="en en-li">Travel time: ≈50 mins</li>
+<li class="th th-li">ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="1720"></span>, เด็ก <span data-jpy="860"></span> (โดยประมาณ)</li>
+<li class="en en-li">Approx. cost: Adult <span data-jpy="1720"></span>, Child <span data-jpy="860"></span></li>
+<li class="th th-li">ท่าเรืออาซากุสะ: หาตำแหน่งเมื่อไปถึง</li>
+<li class="en en-li">Asakusa Pier: Find exact location upon arrival.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>13:00</strong>: <span class="emoji">🍔</span> <span class="th">อาหารกลางวันที่ DiverCity Tokyo Plaza &amp; ชมกันดั้ม</span><span class="en">Lunch at DiverCity Tokyo Plaza &amp; see Gundam Statue</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียดสถานที่</span><span class="en">ℹ️ Place Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">DiverCity Tokyo Plaza: <a href="https://mitsui-shopping-park.com/divercity-tokyo/" target="_blank">Website</a></li><li class="en en-li">DiverCity Tokyo Plaza: <a href="https://mitsui-shopping-park.com/divercity-tokyo/" target="_blank">Website</a></li>
+<li class="th th-li">หุ่นกันดั้มอยู่ด้านหน้าห้าง</li>
+<li class="en en-li">Gundam Statue located in front of the mall.</li>
+<li class="th th-li">มีร้านอาหารหลากหลายใน Food Court และร้านทั่วไป</li>
+<li class="en en-li">Various restaurants available in food court and regular dining areas.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>16:00</strong>: <span class="emoji">🗼</span> <span class="th">เที่ยว Tokyo Skytree ชมวิว</span><span class="en">Visit Tokyo Skytree for views</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทาง &amp; รายละเอียดสกายทรี</span><span class="en">ℹ️ Travel &amp; Skytree Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>การเดินทางจากโอไดบะ:</strong> สถานี Daiba (Yurikamome Line) ไป Toyosu → Tokyo Metro Yurakucho Line ไป Oshiage (Skytree)</li>
+<li class="en en-li"><strong>Travel from Odaiba:</strong> Daiba Station (Yurikamome Line) to Toyosu → Tokyo Metro Yurakucho Line to Oshiage (Skytree).</li>
+<li class="th th-li">เวลาเดินทาง: ≈30-40 นาที</li>
+<li class="en en-li">Travel time: ≈30-40 mins</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="370"></span> ต่อคน</li>
+<li class="en en-li">Approx. cost: <span data-jpy="370"></span> per person</li>
+<li class="th th-li">ค่าเข้า Tembo Deck (350m): ผู้ใหญ่ <span data-jpy="2300"></span>, เด็ก (6-11 ปี) <span data-jpy="1000"></span> (*ตรวจสอบราคาล่าสุด*)</li>
+<li class="en en-li">Tembo Deck (350m) admission: Adult <span data-jpy="2300"></span>, Child (6-11 yrs) <span data-jpy="1000"></span> (*Check latest prices*)</li>
+<li class="th th-li">จุดชมวิวแนะนำ: Tembo Deck (350 เมตร)</li>
+<li class="en en-li">Recommended viewing point: Tembo Deck (350 meters).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>20:00</strong>: <span class="emoji">🚆</span> <span class="th">กลับที่พักชินากาวะ</span><span class="en">Return to accommodation in Shinagawa</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางกลับชินากาวะ</span><span class="en">ℹ️ Travel back to Shinagawa</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">จาก Skytree: สถานี Oshiage (Toei Asakusa Line) ไป Sengakuji → Keikyu Main Line ไป Shinagawa</li>
+<li class="en en-li">From Skytree: Oshiage Station (Toei Asakusa Line) to Sengakuji → Keikyu Main Line to Shinagawa.</li>
+<li class="th th-li">เวลาเดินทาง: ≈40-50 นาที</li>
+<li class="en en-li">Travel time: ≈40-50 mins</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="420"></span> ต่อคน</li>
+<li class="en en-li">Approx. cost: <span data-jpy="420"></span> per person</li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</section>
+<!-- ==================== DAY 3 ==================== -->
+<section id="day3">
+<h1>
+<span class="th th-block">วันที่ 3: 8 มีนาคม 2569 (อาทิตย์) - คาวากุจิโกะ &amp; เจดีย์แดง</span>
+<span class="en en-block">Day 3: March 8, 2026 (Sun) - Kawaguchiko &amp; Chureito Pagoda</span>
+</h1>
+<ul class="timeline">
+<li>
+<strong>07:00</strong>: <span class="emoji">🏨</span> <span class="th">เช็คเอาท์จาก Shinagawa Tobu Hotel</span><span class="en">Check out from Shinagawa Tobu Hotel</span>
+</li>
+<li>
+<strong>08:00</strong>: <span class="emoji">🚌</span> <span class="th">เดินทางไป Busta Shinjuku</span><span class="en">Travel to Busta Shinjuku</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางไปชินจูกุ</span><span class="en">ℹ️ Travel to Shinjuku</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">เดิน 5 นาทีไปสถานี JR Shinagawa</li><li class="en en-li">5-min walk to JR Shinagawa Station.</li>
+<li class="th th-li">ขึ้น JR Yamanote Line ไปสถานี Shinjuku (<span data-jpy="200"></span> ต่อคน)</li><li class="en en-li">Take JR Yamanote Line to Shinjuku Station (<span data-jpy="200"></span> per person).</li>
+<li class="th th-li">เดินไปอาคาร NEWoMan (ชั้น 4) → Busta Shinjuku</li><li class="en en-li">Walk to NEWoMan building (4th floor) → Busta Shinjuku.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>08:40</strong>: <span class="emoji">🚌</span> <span class="th">ขึ้นรถบัส Fujikyu/Keio จาก Busta Shinjuku ไปสถานี Kawaguchiko</span><span class="en">Take Fujikyu/Keio bus from Busta Shinjuku to Kawaguchiko Station</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียดรถบัสไปคาวากุจิโกะ</span><span class="en">ℹ️ Bus to Kawaguchiko Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="2000"></span>, เด็ก <span data-jpy="1000"></span> ต่อเที่ยว (โดยประมาณ)</li>
+<li class="en en-li">Approx. cost: Adult <span data-jpy="2000"></span>, Child <span data-jpy="1000"></span> per trip.</li>
+<li class="th th-li">แนะนำจองล่วงหน้า: <a href="https://japanbusonline.com/en" target="_blank">Japan Bus Online</a> หรือ <a href="https://highway-buses.jp/jpy/hwbtop/sp/" target="_blank">Highway Buses Japan</a></li>
+<li class="en en-li">Recommended to book in advance via <a href="https://japanbusonline.com/en" target="_blank">Japan Bus Online</a> or <a href="https://highway-buses.jp/jpy/hwbtop/sp/" target="_blank">Highway Buses Japan</a>.</li>
+<li class="th th-li">เวลาเดินทาง: ≈1 ชม. 50 นาที - 2 ชม.</li>
+<li class="en en-li">Travel time: Approx. 1 hr 50 mins to 2 hrs.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>10:30</strong>: <span class="emoji">🚶‍♀️</span> <span class="th">ถึงสถานี Kawaguchiko, ฝากกระเป๋า</span><span class="en">Arrive at Kawaguchiko Station, store luggage</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ ล็อกเกอร์ฝากของ</span><span class="en">ℹ️ Luggage Lockers</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">มีล็อกเกอร์หยอดเหรียญที่สถานี</li><li class="en en-li">Coin lockers available at the station.</li>
+<li class="th th-li">ค่าบริการ: <span data-jpy="300"></span>-<span data-jpy="700"></span> ต่อวัน (ตามขนาด)</li><li class="en en-li">Fee: <span data-jpy="300"></span>-<span data-jpy="700"></span> per day (depending on size).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>10:40</strong>: <span class="emoji">🚃</span> <span class="th">ขึ้นรถไฟ Fujikyu Line ไปสถานี Shimoyoshida</span><span class="en">Take Fujikyu Line train to Shimoyoshida Station</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียดรถไฟ Fujikyu Line</span><span class="en">ℹ️ Fujikyu Line Train Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="300"></span> ต่อคน</li><li class="en en-li">Approx. cost: <span data-jpy="300"></span> per person.</li>
+<li class="th th-li">เวลาเดินทาง: ≈10-15 นาที</li><li class="en en-li">Travel time: Approx. 10-15 mins.</li>
+<li class="th th-li">รถไฟออกทุก 30-60 นาที (ตรวจสอบตารางเวลา)</li><li class="en en-li">Trains run every 30-60 mins (check schedule).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>11:00</strong>: <span class="emoji">🚶‍♀️</span> <span class="th">เดินขึ้นเจดีย์แดง (Chureito Pagoda) ชมวิวฟูจิ</span><span class="en">Walk up to Chureito Pagoda for Mt. Fuji view</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียดเจดีย์แดง</span><span class="en">ℹ️ Chureito Pagoda Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">จากสถานี Shimoyoshida เดิน ≈15-20 นาที (ขึ้นบันได 398 ขั้น)</li><li class="en en-li">From Shimoyoshida Station, walk ≈15-20 mins (climb 398 steps).</li>
+<li class="th th-li">เป็นส่วนหนึ่งของศาลเจ้า Arakura Sengen</li><li class="en en-li">Part of Arakura Sengen Shrine.</li>
+<li class="th th-li">จุดชมวิวฟูจิยอดนิยม</li><li class="en en-li">Famous viewpoint for Mt. Fuji.</li>
+<li class="th th-li">เข้าชมฟรี</li><li class="en en-li">No admission fee.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>12:30</strong>: <span class="emoji">🚃</span> <span class="th">นั่งรถไฟกลับสถานี Kawaguchiko, รับกระเป๋า, เช็คอินที่พัก</span><span class="en">Train back to Kawaguchiko Station, pick up luggage, check into accommodation</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ ที่พักแนะนำ (Kawaguchiko)</span><span class="en">ℹ️ Recommended Accommodation (Kawaguchiko)</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>เป้าหมาย:</strong> ราคาไม่เกิน 5,000 บาท/คืน, วิวฟูจิ, เดินทางสะดวก</li><li class="en en-li"><strong>Goal:</strong> Under ฿5000/night, Fuji view, convenient access.</li>
+<li class="th th-li"><strong>ตัวเลือก:</strong> K's House Fuji View (Hostel), Hotel Regina Kawaguchiko (ใกล้สถานี), Fuji View Hotel (ริมทะเลสาบ)</li><li class="en en-li"><strong>Options:</strong> K's House Fuji View (Hostel), Hotel Regina Kawaguchiko (near station), Fuji View Hotel (lakeside).</li>
+<li class="th th-li"><strong>คำแนะนำ:</strong> จองล่วงหน้านานๆ (4-6 เดือน) เพราะเต็มเร็ว</li><li class="en en-li"><strong>Advice:</strong> Book well in advance (4-6 months) as they fill up quickly.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong><span class="th">บ่าย</span><span class="en">Afternoon</span></strong>: <span class="emoji">🚶‍♀️</span> <span class="th">เดินเล่นริมทะเลสาบ, ขึ้นกระเช้า Mt. Fuji Ropeway, แวะคาเฟ่</span><span class="en">Walk around Lake Kawaguchiko, take Mt. Fuji Ropeway, visit cafes</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ กิจกรรมยามบ่าย</span><span class="en">ℹ️ Afternoon Activities</span>
+</div>
+<div class="info-detail">
+<ul>
+<li><strong>Mt. Fuji Ropeway (Kachi Kachi Ropeway):</strong>
+<ul>
+<li class="th th-li">ค่ากระเช้า: ผู้ใหญ่ <span data-jpy="900"></span> (ไป-กลับ), เด็ก <span data-jpy="450"></span> (ไป-กลับ)</li><li class="en en-li">Ropeway fee: Adult <span data-jpy="900"></span> (round trip), Child <span data-jpy="450"></span> (round trip).</li>
+<li class="th th-li">เวลาทำการ: 9:00-17:00 (อาจเปลี่ยนแปลง)</li><li class="en en-li">Operating hours: 9:00 AM - 5:00 PM (may vary seasonally).</li>
+<li class="th th-li">ชมวิวทะเลสาบและฟูจิจากยอดเขา Tenjo</li><li class="en en-li">Panoramic views of Lake Kawaguchiko and Mt. Fuji from Mt. Tenjo.</li>
+</ul>
+</li>
+<li class="th th-li"><strong>Oishi Park:</strong> สวนริมทะเลสาบฝั่งเหนือ วิวฟูจิสวย ดอกไม้ตามฤดูกาล</li><li class="en en-li"><strong>Oishi Park:</strong> Lakeside park on the north shore, beautiful Fuji views, seasonal flowers.</li>
+<li class="th th-li"><strong>คาเฟ่แนะนำ:</strong> Kawaguchiko Herbkan, Cafe Lake Kawaguchiko.</li><li class="en en-li"><strong>Recommended cafes:</strong> Kawaguchiko Herbkan, Cafe Lake Kawaguchiko.</li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</section>
+<!-- ==================== DAY 4 ==================== -->
+<section id="day4">
+<h1>
+<span class="th th-block">วันที่ 4: 9 มีนาคม 2569 (จันทร์) - วันเกิดพอใจที่คาวากุจิโกะ</span>
+<span class="en en-block">Day 4: March 9, 2026 (Mon) - Porjai's Birthday in Kawaguchiko</span>
+<span class="birthday-badge">🎂 Happy Birthday!</span>
+</h1>
+<ul class="timeline">
+<li>
+<strong>09:00</strong>: <span class="emoji">🚌</span> <span class="th">ขึ้นรถบัส (สาย F หรือ Green Line) ไปหมู่บ้านน้ำใส Oshino Hakkai</span><span class="en">Take bus (Line F or Green Line) to Oshino Hakkai village</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางไป Oshino Hakkai</span><span class="en">ℹ️ Travel to Oshino Hakkai</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="560"></span> ต่อเที่ยว</li><li class="en en-li">Approx. cost: <span data-jpy="560"></span> per trip.</li>
+<li class="th th-li">ขึ้นที่ป้าย #5 สถานี Kawaguchiko</li><li class="en en-li">Board at bus stop #5 at Kawaguchiko Station.</li>
+<li class="th th-li">เวลาเดินทาง: ≈30 นาที</li><li class="en en-li">Travel time: Approx. 30 mins.</li>
+<li class="th th-li">รถออกทุก 30-60 นาที</li><li class="en en-li">Buses run every 30-60 mins.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>09:45 – 11:30</strong>: <span class="emoji">🚶‍♀️</span> <span class="th">เที่ยวชม Oshino Hakkai, ถ่ายรูป, ชิมน้ำแร่</span><span class="en">Visit Oshino Hakkai, walk around, take photos, taste spring water</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียด Oshino Hakkai</span><span class="en">ℹ️ Oshino Hakkai Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">หมู่บ้านที่มีบ่อน้ำใส 8 บ่อจากน้ำละลายของฟูจิ</li><li class="en en-li">Village with 8 clear ponds fed by Mt. Fuji's snowmelt.</li>
+<li class="th th-li">ร้านค้าของที่ระลึกและอาหารท้องถิ่น</li><li class="en en-li">Souvenir shops and local food stalls.</li>
+<li class="th th-li">ค่าเข้าชมบ่อหลัก: <span data-jpy="300"></span> ต่อคน</li><li class="en en-li">Main pond admission: <span data-jpy="300"></span> per person.</li>
+<li class="th th-li">เวลาทำการ: 9:00-17:00</li><li class="en en-li">Opening hours: 9:00 AM - 5:00 PM.</li>
+<li class="th th-li">ไฮไลท์: ถ่ายรูปบ่อน้ำกับฟูจิ, ชิมน้ำแร่</li><li class="en en-li">Highlights: Photos of ponds with Fuji backdrop, tasting spring water.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>11:30</strong>: <span class="emoji">🚌</span> <span class="th">เดินทางกลับสถานี Kawaguchiko</span><span class="en">Return to Kawaguchiko Station by bus</span>
+</li>
+<li>
+<strong>12:30</strong>: <span class="emoji">🍽️</span> <span class="th">ทานอาหารกลางวันใกล้สถานี Kawaguchiko</span><span class="en">Have lunch near Kawaguchiko Station</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ ร้านอาหารแนะนำ</span><span class="en">ℹ️ Recommended Restaurants</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>Houtou Fudou:</strong> ร้านดัง เมนู Houtou (คล้ายอุด้งในซุปฟักทอง)</li><li class="en en-li"><strong>Houtou Fudou:</strong> Famous for "Houtou" noodle dish.</li>
+<li class="th th-li"><strong>Lake Kawaguchiko Restaurant:</strong> ร้านอาหารวิวทะเลสาบ/ฟูจิ</li><li class="en en-li"><strong>Lake Kawaguchiko Restaurant:</strong> Restaurant with lake/Fuji views.</li>
+<li class="th th-li"><strong>Tempura Restaurant Ninja:</strong> ร้านเทมปุระชื่อดัง</li><li class="en en-li"><strong>Tempura Restaurant Ninja:</strong> Famous tempura restaurant.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>14:00</strong>: <span class="emoji">🚌</span> <span class="th">ขึ้นรถบัส Red Line เที่ยว Mt. Fuji Ropeway &amp; Oishi Park</span><span class="en">Take Red Line bus to visit Mt. Fuji Ropeway &amp; Oishi Park</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทาง &amp; กิจกรรม (Red Line)</span><span class="en">ℹ️ Travel &amp; Activities (Red Line)</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">แนะนำซื้อ Kawaguchiko Red Line 1-Day Pass: ผู้ใหญ่ <span data-jpy="1500"></span> / เด็ก <span data-jpy="750"></span></li>
+<li class="en en-li">Recommended to buy Kawaguchiko Red Line 1-Day Pass: Adult <span data-jpy="1500"></span> / Child <span data-jpy="750"></span>.</li>
+<li><strong>Mt. Fuji Ropeway (Kachi Kachi Ropeway):</strong>
+<ul>
+<li class="th th-li">ลงป้าย #11 (Kachi Kachi Ropeway)</li><li class="en en-li">Get off at stop #11 (Kachi Kachi Ropeway).</li>
+<li class="th th-li">ค่ากระเช้า: ผู้ใหญ่ <span data-jpy="900"></span> (ไป-กลับ), เด็ก <span data-jpy="450"></span> (ไป-กลับ)</li><li class="en en-li">Ropeway fee: Adult <span data-jpy="900"></span> (round trip), Child <span data-jpy="450"></span> (round trip).</li>
+<li class="th th-li">ชมวิวพาโนรามา</li><li class="en en-li">Enjoy panoramic views.</li>
+</ul>
+</li>
+<li><strong>Oishi Park:</strong>
+<ul>
+<li class="th th-li">ลงป้าย #20 (Oishi Park)</li><li class="en en-li">Get off at stop #20 (Oishi Park).</li>
+<li class="th th-li">สวนดอกไม้ริมทะเลสาบ วิวฟูจิ</li><li class="en en-li">Flower park by the lake with Fuji views.</li>
+<li class="th th-li">มีคาเฟ่/ร้านค้า</li><li class="en en-li">Cafes and shops available.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>17:00</strong>: <span class="emoji">♨️</span> <span class="th">แช่ออนเซ็นที่ Fujiyama Onsen</span><span class="en">Relax in Fujiyama Onsen</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียด Fujiyama Onsen</span><span class="en">ℹ️ Fujiyama Onsen Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ค่าเข้า: ผู้ใหญ่ <span data-jpy="1500"></span> (โดยประมาณ)</li><li class="en en-li">Approx. admission fee: Adult <span data-jpy="1500"></span>.</li>
+<li class="th th-li">การเดินทาง: รถบัส Fujikyu หรือแท็กซี่จากสถานี Kawaguchiko</li><li class="en en-li">Travel by Fujikyu Bus or taxi from Kawaguchiko Station.</li>
+<li class="th th-li">มีบ่อในร่ม/กลางแจ้ง (rotemburo) วิวฟูจิ</li><li class="en en-li">Indoor and outdoor onsen (rotemburo) with Mt. Fuji views.</li>
+<li class="th th-li">ปฏิบัติตามมารยาทออนเซ็น (อาบน้ำก่อนแช่, ห้ามใส่ชุดว่ายน้ำ/ผ้าลงบ่อ)</li><li class="en en-li">Follow onsen etiquette (cleanse before entering, no swimwear/towels in water).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>19:00</strong>: <span class="emoji">🎂</span> <span class="th">กลับที่พัก / พักผ่อน &amp; ฉลองวันเกิดพอใจ</span><span class="en">Return to accommodation / Rest &amp; celebrate Porjai's birthday</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ ไอเดียฉลองวันเกิด</span><span class="en">ℹ️ Birthday Celebration Ideas</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ร้านเค้กใกล้สถานี: Fujisan Sweets Factory หรือ Mont Blanc</li><li class="en en-li">Cake shops near station: Fujisan Sweets Factory or Mont Blanc.</li>
+<li class="th th-li">จองมื้อค่ำพิเศษที่ร้านอาหารวิวฟูจิ</li><li class="en en-li">Book a special dinner at a restaurant with Fuji views.</li>
+<li class="th th-li">เตรียมของขวัญเล็กๆ น้อยๆ</li><li class="en en-li">Prepare small gifts.</li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</section>
+<!-- ==================== DAY 5 ==================== -->
+<section id="day5">
+<h1>
+<span class="th th-block">วันที่ 5: 10 มีนาคม 2569 (อังคาร) - กลับโตเกียว &amp; ช้อปปิ้งอุเอโนะ</span>
+<span class="en en-block">Day 5: March 10, 2026 (Tue) - Return to Tokyo &amp; Ueno Shopping</span>
+</h1>
+<ul class="timeline">
+<li>
+<strong>08:00</strong>: <span class="emoji">🍳</span> <span class="th">อาหารเช้า, เดินเล่น, ถ่ายรูปในคาวากุจิโกะ</span><span class="en">Breakfast, walk around, take photos in Kawaguchiko</span>
+</li>
+<li>
+<strong>11:00</strong>: <span class="emoji">🏨</span> <span class="th">เช็คเอาท์, เดินทางกลับโตเกียว</span><span class="en">Check out, travel back to Tokyo</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางกลับโตเกียว</span><span class="en">ℹ️ Travel back to Tokyo</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>วิธีแนะนำ:</strong> รถบัส Fujikyu/Keio จากสถานี Kawaguchiko ไป Busta Shinjuku</li><li class="en en-li"><strong>Recommended:</strong> Fujikyu/Keio bus from Kawaguchiko Station to Busta Shinjuku.</li>
+<li class="th th-li">ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="2000"></span>, เด็ก <span data-jpy="1000"></span> ต่อเที่ยว</li><li class="en en-li">Approx. cost: Adult <span data-jpy="2000"></span>, Child <span data-jpy="1000"></span> per trip.</li>
+<li class="th th-li">เวลาเดินทาง: ≈1 ชม. 45 นาที - 2 ชม.</li><li class="en en-li">Travel time: Approx. 1 hr 45 mins - 2 hrs.</li>
+<li class="th th-li">จองตั๋วรถบัสล่วงหน้า</li><li class="en en-li">Book bus tickets in advance.</li>
+<li class="th th-li">(วิธีอื่น: รถไฟ JR ต้องต่อหลายสาย อาจนานกว่าและแพงกว่า)</li><li class="en en-li">(Alternative: JR train requires multiple transfers, may be longer and more expensive).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>13:00</strong>: <span class="emoji">🏨</span> <span class="th">ถึง Busta Shinjuku, เดินทางไปโรงแรมอุเอโนะ, เช็คอิน</span><span class="en">Arrive at Busta Shinjuku, travel to Ueno hotel, check in</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทาง &amp; ที่พัก (อุเอโนะ)</span><span class="en">ℹ️ Travel &amp; Accommodation (Ueno)</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>จาก Shinjuku ไป Ueno:</strong> JR Yamanote Line (สายสีเขียว) ≈25 นาที</li><li class="en en-li"><strong>From Shinjuku to Ueno:</strong> JR Yamanote Line (Green line) ≈25 mins.</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="200"></span> ต่อคน</li><li class="en en-li">Approx. cost: <span data-jpy="200"></span> per person.</li>
+<li class="th th-li"><strong>โรงแรมแนะนำ (อุเอโนะ, &lt;5000 บาท/คืน):</strong> Hotel Sardonyx Ueno, Mitsui Garden Hotel Ueno, Centurion Hotel Ueno</li><li class="en en-li"><strong>Recommended hotels (Ueno, &lt;฿5000/night):</strong> Hotel Sardonyx Ueno, Mitsui Garden Hotel Ueno, Centurion Hotel Ueno.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>14:00</strong>: <span class="emoji">🛍️</span> <span class="th">ช้อปปิ้งเสื้อผ้าที่ GU Marui Ueno</span><span class="en">Clothes shopping at GU Marui Ueno</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียด GU Marui Ueno</span><span class="en">ℹ️ GU Marui Ueno Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">แบรนด์เสื้อผ้าราคาประหยัด (น้องสาว UNIQLO)</li><li class="en en-li">Affordable Japanese clothing brand (sister brand of UNIQLO).</li>
+<li class="th th-li">อยู่ในห้าง Marui Ueno</li><li class="en en-li">Located in Marui Ueno department store.</li>
+<li class="th th-li">เวลาทำการ: ≈10:00-21:00 (ตรวจสอบล่าสุด)</li><li class="en en-li">Approx. opening hours: 10:00 AM - 9:00 PM (check latest).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>15:00</strong>: <span class="emoji">🧸</span> <span class="th">ช้อปปิ้ง Sanrio ที่ Akihabara</span><span class="en">Shopping for Sanrio merchandise at Akihabara</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทาง &amp; Sanrio Akihabara</span><span class="en">ℹ️ Travel &amp; Sanrio Akihabara</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>จาก Ueno ไป Akihabara:</strong> JR Keihin-Tohoku หรือ Yamanote Line ≈5 นาที</li><li class="en en-li"><strong>From Ueno to Akihabara:</strong> JR Keihin-Tohoku or Yamanote Line ≈5 mins.</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="140"></span> ต่อคน</li><li class="en en-li">Approx. cost: <span data-jpy="140"></span> per person.</li>
+<li class="th th-li">ร้าน Sanrio Akihabara: ขายสินค้า Hello Kitty, My Melody, etc.</li><li class="en en-li">Sanrio Akihabara store: Sells Hello Kitty, My Melody, etc. merchandise.</li>
+<li class="th th-li">มีเครื่องเขียน, กระเป๋า, พวงกุญแจ, ของที่ระลึก</li><li class="en en-li">Wide variety: stationery, bags, keychains, souvenirs.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>16:30</strong>: <span class="emoji">🚶‍♀️</span> <span class="th">เดินเล่น Ameyoko Market</span><span class="en">Walk around Ameyoko Market</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียด Ameyoko Market</span><span class="en">ℹ️ Ameyoko Market Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ตลาดกลางแจ้งใต้ทางรถไฟระหว่าง Ueno และ Okachimachi</li><li class="en en-li">Bustling open-air market under railway tracks between Ueno and Okachimachi stations.</li>
+<li class="th th-li">แหล่งช้อปปิ้งราคาถูก: อาหาร, เสื้อผ้า, รองเท้า, กระเป๋า, ของฝาก</li><li class="en en-li">Known for cheap shopping: food, clothes, shoes, bags, souvenirs.</li>
+<li class="th th-li">บรรยากาศตลาดญี่ปุ่นดั้งเดิม</li><li class="en en-li">Lively traditional Japanese market atmosphere.</li>
+<li class="th th-li">เวลาทำการ: ส่วนใหญ่ 10:00-19:00</li><li class="en en-li">Opening hours: Most shops 10:00 AM - 7:00 PM.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>17:30</strong>: <span class="emoji">📸</span> <span class="th">ช้อปปิ้ง Bic Camera และ Donki (Don Quijote) ในอุเอโนะ</span><span class="en">Shopping at Bic Camera and Donki (Don Quijote) in Ueno</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียดร้านค้า</span><span class="en">ℹ️ Store Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>Bic Camera Ueno:</strong> ร้านอิเล็กทรอนิกส์ใหญ่ ใกล้สถานี Ueno (East Exit), เวลา ≈10:00-21:00</li><li class="en en-li"><strong>Bic Camera Ueno:</strong> Large electronics store near Ueno Station (East Exit), Approx. hours 10:00 AM - 9:00 PM.</li>
+<li class="th th-li"><strong>Don Quijote (Donki) Ueno:</strong> ห้างลดราคา ขายทุกอย่าง, บางสาขาเปิด 24 ชม., เหมาะซื้อขนม/ของฝาก</li><li class="en en-li"><strong>Don Quijote (Donki) Ueno:</strong> Discount store selling everything, some branches open 24 hrs, good for snacks/souvenirs.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong><span class="th">เย็น</span><span class="en">Evening</span></strong>: <span class="emoji">🚶‍♀️</span> <span class="th">กลับที่พักในอุเอโนะ</span><span class="en">Return to accommodation in Ueno</span>
+</li>
+</ul>
+</section>
+<!-- ==================== DAY 6 ==================== -->
+<section id="day6">
+<h1>
+<span class="th th-block">วันที่ 6: 11 มีนาคม 2569 (พุธ) - สนุกกับหิมะที่ Gala Yuzawa</span>
+<span class="en en-block">Day 6: March 11, 2026 (Wed) - Fun with Snow at Gala Yuzawa</span>
+</h1>
+<ul class="timeline">
+<li>
+<strong>06:30</strong>: <span class="emoji">🚄</span> <span class="th">เดินทางจาก Ueno/Tokyo ไป Gala Yuzawa (JR Joetsu Shinkansen)</span><span class="en">Depart from Ueno/Tokyo to Gala Yuzawa Station (JR Joetsu Shinkansen)</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียด Shinkansen</span><span class="en">ℹ️ Shinkansen Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">รถไฟ: Max Tanigawa หรือ Toki</li><li class="en en-li">Train: Max Tanigawa or Toki.</li>
+<li class="th th-li">เวลาเดินทาง: ≈1 ชม. 15 นาที - 1 ชม. 30 นาที</li><li class="en en-li">Travel time: Approx. 1 hr 15 mins - 1 hr 30 mins.</li>
+<li class="th th-li">ใช้ Tokyo Wide Pass ได้ (ซื้อล่วงหน้า)</li><li class="en en-li">Tokyo Wide Pass can be used (purchase in advance).</li>
+<li class="th th-li">แนะนำจองที่นั่ง</li><li class="en en-li">Seat reservations recommended.</li>
+<li class="th th-li">ราคา (ถ้าไม่ใช้ Pass): <span data-jpy="6000"></span>-<span data-jpy="7000"></span> ต่อคน/เที่ยว</li><li class="en en-li">Fare (without Pass): <span data-jpy="6000"></span>-<span data-jpy="7000"></span> per person/one way.</li>
+<li class="th th-li">Tokyo Wide Pass: <span data-jpy="10180"></span> ต่อคน (3 วัน)</li><li class="en en-li">Tokyo Wide Pass: <span data-jpy="10180"></span> per person (3 days).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>08:00</strong>: <span class="emoji">🏂</span> <span class="th">ถึงสถานี Gala Yuzawa (ติดกับลานสกี)</span><span class="en">Arrive at Gala Yuzawa Station (connected to ski resort)</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียดสถานี</span><span class="en">ℹ️ Station Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">สถานีเชื่อมต่อโดยตรงกับลานสกี</li><li class="en en-li">Station directly connected to the ski resort.</li>
+<li class="th th-li">มีร้านเช่าอุปกรณ์, ล็อกเกอร์, ร้านอาหารในสถานี</li><li class="en en-li">Rental shops, lockers, restaurants inside the station.</li>
+<li class="th th-li">ขึ้นลิฟต์จากชานชาลาไปลานสกี</li><li class="en en-li">Take elevator from platform to access ski area.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>08:30 – 15:30</strong>: <span class="emoji">🏂</span> <span class="th">สนุกกับกิจกรรมที่ Gala Yuzawa: เล่นหิมะ, ขึ้นกระเช้า, ทานอาหาร</span><span class="en">Enjoy activities at Gala Yuzawa: Snow play, gondola, lunch</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ กิจกรรม &amp; ค่าใช้จ่าย (Gala Yuzawa)</span><span class="en">ℹ️ Activities &amp; Costs (Gala Yuzawa)</span>
+</div>
+<div class="info-detail">
+<ul>
+<li><strong><span class="th">กิจกรรมแนะนำ:</span><span class="en">Recommended activities:</span></strong>
+<ul>
+<li class="th th-li">เช่าอุปกรณ์เล่นหิมะ (เช่น บอร์ดเลื่อน)</li><li class="en en-li">Rent snow gear (e.g., snow sleds).</li>
+<li class="th th-li">ขึ้นกระเช้าชมวิว (Gondola)</li><li class="en en-li">Take the gondola for views.</li>
+<li class="th th-li">ถ่ายรูปที่ Snow Park</li><li class="en en-li">Take photos at the Snow Park.</li>
+<li class="th th-li">เรียนสกี/สโนว์บอร์ด (มีคอร์ส)</li><li class="en en-li">Ski/snowboard lessons available.</li>
+</ul>
+</li>
+<li><strong><span class="th">ค่าใช้จ่ายโดยประมาณ:</span><span class="en">Approximate costs:</span></strong>
+<ul>
+<li class="th th-li">บัตร Lift Pass (กระเช้า): ผู้ใหญ่ <span data-jpy="5200"></span>, เด็ก <span data-jpy="2500"></span></li><li class="en en-li">Lift Pass (gondola): Adult <span data-jpy="5200"></span>, Child <span data-jpy="2500"></span>.</li>
+<li class="th th-li">เช่าชุดสกี/บอร์ด: <span data-jpy="5000"></span>-<span data-jpy="6000"></span></li><li class="en en-li">Ski/snowboard rental set: <span data-jpy="5000"></span>-<span data-jpy="6000"></span>.</li>
+<li class="th th-li">เช่าชุดกันหิมะ: <span data-jpy="2000"></span>-<span data-jpy="3000"></span></li><li class="en en-li">Snow wear rental: <span data-jpy="2000"></span>-<span data-jpy="3000"></span>.</li>
+<li class="th th-li">เช่าบอร์ดเลื่อน: <span data-jpy="1500"></span></li><li class="en en-li">Snow sled rental: <span data-jpy="1500"></span>.</li>
+</ul>
+</li>
+<li><strong><span class="th">สิ่งที่ต้องเตรียม:</span><span class="en">What to bring:</span></strong> <span class="th">เสื้อผ้าอุ่น, ถุงมือกันน้ำ, ผ้าพันคอ, หมวก, แว่นกันแดด, ครีมกันแดด</span><span class="en">Warm clothing, waterproof gloves, scarf, hat, sunglasses, sunscreen.</span></li>
+<li class="th th-li">มีร้านอาหารในลานสกี</li><li class="en en-li">Restaurants available in the ski area.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>16:00</strong>: <span class="emoji">🚄</span> <span class="th">ขึ้น Shinkansen กลับ Tokyo/Ueno</span><span class="en">Take Shinkansen back to Tokyo/Ueno</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางกลับ</span><span class="en">ℹ️ Return Travel</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">กลับไปสถานี Gala Yuzawa</li><li class="en en-li">Return to Gala Yuzawa Station.</li>
+<li class="th th-li">ตรวจสอบตารางรถไฟกลับ (Max Tanigawa หรือ Toki)</li><li class="en en-li">Check return train schedule (Max Tanigawa or Toki).</li>
+<li class="th th-li">ใช้ Tokyo Wide Pass หรือซื้อตั๋วกลับ</li><li class="en en-li">Use Tokyo Wide Pass or purchase return tickets.</li>
+<li class="th th-li">เวลาเดินทาง: ≈1 ชม. 15 นาที - 1 ชม. 30 นาที</li><li class="en en-li">Travel time: Approx. 1 hr 15 mins - 1 hr 30 mins.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>17:30</strong>: <span class="emoji">🚶‍♀️</span> <span class="th">ถึงสถานีอุเอโนะ, พักผ่อน/เดินเล่น</span><span class="en">Arrive at Ueno Station, rest or walk around</span>
+</li>
+</ul>
+</section>
+<!-- ==================== DAY 7 ==================== -->
+<section id="day7">
+<h1>
+<span class="th th-block">วันที่ 7: 12 มีนาคม 2569 (พฤหัสบดี) - ตามรอยอนิเมะ &amp; ชมวิวโตเกียว</span>
+<span class="en en-block">Day 7: March 12, 2026 (Thu) - Anime Pilgrimage &amp; Tokyo Views</span>
+</h1>
+<ul class="timeline">
+<li>
+<strong>09:00</strong>: <span class="emoji">🚆</span> <span class="th">เดินทางจาก Ikebukuro ไปศาลเจ้า Suga (ตามรอย Your Name)</span><span class="en">Travel from Ikebukuro to Suga Shrine (Your Name pilgrimage)</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางไปศาลเจ้า Suga</span><span class="en">ℹ️ Travel to Suga Shrine</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">จาก Ikebukuro: JR Yamanote Line ไป Yotsuya, เดิน ≈10 นาที</li><li class="en en-li">From Ikebukuro: JR Yamanote Line to Yotsuya, walk ≈10 mins.</li>
+<li class="th th-li">เวลาเดินทาง: ≈25 นาที</li><li class="en en-li">Travel time: Approx. 25 mins.</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="200"></span> ต่อคน</li><li class="en en-li">Approx. cost: <span data-jpy="200"></span> per person.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>10:00</strong>: <span class="emoji">📸</span> <span class="th">ถ่ายรูปบันไดศาลเจ้า Suga (ฉาก Your Name)</span><span class="en">Take photos at Suga Shrine stairs (Your Name scene)</span>
+</li>
+<li>
+<strong>11:00</strong>: <span class="emoji">🚆</span> <span class="th">เดินทางไป Shiodome → ชม Ghibli Clock</span><span class="en">Travel to Shiodome → See the Ghibli Clock</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางไป Shiodome</span><span class="en">ℹ️ Travel to Shiodome</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">จาก Yotsuya: Tokyo Metro Marunouchi Line ไป Ginza → Toei Oedo Line ไป Shiodome</li><li class="en en-li">From Yotsuya: Tokyo Metro Marunouchi Line to Ginza → Toei Oedo Line to Shiodome.</li>
+<li class="th th-li">เวลาเดินทาง: ≈25–30 นาที</li><li class="en en-li">Travel time: Approx. 25–30 mins.</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="300"></span> ต่อคน</li><li class="en en-li">Approx. cost: <span data-jpy="300"></span> per person.</li>
+<li class="th th-li">Ghibli Clock อยู่หน้าตึก Nippon TV</li><li class="en en-li">Ghibli Clock is in front of the Nippon TV building.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>12:30</strong>: <span class="emoji">🍽️</span> <span class="th">ทานกลางวันแถว Shimbashi หรือ Nippon TV Tower</span><span class="en">Have lunch around Shimbashi or near Nippon TV Tower</span>
+</li>
+<li>
+<strong>14:00</strong>: <span class="emoji">🗼</span> <span class="th">ขึ้นชมวิว Tokyo Tower (Tembo Deck)</span><span class="en">Go up Tokyo Tower (Tembo Deck) for views</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางไป Tokyo Tower</span><span class="en">ℹ️ Travel to Tokyo Tower</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">จาก Shiodome: เดิน หรือ Toei Oedo Line ไปสถานี Akabanebashi</li><li class="en en-li">From Shiodome: Walk or take Toei Oedo Line to Akabanebashi Station.</li>
+<li class="th th-li">เวลาเดินทาง: ≈10–15 นาที</li><li class="en en-li">Travel time: Approx. 10–15 mins.</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="220"></span> ต่อคน</li><li class="en en-li">Approx. cost: <span data-jpy="220"></span> per person.</li>
+<li class="th th-li">ค่าเข้า Main Deck (150m): ผู้ใหญ่ <span data-jpy="1200"></span>, เด็ก <span data-jpy="700"></span> (*ตรวจสอบล่าสุด*)</li><li class="en en-li">Main Deck (150m) admission: Adult <span data-jpy="1200"></span>, Child <span data-jpy="700"></span> (*Check latest*).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>16:00</strong>: <span class="emoji">🌇</span> <span class="th">ไป Sky Deck @ Roppongi Hills ชมวิว Tokyo Tower ตอนพระอาทิตย์ตก</span><span class="en">Head to Sky Deck @ Roppongi Hills for sunset view of Tokyo Tower</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางไป Roppongi Hills</span><span class="en">ℹ️ Travel to Roppongi Hills</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">จาก Tokyo Tower: เดิน ≈20 นาที หรือ Toei Oedo Line</li><li class="en en-li">From Tokyo Tower: Walk ≈20 mins or take Toei Oedo Line.</li>
+<li class="th th-li">เวลาเดินทาง: ≈10–20 นาที</li><li class="en en-li">Travel time: Approx. 10–20 mins.</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="220"></span> ต่อคน</li><li class="en en-li">Approx. cost: <span data-jpy="220"></span> per person.</li>
+<li class="th th-li">ค่าเข้า Sky Deck (+Mori Art Museum): ผู้ใหญ่ <span data-jpy="2200"></span>, เด็ก <span data-jpy="1000"></span> (*ตรวจสอบล่าสุด*)</li><li class="en en-li">Sky Deck (+Mori Art Museum) admission: Adult <span data-jpy="2200"></span>, Child <span data-jpy="1000"></span> (*Check latest*).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>18:30</strong>: <span class="emoji">🚆</span> <span class="th">กลับ Ikebukuro, เดินเล่น/หาข้าวเย็น</span><span class="en">Return to Ikebukuro, light stroll/find dinner</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางกลับ Ikebukuro</span><span class="en">ℹ️ Travel back to Ikebukuro</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">จาก Roppongi Hills: Tokyo Metro Hibiya Line → เปลี่ยนสายที่ Naka-Meguro เป็น Fukutoshin Line</li><li class="en en-li">From Roppongi Hills: Tokyo Metro Hibiya Line → Change at Naka-Meguro to Fukutoshin Line.</li>
+<li class="th th-li">เวลาเดินทาง: ≈25–30 นาที</li><li class="en en-li">Travel time: Approx. 25–30 mins.</li>
+<li class="th th-li">ค่าใช้จ่าย: <span data-jpy="270"></span> ต่อคน</li><li class="en en-li">Approx. cost: <span data-jpy="270"></span> per person.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>20:00</strong>: <span class="emoji">🚶‍♀️</span> <span class="th">กลับเข้าที่พัก พักผ่อน</span><span class="en">Return to accommodation and rest</span>
+</li>
+</ul>
+</section>
+<!-- ==================== DAY 8 ==================== -->
+<section id="day8">
+<h1>
+<span class="th th-block">วันที่ 8: 13 มีนาคม 2569 (ศุกร์) - ช้อปปิ้ง &amp; เดินทางกลับไทย</span>
+<span class="en en-block">Day 8: March 13, 2026 (Fri) - Shopping &amp; Return to Thailand</span>
+</h1>
+<ul class="timeline">
+<li>
+<strong>09:00</strong>: <span class="emoji">🏨</span> <span class="th">เช็คเอาท์ &amp; ฝากกระเป๋าที่โรงแรม (อุเอโนะ)</span><span class="en">Check out &amp; leave luggage at hotel (Ueno)</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การฝากกระเป๋า</span><span class="en">ℹ️ Luggage Storage</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">โรงแรมส่วนใหญ่รับฝากหลังเช็คเอาท์ (รับคืนวันเดียวกัน)</li><li class="en en-li">Most hotels offer luggage storage after check-out (same-day pickup).</li>
+<li class="th th-li">ตรวจสอบเวลาปิดรับกระเป๋า (มักจะ 20:00-22:00)</li><li class="en en-li">Check hotel's luggage pick-up closing time (usually 8:00 PM - 10:00 PM).</li>
+<li class="th th-li">ทางเลือก: ล็อกเกอร์สถานี Ueno (<span data-jpy="500"></span>-<span data-jpy="800"></span>/วัน)</li><li class="en en-li">Alternative: Lockers at Ueno Station (<span data-jpy="500"></span>-<span data-jpy="800"></span>/day).</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>10:00</strong>: <span class="emoji">🌳</span> <span class="th">เดินเล่นในสวนอุเอโนะ (Ueno Park)</span><span class="en">Walk in Ueno Park</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายละเอียดสวนอุเอโนะ</span><span class="en">ℹ️ Ueno Park Details</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">สวนสาธารณะใหญ่ใจกลางโตเกียว มีพิพิธภัณฑ์, สวนสัตว์</li><li class="en en-li">Large public park in central Tokyo, home to museums and a zoo.</li>
+<li class="th th-li">เข้าสวนฟรี (พิพิธภัณฑ์/สวนสัตว์มีค่าเข้า)</li><li class="en en-li">Free admission to the park (museums/zoo have fees).</li>
+<li class="th th-li">ต้นมีนาคม อาจเห็นซากุระเริ่มบาน</li><li class="en en-li">Early March: Potential for early cherry blossoms.</li>
+<li class="th th-li">จุดน่าสนใจ: ทะเลสาบ Shinobazu, ศาลเจ้า Ueno Toshogu</li><li class="en en-li">Points of interest: Shinobazu Pond, Ueno Toshogu Shrine.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>11:00</strong>: <span class="emoji">🛍️</span> <span class="th">ซื้อของฝากที่ Ameyoko Market (อีกครั้ง)</span><span class="en">Buy souvenirs at Ameyoko Market (again)</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ ของฝากแนะนำ</span><span class="en">ℹ️ Souvenir Recommendations</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>ขนม:</strong> Tokyo Banana, Shiroi Koibito, KitKat รสพิเศษ, Royce', Pocky</li><li class="en en-li"><strong>Snacks:</strong> Tokyo Banana, Shiroi Koibito, special KitKat flavors, Royce', Pocky.</li>
+<li class="th th-li"><strong>เครื่องสำอาง/สกินแคร์:</strong> มาส์กหน้า, ครีม (Shiseido, DHC, Canmake)</li><li class="en en-li"><strong>Cosmetics/Skincare:</strong> Face masks, creams (Shiseido, DHC, Canmake).</li>
+<li class="th th-li"><strong>ของใช้:</strong> ผ้าเช็ดตัว, กระดาษซับมัน, ถุงเท้า, ตะเกียบ</li><li class="en en-li"><strong>Household items:</strong> Towels, oil blotting paper, socks, chopsticks.</li>
+<li class="th th-li"><strong>อาหารแห้ง:</strong> สาหร่าย, ปลาแห้ง, ชาเขียว</li><li class="en en-li"><strong>Dried food:</strong> Seaweed, dried fish, green tea.</li>
+<li class="th th-li"><strong>ร้านใน Ameyoko:</strong> Kaneso (ขนม), Ameyoko Center Bldg, Kawamoto</li><li class="en en-li"><strong>Shops in Ameyoko:</strong> Kaneso (sweets), Ameyoko Center Bldg, Kawamoto.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>16:00</strong>: <span class="emoji">🚄</span> <span class="th">รับกระเป๋า, เดินทางไปสนามบินนาริตะ (NRT) ด้วย Keisei Skyliner</span><span class="en">Pick up luggage, travel to Narita Airport (NRT) by Keisei Skyliner</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การเดินทางไปสนามบิน (Skyliner)</span><span class="en">ℹ️ Travel to Airport (Skyliner)</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">จากสถานี Keisei Ueno ไปสนามบินนาริตะ (Terminal 2)</li><li class="en en-li">From Keisei Ueno Station to Narita Airport (Terminal 2).</li>
+<li class="th th-li">เวลาเดินทาง: ≈40-50 นาที</li><li class="en en-li">Travel time: Approx. 40-50 mins.</li>
+<li class="th th-li">ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="2570"></span>, เด็ก <span data-jpy="1290"></span> ต่อคน</li><li class="en en-li">Approx. cost: Adult <span data-jpy="2570"></span>, Child <span data-jpy="1290"></span> per person.</li>
+<li class="th th-li">แนะนำซื้อตั๋วล่วงหน้า (ออนไลน์/สถานี)</li><li class="en en-li">Recommended to purchase tickets in advance (online/station).</li>
+<li class="th th-li">สถานี Keisei Ueno ใกล้ JR Ueno (เดิน ≈5 นาที)</li><li class="en en-li">Keisei Ueno Station is near JR Ueno Station (approx. 5-min walk).</li>
+<li class="th th-li">รถออกทุก 30-40 นาที</li><li class="en en-li">Trains depart every 30-40 mins.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>17:00</strong>: <span class="emoji">✈️</span> <span class="th">ถึงสนามบินนาริตะ, เช็คอิน, เตรียมขึ้นเครื่อง</span><span class="en">Arrive at Narita Airport, check in, prepare for boarding</span>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ ข้อมูลสนามบิน</span><span class="en">ℹ️ Airport Information</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">ควรถึงสนามบินล่วงหน้า 2-3 ชม. สำหรับเที่ยวบินระหว่างประเทศ</li><li class="en en-li">Arrive 2-3 hours before international flights.</li>
+<li class="th th-li">หลังผ่าน ตม./Security สามารถช้อป Duty Free ได้</li><li class="en en-li">Duty-free shopping available after immigration/security.</li>
+<li class="th th-li">มีบริการ Tax Refund (ต้องมีใบเสร็จและสินค้า)</li><li class="en en-li">Tax Refund service available (need receipts and goods).</li>
+<li class="th th-li">ตรวจสอบ Terminal และเคาน์เตอร์เช็คอินของสายการบิน</li><li class="en en-li">Double-check your airline's terminal and check-in counter.</li>
+</ul>
+</div>
+</div>
+</li>
+<li>
+<strong>21:15</strong>: <span class="emoji">🛫</span> <span class="th">เที่ยวบินกลับไทย (XJ607) จาก Narita Terminal 2</span><span class="en">Flight back to Thailand (XJ607) from Narita Terminal 2</span>
+</li>
+</ul>
+</section>
+<!-- ==================== BUDGET ==================== -->
+<section id="budget">
+<h1>
+<span class="th th-block">ประมาณการค่าใช้จ่ายและสถานะ</span>
+<span class="en en-block">Budget Estimate and Status</span>
+</h1>
+<p id="exchange-rate-info">
+<span class="emoji">💰</span>
+<span class="th"></span><span class="en"></span>
+</p>
+<h2>
+<span class="th th-block"><span class="emoji">💳</span> ประมาณการค่าใช้จ่าย</span>
+<span class="en en-block"><span class="emoji">💳</span> Estimated Expenses</span>
+</h2>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><span class="th">รายการ</span><span class="en">Item</span></th>
+<th><span class="th">รายละเอียด</span><span class="en">Details</span></th>
+<th><span class="th">ยอด (เยน)</span><span class="en">Amount (Yen)</span></th>
+<th><span class="th">บาท (≈)</span><span class="en">Baht (≈)</span></th>
+<th><span class="th">สถานะ</span><span class="en">Status</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="th">✈️ ตั๋วเครื่องบิน</span><span class="en">✈️ Flight Tickets</span></td>
+<td><span class="th">ไป–กลับ Narita</span><span class="en">Round trip to Narita</span></td>
+<td>-</td>
+<td>฿37,568</td>
+<td><span class="status status-complete"><span class="th">✅ จองแล้ว</span><span class="en">✅ Booked</span></span></td>
+</tr>
+<tr>
+<td><span class="th">🏨 ที่พักรวม</span><span class="en">🏨 Accommodation</span></td>
+<td><span class="th">Shinagawa, Kawaguchiko, Ueno</span><span class="en">Shinagawa, Kawaguchiko, Ueno</span></td>
+<td>~</td>
+<td data-thb="20000">~฿20,000</td> <!-- Added data-thb for consistency -->
+<td><span class="status status-pending"><span class="th">⏳ ทั้งหมด 7 คืน</span><span class="en">⏳ All 7 nights</span></span></td>
+</tr>
+<tr>
+<td><span class="th">🚄 Tokyo Wide Pass</span><span class="en">🚄 Tokyo Wide Pass</span></td>
+<td><span class="th">2 ใบ</span><span class="en">2 passes</span></td>
+<td><span data-jpy="20360"></span></td>
+<td><span class="thb-amount"></span></td>
+<td><span class="status status-urgent"><span class="th">❗ ต้องซื้อ</span><span class="en">❗ Must buy</span></span></td>
+</tr>
+<tr>
+<td><span class="th">🚇 Subway Pass</span><span class="en">🚇 Subway Pass</span></td>
+<td><span class="th">2 คน 2 วัน</span><span class="en">2 people 2 days</span></td>
+<td><span data-jpy="6000"></span></td>
+<td><span class="thb-amount"></span></td>
+<td><span class="status status-urgent"><span class="th">❗ ต้องซื้อ</span><span class="en">❗ Must buy</span></span></td>
+</tr>
+<tr>
+<td><span class="th">🚌 รถบัส Kawaguchiko</span><span class="en">🚌 Kawaguchiko Bus</span></td>
+<td><span class="th">ไป–กลับ</span><span class="en">Round trip</span></td>
+<td><span data-jpy="4000"></span></td>
+<td><span class="thb-amount"></span></td>
+<td><span class="status status-urgent"><span class="th">❗ ต้องจอง</span><span class="en">❗ Must book</span></span></td>
+</tr>
+<tr>
+<td><span class="th">🎿 Gala Yuzawa</span><span class="en">🎿 Gala Yuzawa</span></td>
+<td><span class="th">บัตรเข้า + เช่าอุปกรณ์</span><span class="en">Entry + rental</span></td>
+<td><span data-jpy="9000"></span></td>
+<td><span class="thb-amount"></span></td>
+<td><span class="status status-planning"><span class="th">⏳ วางแผน</span><span class="en">⏳ Planning</span></span></td>
+</tr>
+<tr>
+<td><span class="th">🚄 Skyliner</span><span class="en">🚄 Skyliner</span></td>
+<td><span class="th">2 คน</span><span class="en">2 people</span></td>
+<td><span data-jpy="5140"></span></td>
+<td><span class="thb-amount"></span></td>
+<td><span class="status status-urgent"><span class="th">❗ ต้องซื้อ</span><span class="en">❗ Must buy</span></span></td>
+</tr>
+<tr>
+<td><span class="th">📱 WiFi / SIM</span><span class="en">📱 WiFi / SIM</span></td>
+<td><span class="th">เช่า 5–7 วัน</span><span class="en">Rental 5–7 days</span></td>
+<td><span data-jpy="1600"></span></td>
+<td><span class="thb-amount"></span></td>
+<td><span class="status status-urgent"><span class="th">❗ ยังไม่ซื้อ</span><span class="en">❗ Not yet purchased</span></span></td>
+</tr>
+<tr>
+<td><span class="th">🛍️ ช้อปปิ้ง / เงินสำรอง</span><span class="en">🛍️ Shopping / Reserve</span></td>
+<td><span class="th">รวมของฝาก เสื้อผ้า</span><span class="en">Souvenirs, clothes</span></td>
+<td>-</td>
+<td data-thb="20000">~฿20,000</td> <!-- Added data-thb for consistency -->
+<td><span class="status status-planning"><span class="th">🪪 ประมาณ</span><span class="en">🪪 Estimate</span></span></td>
+</tr>
+<tr class="total">
+<td colspan="3"><strong><span class="th">รวมค่าใช้จ่ายโดยประมาณ (ไม่รวมตั๋วเครื่องบินและประกัน)</span><span class="en">Estimated total expenses (excluding flights and insurance)</span></strong></td>
+<td data-thb="50142"><strong>~฿50,142</strong></td> <!-- Added data-thb for consistency -->
+<td></td>
+</tr>
+<tr class="total">
+<td colspan="3"><strong><span class="th">รวมค่าใช้จ่ายทั้งหมดโดยประมาณ</span><span class="en">Estimated total expenses</span></strong></td>
+<td data-thb="87710"><strong>~฿87,710</strong></td> <!-- Added data-thb for consistency -->
+<td></td>
+</tr>
+<tr class="remaining">
+<td colspan="3"><strong><span class="th">งบประมาณที่เหลือ (ประมาณ)</span><span class="en">Remaining budget (approx.)</span></strong></td>
+<td data-thb="12290"><strong>~฿12,290</strong></td> <!-- Added data-thb for consistency -->
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note-box">
+<div class="note-toggle">
+<span class="th">ℹ️ หมายเหตุเกี่ยวกับงบประมาณ</span><span class="en">ℹ️ Budget Notes</span>
+</div>
+<div class="note-detail">
+<ul>
+<li class="th th-li">ค่าที่พักเป็นการประมาณการสำหรับ 7 คืน (รวมภาษี/ค่าธรรมเนียม)</li><li class="en en-li">Accommodation costs are estimated for 7 nights (including taxes/fees).</li>
+<li class="th th-li">ค่าอาหารประมาณ ¥3,000/คน/วัน (รวมในช่องช้อปปิ้ง/สำรอง)</li><li class="en en-li">Food costs estimated at ¥3,000/person/day (included in shopping/reserve).</li>
+<li class="th th-li">ค่าเข้าชมสถานที่ต่างๆ คำนวณรวมในงบแล้ว (จ่ายหน้างาน)</li><li class="en en-li">Admission fees for attractions are included in the budget (paid on-site).</li>
+<li class="th th-li">ควรแลกเงินเยนไปประมาณ 70% ของค่าใช้จ่าย (ไม่รวมที่จ่ายบัตรแล้ว)</li><li class="en en-li">Recommended to exchange ~70% of total expenses (excluding pre-paid items) into Yen.</li>
+</ul>
+</div>
+</div>
+<h2>
+<span class="th th-block"><span class="emoji">📋</span> รายการที่ต้องจองล่วงหน้า</span>
+<span class="en en-block"><span class="emoji">📋</span> Items to Book in Advance</span>
+</h2>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ รายการที่ต้องจอง &amp; วันที่ควรจอง</span><span class="en">ℹ️ Items to Book &amp; Booking Dates</span>
+</div>
+<div class="info-detail">
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><span class="th">รายการ</span><span class="en">Item</span></th>
+<th><span class="th">วันที่ควรจอง/ซื้อ</span><span class="en">Booking/Purchase Date</span></th>
+<th><span class="th">เว็บไซต์</span><span class="en">Website</span></th>
+<th><span class="th">หมายเหตุ</span><span class="en">Notes</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="th">ที่พักชินากาวะ</span><span class="en">Shinagawa Accommodation</span></td>
+<td><span class="th">3 เดือนล่วงหน้า</span><span class="en">3 months in advance</span></td>
+<td><span class="th">Agoda, Booking.com, เว็บไซต์โรงแรม</span><span class="en">Agoda, Booking.com, Hotel website</span></td>
+<td><span class="th">ควรจองแบบยกเลิกได้</span><span class="en">Book a cancellable room</span></td>
+</tr>
+<tr>
+<td><span class="th">ที่พักคาวากุจิโกะ</span><span class="en">Kawaguchiko Accommodation</span></td>
+<td><span class="th">4-6 เดือนล่วงหน้า</span><span class="en">4-6 months in advance</span></td>
+<td><span class="th">Agoda, Booking.com, เว็บไซต์โรงแรม</span><span class="en">Agoda, Booking.com, Hotel website</span></td>
+<td><span class="th">เต็มเร็ว (โดยเฉพาะวิวฟูจิ)</span><span class="en">Fills up quickly (esp. Fuji views)</span></td>
+</tr>
+<tr>
+<td><span class="th">ที่พักอุเอโนะ</span><span class="en">Ueno Accommodation</span></td>
+<td><span class="th">3 เดือนล่วงหน้า</span><span class="en">3 months in advance</span></td>
+<td><span class="th">Agoda, Booking.com, เว็บไซต์โรงแรม</span><span class="en">Agoda, Booking.com, Hotel website</span></td>
+<td><span class="th">เลือกใกล้สถานี</span><span class="en">Choose near station</span></td>
+</tr>
+<tr>
+<td><span class="th">รถบัส Kawaguchiko</span><span class="en">Kawaguchiko Bus</span></td>
+<td><span class="th">1-2 เดือนล่วงหน้า</span><span class="en">1-2 months in advance</span></td>
+<td><span class="th">Japan Bus Online, Highway Buses Japan</span><span class="en">Japan Bus Online, Highway Buses Japan</span></td>
+<td><span class="th">ควรจองช่วงฤดูท่องเที่ยว</span><span class="en">Book in advance during peak season</span></td>
+</tr>
+<tr>
+<td><span class="th">Tokyo Wide Pass</span><span class="en">Tokyo Wide Pass</span></td>
+<td><span class="th">ซื้อที่สนามบินนาริตะเมื่อถึง</span><span class="en">Purchase at Narita Airport upon arrival</span></td>
+<td><span class="th">JR East Travel Service Center</span><span class="en">JR East Travel Service Center</span></td>
+<td><span class="th">ต้องใช้พาสปอร์ต</span><span class="en">Passport required</span></td>
+</tr>
+<tr>
+<td><span class="th">WiFi/SIM Card</span><span class="en">WiFi/SIM Card</span></td>
+<td><span class="th">1-2 เดือนล่วงหน้า</span><span class="en">1-2 months in advance</span></td>
+<td><span class="th">Klook, KKday, ผู้ให้บริการในไทย</span><span class="en">Klook, KKday, or providers in Thailand</span></td>
+<td><span class="th">แนะนำจองล่วงหน้า รับที่สนามบิน</span><span class="en">Recommended to book ahead &amp; pick up at Narita</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2>
+<span class="th th-block"><span class="emoji">💱</span> เงินที่ควรแลกไป</span>
+<span class="en en-block"><span class="emoji">💱</span> Amount of Money to Exchange</span>
+</h2>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ การแลกเงินและการใช้จ่าย</span><span class="en">ℹ️ Money Exchange and Spending</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>จำนวนเงินที่ควรแลก:</strong> ~30,000-35,000 บาท ต่อ 2 คน (<span data-jpy="150000"></span>-<span data-jpy="175000"></span>)</li><li class="en en-li"><strong>Amount to exchange:</strong> ~฿30,000-฿35,000 per 2 people (<span data-jpy="150000"></span>-<span data-jpy="175000"></span>)</li>
+<li class="th th-li"><strong>สถานที่แลกเงิน:</strong> แลกในไทยได้เรทดีกว่า</li><li class="en en-li"><strong>Where to exchange:</strong> Exchange in Thailand for a better rate.</li>
+<li><strong><span class="th">การชำระเงินในญี่ปุ่น:</span><span class="en">Payment methods in Japan:</span></strong>
+<ul>
+<li class="th th-li">ร้านใหญ่/โรงแรมรับบัตรเครดิต, ร้านเล็กๆ มักรับเงินสด</li><li class="en en-li">Larger stores/hotels accept credit cards; smaller shops often prefer cash.</li>
+<li class="th th-li">ควรพกเงินสดติดตัว ≈5,000-10,000 เยน/วัน</li><li class="en en-li">Carry ≈¥5,000-¥10,000 in cash per day.</li>
+<li class="th th-li">ร้านสะดวกซื้อ (7-Eleven, Lawson, Family Mart) มี ATM รองรับบัตรต่างประเทศ</li><li class="en en-li">Convenience stores (7-Eleven, Lawson, Family Mart) usually have ATMs supporting international cards.</li>
+</ul>
+</li>
+<li><strong><span class="th">การใช้บัตรเครดิต:</span><span class="en">Using credit cards:</span></strong>
+<ul>
+<li class="th th-li">แจ้งธนาคารก่อนเดินทาง</li><li class="en en-li">Notify your bank before traveling.</li>
+<li class="th th-li">ตรวจสอบค่าธรรมเนียม FX</li><li class="en en-li">Check foreign transaction fees.</li>
+<li class="th th-li">บางร้านอาจขอดูบัตรประชาชน/พาสปอร์ต</li><li class="en en-li">Some shops might ask for ID/passport.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<h2>
+<span class="th th-block"><span class="emoji">📅</span> กำหนดการชำระเงิน</span>
+<span class="en en-block"><span class="emoji">📅</span> Payment Schedule</span>
+</h2>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ ไทม์ไลน์การชำระเงิน</span><span class="en">ℹ️ Payment Timeline</span>
+</div>
+<div class="info-detail">
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><span class="th">ระยะเวลา</span><span class="en">Timeline</span></th>
+<th><span class="th">รายการที่ต้องชำระ</span><span class="en">Items to Pay For</span></th>
+<th><span class="th">ประมาณการค่าใช้จ่าย</span><span class="en">Estimated Cost</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="th">6 เดือนก่อนเดินทาง</span><span class="en">6 months before travel</span></td>
+<td><span class="th">ตั๋วเครื่องบิน</span><span class="en">Flight tickets</span></td>
+<td data-thb="37568">฿37,568</td>
+</tr>
+<tr>
+<td><span class="th">3-4 เดือนก่อนเดินทาง</span><span class="en">3-4 months before travel</span></td>
+<td><span class="th">ที่พักทั้งหมด</span><span class="en">All accommodation</span></td>
+<td data-thb="20000">~฿20,000</td>
+</tr>
+<tr>
+<td><span class="th">1-2 เดือนก่อนเดินทาง</span><span class="en">1-2 months before travel</span></td>
+<td><span class="th">ตั๋วรถบัส และ WiFi/SIM</span><span class="en">Bus tickets and WiFi/SIM</span></td>
+<td data-thb="1232">~฿1,232</td>
+</tr>
+<tr>
+<td><span class="th">ระหว่างการเดินทาง</span><span class="en">During the trip</span></td>
+<td><span class="th">ค่าเดินทางในญี่ปุ่น, กิจกรรม, อาหาร, ช้อปปิ้ง</span><span class="en">Transportation in Japan, activities, food, shopping</span></td>
+<td data-thb="28910">~฿28,910</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h2>
+<span class="th th-block"><span class="emoji">📝</span> รายการที่ต้องเตรียม</span>
+<span class="en en-block"><span class="emoji">📝</span> Items to Prepare</span>
+</h2>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ เอกสารสำคัญ</span><span class="en">ℹ️ Important Documents</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li">หนังสือเดินทาง (Passport) อายุเหลือ &gt; 6 เดือน</li><li class="en en-li">Passport with &gt; 6 months validity.</li>
+<li class="th th-li">สำเนาหนังสือเดินทาง</li><li class="en en-li">Copy of passport.</li>
+<li class="th th-li">ตั๋วเครื่องบินไป-กลับ (E-ticket)</li><li class="en en-li">Round-trip flight ticket (E-ticket).</li>
+<li class="th th-li">เอกสารยืนยันการจองโรงแรม</li><li class="en en-li">Hotel booking confirmations.</li>
+<li class="th th-li">บัตรเครดิต และเงินสดเยน</li><li class="en en-li">Credit cards and Japanese Yen cash.</li>
+<li class="th th-li">ประกันการเดินทาง</li><li class="en en-li">Travel insurance.</li>
+<li class="th th-li">ใบขับขี่สากล (หากเช่ารถ)</li><li class="en en-li">International driving permit (if renting a car).</li>
+</ul>
+</div>
+</div>
+<div class="info-box">
+<div class="info-toggle">
+<span class="th">ℹ️ สิ่งของจำเป็น</span><span class="en">ℹ️ Essential Items</span>
+</div>
+<div class="info-detail">
+<ul>
+<li class="th th-li"><strong>เสื้อผ้า:</strong> เสื้อกันหนาว/ลม, ถุงมือ, ผ้าพันคอ, หมวก (มี.ค. ≈5-12°C)</li><li class="en en-li"><strong>Clothing:</strong> Warm jacket/windbreaker, gloves, scarf, hat (March avg ≈5-12°C).</li>
+<li class="th th-li"><strong>รองเท้า:</strong> รองเท้าเดินสบาย, รองเท้ากันน้ำ (ถ้าเล่นหิมะ)</li><li class="en en-li"><strong>Footwear:</strong> Walking shoes, waterproof shoes (if playing in snow).</li>
+<li class="th th-li"><strong>อิเล็กทรอนิกส์:</strong> มือถือ, กล้อง, ที่ชาร์จ, แบตสำรอง</li><li class="en en-li"><strong>Electronics:</strong> Mobile phone, camera, chargers, power bank.</li>
+<li class="th th-li"><strong>ยา:</strong> ยาประจำตัว, ยาแก้ปวด/หวัด, พลาสเตอร์</li><li class="en en-li"><strong>Medications:</strong> Personal meds, painkillers, cold medicine, plasters.</li>
+<li class="th th-li"><strong>อื่นๆ:</strong> กระเป๋าสะพายเล็ก, กระเป๋าล้อลาก, อะแดปเตอร์ปลั๊ก</li><li class="en en-li"><strong>Other:</strong> Small backpack, rolling suitcase, power adapter.</li>
+</ul>
+</div>
+</div>
+<h2>
+<span class="th th-block"><span class="emoji">💴</span> งบที่พักช่วงกลางทริป (พัก Ikebukuro)</span>
+<span class="en en-block"><span class="emoji">💴</span> Mid-Trip Accommodation Budget (Ikebukuro)</span>
+</h2>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><span class="th">วันที่</span><span class="en">Date</span></th>
+<th><span class="th">โรงแรม</span><span class="en">Hotel</span></th>
+<th><span class="th">ราคา (¥)</span><span class="en">Price (¥)</span></th>
+<th><span class="th">บาท (≈)</span><span class="en">Baht (≈)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="th">7 มี.ค.</span><span class="en">Mar 7</span></td>
+<td>Super Hotel JR Ikebukuro</td>
+<td><span data-jpy="10000"></span></td>
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr>
+<td><span class="th">8 มี.ค.</span><span class="en">Mar 8</span></td>
+<td>Super Hotel JR Ikebukuro</td>
+<td><span data-jpy="10000"></span></td>
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr>
+<td><span class="th">9 มี.ค.</span><span class="en">Mar 9</span></td>
+<td>Hotel Metropolitan Ikebukuro</td>
+<td><span data-jpy="15000"></span></td>
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr>
+<td><span class="th">10 มี.ค.</span><span class="en">Mar 10</span></td>
+<td>Sakura Hotel Ikebukuro</td>
+<td><span data-jpy="7500"></span></td>
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr class="total"> <!-- Changed to total class for consistency -->
+<td><strong><span class="th">รวม</span><span class="en">Total</span></strong></td>
+<td></td>
+<td><strong><span data-jpy="42500"></span></strong></td>
+<td><strong><span class="thb-amount"></span></strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2>
+<span class="th th-block"><span class="emoji">🧾</span> สรุปงบประมาณรวมทั้งทริป</span>
+<span class="en en-block"><span class="emoji">🧾</span> Overall Trip Budget Summary</span>
+</h2>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><span class="th">รายการ</span><span class="en">Item</span></th>
+<th><span class="th">ราคา (¥)</span><span class="en">Price (¥)</span></th>
+<th><span class="th">บาท (≈)</span><span class="en">Baht (≈)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="th">✈️ ตั๋วเครื่องบิน (2 คน)</span><span class="en">✈️ Flight Tickets (2 people)</span></td>
+<td><span data-jpy="70000"></span></td> <!-- Assuming this is an estimate in JPY -->
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr>
+<td><span class="th">🏨 ที่พักรวม 7 คืน</span><span class="en">🏨 Accommodation for 7 nights</span></td>
+<td><span data-jpy="70000"></span></td> <!-- Assuming this is an estimate in JPY -->
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr>
+<td><span class="th">🚆 ตั๋วเดินทาง (Pass / IC)</span><span class="en">🚆 Travel tickets (Pass / IC)</span></td>
+<td><span data-jpy="8000"></span></td>
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr>
+<td><span class="th">🎫 ค่ากิจกรรม &amp; เข้าชม</span><span class="en">🎫 Activities &amp; admissions</span></td>
+<td><span data-jpy="10000"></span></td>
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr>
+<td><span class="th">🍜 ค่าอาหาร (เฉลี่ย 2 มื้อ/วัน)</span><span class="en">🍜 Food (avg. 2 meals/day)</span></td>
+<td><span data-jpy="25000"></span></td>
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr>
+<td><span class="th">🧸 ของฝาก &amp; ช้อปปิ้ง</span><span class="en">🧸 Souvenirs &amp; shopping</span></td>
+<td><span data-jpy="15000"></span></td>
+<td><span class="thb-amount"></span></td>
+</tr>
+<tr class="total"> <!-- Changed to total class for consistency -->
+<td><strong><span class="th">รวมโดยประมาณ</span><span class="en">Approximate Total</span></strong></td>
+<td><strong><span data-jpy="198000"></span></strong></td>
+<td><strong><span class="thb-amount"></span></strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="hotel-timeline">
+<h2 class="th th-block">🛏️ ไทม์ไลน์การเข้าพักโรงแรมแต่ละคืน</h2>
+<ul class="timeline">
+<li>
+<strong>6 มี.ค. 18:30</strong>: 🏨 เข้าพัก <b>Shinagawa Tobu Hotel</b> (ย่านชินากาวะ)<br/>
+    ➜ เดินทางสะดวกจากสนามบินด้วย Narita Express
+  </li>
+<li>
+<strong>7 มี.ค. 15:00</strong>: 🏨 เข้าพัก <b>Super Hotel JR Ikebukuro</b> (อิเคะบุคุโระ)<br/>
+    ➜ เที่ยวอาซากุสะ, อากิฮาบาระ, Skytree เดินทางง่าย
+  </li>
+<li>
+<strong>8 มี.ค. 14:00</strong>: 🏨 เข้าพัก <b>Fuji View Hotel</b> หรือเทียบเท่า (คาวากุจิโกะ)<br/>
+    ➜ ใกล้เจดีย์แดง, หมู่บ้านน้ำใส, วิวฟูจิสวย
+  </li>
+<li>
+<strong>10 มี.ค. 13:00</strong>: 🏨 เข้าพัก <b>Hotel Sardonyx Ueno</b> หรือเทียบเท่า (อุเอโนะ)<br/>
+    ➜ เดินทางไป Gala Yuzawa / ซื้อของ Ameyoko / Tokyo Tower สะดวก
+  </li>
+</ul>
+</section><section id="hotel-recommendation">
+<h2 class="th th-block">🏨 รายชื่อโรงแรมแนะนำ (เพื่อใช้พิจารณาเลือกจอง)</h2>
+<ul>
+<li><strong>Shinagawa (6 มี.ค.):</strong> <a href="https://www.agoda.com/th-th/shinagawa-tobu-hotel/hotel/tokyo-jp.html" target="_blank">Shinagawa Tobu Hotel</a></li>
+<li><strong>Ikebukuro (7 มี.ค.):</strong> <a href="https://www.agoda.com/super-hotel-jr-ikebukuro/hotel/tokyo-jp.html" target="_blank">Super Hotel JR Ikebukuro</a>, Daiwa Roynet Ikebukuro</li>
+<li><strong>Kawaguchiko (8–9 มี.ค.):</strong> <a href="https://www.agoda.com/fuji-view-hotel/hotel/fujikawaguchiko-jp.html" target="_blank">Fuji View Hotel</a>, Fujikawaguchiko Resort Hotel, K’s House Mt.Fuji</li>
+<li><strong>Ueno (10–12 มี.ค.):</strong> <a href="https://www.agoda.com/hotel-sardonyx-ueno/hotel/tokyo-jp.html" target="_blank">Hotel Sardonyx Ueno</a>, Mitsui Garden Hotel Ueno</li>
+</ul>
+<p class="th"><em>📌 หากจองสำเร็จแล้วสามารถกลับมา update สถานะในแผนนี้ได้</em></p>
+</section></div> <!-- end .container -->
+<a class="back-to-top" href="#toc">
+<span class="th">🔙 กลับไปหน้าหลัก</span>
+<span class="en">🔙 Back to Top</span>
+</a>
+</body>
+</html>
