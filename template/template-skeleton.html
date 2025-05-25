@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</title>
+<style>
+        /* Base styles */
+        :root {
+            --primary-color: #ff6b8b;
+            --primary-light: #ffdfd0;
+            --primary-dark: #d6336c;
+            --background: #fff8f0;
+            --card-bg: #fff;
+            --text-color: #333;
+            --border-color: #ffc0cb;
+            --info-bg: #fff4f7;
+            --info-border: #ffa5ba;
+            --note-bg: #f9f3ff;
+            --note-border: #d4b8ff;
+            --table-alt: #fff5f7;
+            --table-header: #ffe0e9;
+            --table-border: #f2c8d9;
+            --shadow: rgba(255, 192, 203, 0.3);
+            --success: #28a745;
+            --warning: #ffc107;
+            --pending: #6c757d;
+            --danger: #dc3545;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+             /* Smooth scrolling for internal links */
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Noto Sans Thai", "Sarabun", sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 4rem; /* Space for back-to-top button */
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-light);
+            color: var(--text-color);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            /* Removed position: relative; as language switcher is now fixed */
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            padding-top: 2.5rem; /* Add padding to prevent overlap with fixed switcher */
+        }
+        header h2 {
+            font-size: 1.2rem; /* Slightly smaller date */
+            margin-top: 0.5rem;
+            border-bottom: none; /* Remove border from header h2 */
+            padding-bottom: 0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Headings */
+        h1,
+        h2,
+        h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Section Headings */
+        section > h1, section > h2 {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem; /* More space before sections */
+        }
+        section > h1 { font-size: 1.6rem; }
+        section > h2 { font-size: 1.4rem; }
+
+
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Paragraphs, Lists */
+        p,
+        ul,
+        ol {
+            margin-bottom: 1rem;
+        }
+        ul, ol {
+            padding-left: 1.5rem; /* Indent lists */
+        }
+        li ul, li ol {
+            margin-top: 0.5rem; /* Space before nested lists */
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tables */
+        .table-container {
+             /* Allows horizontal scrolling on small screens */
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        table {
+            width: 100%;
+            min-width: 600px; /* Prevent excessive squashing */
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 0.75rem;
+            border: 1px solid var(--table-border);
+            text-align: left;
+            vertical-align: top; /* Align content to top */
+        }
+
+        th {
+            background-color: var(--table-header);
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--table-alt);
+        }
+
+        tr.total {
+            font-weight: bold;
+            background-color: var(--info-bg);
+        }
+
+        tr.remaining {
+            font-weight: bold;
+            background-color: var(--note-bg);
+        }
+
+        /* Status indicators */
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap; /* Prevent wrapping */
+        }
+
+        .status-complete { background-color: var(--success); color: white; }
+        .status-pending { background-color: var(--warning); color: var(--text-color); }
+        .status-planning { background-color: var(--pending); color: white; }
+        .status-urgent { background-color: var(--danger); color: white; }
+
+        /* Info/Note boxes */
+        .info-box, .note-box {
+            border-left: 5px solid var(--info-border);
+            padding: 0.8rem 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0; /* Rounded corners only on right */
+            transition: all 0.3s ease;
+        }
+        .info-box { background-color: var(--info-bg); border-left-color: var(--info-border); }
+        .note-box { background-color: var(--note-bg); border-left-color: var(--note-border); }
+
+
+        .info-toggle,
+        .note-toggle {
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .info-toggle::after,
+        .note-toggle::after {
+            content: "▼";
+            font-size: 0.7em;
+            transition: transform 0.3s;
+            margin-left: 0.5rem; /* Space before arrow */
+        }
+
+        .info-toggle.collapsed::after,
+        .note-toggle.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .info-detail,
+        .note-detail {
+            margin-top: 0.8rem; /* More space for detail */
+            overflow: hidden;
+            transition: max-height 0.4s ease-out; /* Smoother transition */
+            max-height: 1000px; /* Adjust if needed for very long content */
+        }
+
+        .info-detail.collapsed,
+        .note-detail.collapsed {
+            max-height: 0;
+            margin-top: 0; /* Remove margin when collapsed */
+        }
+
+        /* Ensure nested lists inside details have correct padding */
+        .info-detail ul, .info-detail ol,
+        .note-detail ul, .note-detail ol {
+            padding-left: 1.5rem;
+        }
+
+
+        /* Timeline */
+        .timeline {
+            list-style-type: none;
+            margin: 1.5rem 0;
+            padding: 0;
+            position: relative; /* For the main line */
+        }
+         /* The vertical line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: calc(1rem + 7px - 1px); /* Aligns with center of circle */
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .timeline li {
+            position: relative;
+            padding: 0.5rem 0 1rem 2.5rem; /* Increased left padding */
+            margin-bottom: 1rem; /* Space between items */
+        }
+         /* The circle */
+        .timeline li::before {
+            content: "";
+            position: absolute;
+            left: 1rem; /* Position circle relative to li */
+            top: 0.8rem; /* Align vertically better */
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            background-color: var(--primary-color);
+            border: 2px solid var(--background); /* Make circle stand out */
+            border-radius: 50%;
+            z-index: 1; /* Ensure circle is above the line */
+        }
+
+        .timeline strong {
+            font-weight: bold;
+            color: var(--primary-dark);
+            display: block; /* Time on its own line */
+            margin-bottom: 0.3rem;
+        }
+        .timeline .emoji {
+            margin-right: 8px;
+        }
+
+        /* Overview Section Flex Style */
+        #overview .day-overviews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem; /* Spacing between cards */
+        }
+
+        #overview .day-overview {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px var(--shadow);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            flex: 1 1 100%; /* Default: full width on small screens */
+        }
+
+        #overview .day-overview:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+
+        #overview .day-overview h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        #overview .day-overview h3 a {
+            color: var(--primary-dark);
+        }
+        #overview .day-overview p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+
+        /* Back to top */
+        .back-to-top {
+            display: none; /* Hidden by default, shown by JS */
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 50px; /* Pill shape */
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.2s, opacity 0.3s, visibility 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+        .back-to-top.visible {
+            display: inline-block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Emoji */
+        .emoji {
+            margin-right: 5px;
+            font-size: 1.1em;
+            vertical-align: middle; /* Align better with text */
+        }
+
+        /* Birthday badge */
+        .birthday-badge {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            vertical-align: middle;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        /* Language Switcher - Floating/Fixed */
+        .language-switcher {
+            position: fixed; /* Changed from absolute */
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque */
+            padding: 0.3rem;
+            border-radius: 20px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.2); /* Slightly stronger shadow */
+            z-index: 1001; /* Ensure it's above back-to-top */
+        }
+
+        .language-switcher button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 0.2rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .language-switcher button.active {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+        .language-switcher button:not(.active):hover {
+             background-color: var(--primary-light);
+        }
+
+        /* Language Specific Styles */
+        .lang-en .th,
+        .lang-th .en {
+            display: none;
+        }
+        .lang-en .en,
+        .lang-th .th {
+            display: inline; /* Use inline or block as appropriate */
+        }
+        /* Adjust display for block elements like p, h1, h2, h3, li */
+        .lang-en .th-block,
+        .lang-th .en-block {
+            display: none;
+        }
+        .lang-en .en-block,
+        .lang-th .th-block {
+            display: block;
+        }
+         /* Ensure list items display correctly */
+        .lang-en .th-li,
+        .lang-th .en-li {
+            display: none;
+        }
+        .lang-en .en-li,
+        .lang-th .th-li {
+            display: list-item; /* Correct display type for li */
+        }
+
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container { padding: 1.5rem; }
+            header h1 { font-size: 2.2rem; }
+            header h2 { font-size: 1.4rem; }
+            section > h1 { font-size: 1.8rem; }
+            section > h2 { font-size: 1.5rem; }
+
+            /* Overview Flex - 2 columns */
+            #overview .day-overview {
+                flex-basis: calc(50% - 0.5rem); /* 2 columns with gap */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container { padding: 2rem; }
+            header h1 { font-size: 2.5rem; }
+
+             /* Overview Flex - 3 columns */
+            #overview .day-overview {
+                 flex-basis: calc(33.333% - 0.67rem); /* 3 columns with gap */
+            }
+        }
+
+        @media (max-width: 767px) {
+            th, td { padding: 0.6rem; font-size: 0.9rem; }
+            .timeline li { padding-left: 2rem; } /* Adjust timeline padding */
+            .timeline::before { left: calc(0.5rem + 7px - 1px); } /* Adjust timeline line position */
+            .timeline li::before { left: 0.5rem; } /* Adjust timeline circle position */
+            header h1 { font-size: 1.6rem; padding-top: 3rem; /* More padding for smaller screens */ }
+            header h2 { font-size: 1.1rem; }
+            section > h1 { font-size: 1.4rem; }
+            section > h2 { font-size: 1.2rem; }
+            .back-to-top { bottom: 1rem; right: 1rem; padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+            .language-switcher { top: 0.5rem; right: 0.5rem; } /* Adjust fixed position */
+        }
+
+        /* Print styles */
+        @media print {
+            .day-overview, table, .info-box, .note-box, .timeline li {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .back-to-top, .language-switcher { display: none; }
+            body { background-color: white; padding-bottom: 0; }
+            header { box-shadow: none; padding-top: 1.5rem; /* Reset padding for print */ }
+            header h1 { padding-top: 0; }
+            .table-container { overflow-x: visible; }
+            table { min-width: auto; }
+            /* Optionally expand all details for print */
+            /*
+            .info-detail, .note-detail { max-height: none !important; }
+            .info-toggle::after, .note-toggle::after { display: none; }
+            */
+        }
+    </style>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- Collapsible Sections ---
+            document.querySelectorAll(".info-toggle, .note-toggle").forEach(button => {
+                const detail = button.nextElementSibling;
+                if (detail && (detail.classList.contains('info-detail') || detail.classList.contains('note-detail'))) {
+                    // Start collapsed
+                    button.classList.add("collapsed");
+                    detail.classList.add("collapsed");
+
+                    button.addEventListener("click", (e) => {
+                        // Prevent link clicks inside toggle from triggering collapse
+                        if (e.target.tagName === 'A') return;
+
+                        button.classList.toggle("collapsed");
+                        detail.classList.toggle("collapsed");
+                    });
+
+                    // Allow keyboard activation
+                    button.setAttribute('role', 'button');
+                    button.setAttribute('tabindex', '0');
+                    button.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault(); // Prevent page scroll on Space
+                            button.click();
+                        }
+                    });
+                } else {
+                    console.warn("Collapsible toggle found without a matching detail element:", button);
+                }
+            });
+
+            // --- Language Switching ---
+            const langButtons = document.querySelectorAll('.language-switcher button');
+            const body = document.body;
+            // Get saved language or default to Thai
+            let currentLang = localStorage.getItem('tripLanguage') || 'th';
+
+            function setLanguage(lang) {
+                if (lang !== 'th' && lang !== 'en') lang = 'th'; // Fallback
+                localStorage.setItem('tripLanguage', lang);
+                currentLang = lang;
+                body.className = `lang-${lang}`; // Set class on body
+
+                // Update button active state
+                langButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+
+                // Update Back-to-Top text
+                const backToTopBtn = document.querySelector('.back-to-top');
+                if (backToTopBtn) {
+                    // Find the correct span to update
+                    const textSpan = backToTopBtn.querySelector(lang === 'th' ? '.th' : '.en');
+                    if (textSpan) {
+                         // No need to set textContent here, CSS handles visibility
+                    }
+                }
+                 // Update page title
+                const titleTh = "เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026";
+                const titleEn = "Porjai's Japan Trip: Birthday Adventure 2026";
+                document.title = lang === 'th' ? titleTh : titleEn;
+            }
+
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    setLanguage(button.dataset.lang);
+                });
+            });
+
+            // Set initial language on load
+            setLanguage(currentLang);
+
+            // --- Currency Conversion (JPY to THB) ---
+            const jpyToThbRate = 0.2346; // 100 JPY ≈ 23.46 THB (Update as needed)
+
+            const convertCurrency = () => {
+                document.querySelectorAll('[data-jpy]').forEach(el => {
+                    const jpyString = el.dataset.jpy.replace(/,/g, ''); // Remove commas
+                    const jpy = parseFloat(jpyString);
+                    if (!isNaN(jpy)) {
+                        const thb = (jpy * jpyToThbRate).toFixed(0); // Calculate and round to nearest Baht
+                        // Display both JPY and THB
+                        const jpyFormatted = `¥${jpy.toLocaleString('en-US')}`;
+                        const thbFormatted = `฿${parseInt(thb).toLocaleString('en-US')}`;
+
+                        // Find the right place to display THB. If a span exists, use it.
+                        let thbSpan = el.querySelector('.thb-amount');
+                        if (!thbSpan) {
+                            // Check if the element itself should display the THB amount (e.g., in a table cell)
+                            if (el.tagName === 'TD' || el.tagName === 'STRONG') {
+                                el.innerHTML = `${thbFormatted}`; // Directly set THB if it's the main content
+                            } else {
+                                // Otherwise, append THB in parentheses after JPY
+                                thbSpan = document.createElement('span');
+                                thbSpan.className = 'thb-amount';
+                                el.innerHTML = `${jpyFormatted} <span class="thb-amount">(${thbFormatted})</span>`;
+                            }
+                        } else {
+                             // Update existing span if needed
+                             el.innerHTML = `${jpyFormatted} <span class="thb-amount">(${thbFormatted})</span>`;
+                        }
+
+                    } else {
+                        console.warn("Invalid JPY value found:", el.dataset.jpy);
+                    }
+                });
+                 // Update the rate display text
+                const rateDisplay = document.getElementById('exchange-rate-info');
+                if(rateDisplay) {
+                    const rateTextTh = `อัตราแลกเปลี่ยน: 100 เยน ≈ ${ (jpyToThbRate * 100).toFixed(2) } บาท (ตรวจสอบอัตราปัจจุบัน)`;
+                    const rateTextEn = `Exchange Rate: 100 Yen ≈ ${ (jpyToThbRate * 100).toFixed(2) } Baht (Check current rates)`;
+                    rateDisplay.querySelector('.th').textContent = rateTextTh;
+                    rateDisplay.querySelector('.en').textContent = rateTextEn;
+                }
+            };
+
+
+            convertCurrency(); // Run on load
+
+            // --- Back to Top Button Visibility ---
+            const backToTopBtn = document.querySelector('.back-to-top');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) { // Show after scrolling down 300px
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+            }
+
+        }); // End DOMContentLoaded
+    </script>
+</head>
+<body class="lang-th"> <!-- Default language class -->
+<!-- Language Switcher Moved Outside Header for Fixed Positioning -->
+<div class="language-switcher">
+<button data-lang="th">TH</button>
+<button data-lang="en">EN</button>
+</div>
+<header>
+<h1 id="toc">
+<span class="th">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+<span class="en">Porjai's Japan Trip: Birthday Adventure 2026</span>
+</h1>
+<!-- Language switcher removed from here -->
+<h2>
+<span class="th">📅 ศุกร์ 6 – ศุกร์ 13 มีนาคม 2026</span>
+<span class="en">📅 March 6th (Fri) – March 13th (Fri), 2026</span>
+</h2>
+</header>
+<div class="container">
+<p>
+<span class="th">✈️ ผู้เดินทาง: 🧍 Arilek (คุณพ่อ) 👧 Nuntnaphat (พอใจ)</span><span class="en">✈️ Travelers: 🧍 Arilek (Dad) 👧 Nuntnaphat (Porjai)</span><br/>
+<span class="th">🗺️ เส้นทาง: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</span><span class="en">🗺️ Itinerary: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</span>
+</p>
+<section id="overview">
+<h1>
+<span class="th th-block">ภาพรวมการเดินทางและกิจกรรม</span>
+<span class="en en-block">Trip Overview &amp; Activities</span>
+</h1>
+<!-- Flex container -->
+<div class="day-overviews">
+<!-- Day 1 Overview -->
+<div class="day-overview">
+<h3><a href="#day1"><span class="th">วันที่ 1: 6 มี.ค. (ศ) - นาริตะ &amp; ชินากาวะ</span><span class="en">Day 1: Mar 6 (Fri) - Arrival &amp; Shinagawa</span></a></h3>
+<p><span class="th">เดินทางถึงนาริตะ, เดินทางเข้าชินากาวะ, เช็คอินโรงแรม, ซื้อของขวัญ/อาหารเย็น.</span><span class="en">Arrive in Narita, travel to Shinagawa, check into hotel, gift shopping/dinner.</span></p>
+</div>
+<!-- Day 2 Overview -->
+<div class="day-overview">
+<h3><a href="#day2"><span class="th">วันที่ 2: 7 มี.ค. (ส) - อาซากุสะ, สกายทรี &amp; โอไดบะ</span><span class="en">Day 2: Mar 7 (Sat) - Asakusa, Skytree &amp; Odaiba</span></a></h3>
+<p><span class="th">เที่ยววัดเซ็นโซจิ, ชมวิวโตเกียวสกายทรี, ล่องเรือ, ชมกันดั้มที่โอไดบะ.</span><span class="en">Visit Senso-ji Temple, Tokyo Skytree view, cruise, see Gundam in Odaiba.</span></p>
+</div>
+<!-- Day 3 Overview -->
+<div class="day-overview">
+<h3><a href="#day3"><span class="th">วันที่ 3: 8 มี.ค. (อา) - คาวากุจิโกะ &amp; เจดีย์แดง</span><span class="en">Day 3: Mar 8 (Sun) - Kawaguchiko &amp; Chureito Pagoda</span></a></h3>
+<p><span class="th">เดินทางไปคาวากุจิโกะ, ชมเจดีย์แดงวิวฟูจิ, เช็คอิน, เดินเล่นริมทะเลสาบ, ขึ้นกระเช้า.</span><span class="en">Travel to Kawaguchiko, see Chureito Pagoda with Fuji view, check in, walk by the lake, take ropeway.</span></p>
+</div>
+<!-- Day 4 Overview -->
+<div class="day-overview">
+<h3><a href="#day4"><span class="th">วันที่ 4: 9 มี.ค. (จ) - วันเกิดพอใจที่คาวากุจิโกะ</span><span class="en">Day 4: Mar 9 (Mon) - Porjai's Birthday in Kawaguchiko</span></a></h3>
+<p><span class="th">เที่ยวหมู่บ้านน้ำใส, ชมวิวฟูจิจากกระเช้า/สวนโออิชิ, แช่ออนเซ็น, ฉลองวันเกิด.</span><span class="en">Visit Oshino Hakkai, enjoy Fuji views from ropeway/Oishi Park, relax in onsen, celebrate birthday.</span></p>
+</div>
+<!-- Day 5 Overview -->
+<div class="day-overview">
+<h3><a href="#day5"><span class="th">วันที่ 5: 10 มี.ค. (อ) - กลับโตเกียว &amp; ช้อปปิ้งอุเอโนะ</span><span class="en">Day 5: Mar 10 (Tue) - Return to Tokyo &amp; Ueno Shopping</span></a></h3>
+<p><span class="th">เดินทางกลับโตเกียว, เช็คอินอุเอโนะ, ช้อปปิ้ง GU, Sanrio, Ameyoko, Bic Camera, Donki.</span><span class="en">Return to Tokyo, check into Ueno, shopping at GU, Sanrio, Ameyoko, Bic Camera, Donki.</span></p>
+</div>
+<!-- Day 6 Overview -->
+<div class="day-overview">
+<h3><a href="#day6"><span class="th">วันที่ 6: 11 มี.ค. (พ) - สนุกกับหิมะที่ Gala Yuzawa</span><span class="en">Day 6: Mar 11 (Wed) - Fun with Snow at Gala Yuzawa</span></a></h3>
+<p><span class="th">นั่งชินคันเซ็นไป Gala Yuzawa, เล่นหิมะ, ขึ้นกระเช้าชมวิว, เดินทางกลับอุเอโนะ.</span><span class="en">Take Shinkansen to Gala Yuzawa, play in snow, enjoy gondola views, return to Ueno.</span></p>
+</div>
+<!-- Day 7 Overview -->
+<div class="day-overview">
+<h3><a href="#day7"><span class="th">วันที่ 7: 12 มี.ค. (พฤ) - ตามรอยอนิเมะ &amp; ชมวิวโตเกียว</span><span class="en">Day 7: Mar 12 (Thu) - Anime Pilgrimage &amp; Tokyo Views</span></a></h3>
+<p><span class="th">ตามรอย "Your Name" ที่ศาลเจ้า Suga, ชม Ghibli Clock, ชมวิว Tokyo Tower และ Roppongi Hills.</span><span class="en">Visit Suga Shrine ("Your Name"), see Ghibli Clock, enjoy views from Tokyo Tower and Roppongi Hills.</span></p>
+</div>
+<!-- Day 8 Overview -->
+<div class="day-overview">
+<h3><a href="#day8"><span class="th">วันที่ 8: 13 มี.ค. (ศ) - ช้อปปิ้ง &amp; เดินทางกลับไทย</span><span class="en">Day 8: Mar 13 (Fri) - Shopping &amp; Return to Thailand</span></a></h3>
+<p><span class="th">เดินเล่นสวนอุเอโนะ, ซื้อของฝาก Ameyoko, เดินทางไปสนามบินนาริตะ, กลับไทย.</span><span class="en">Walk in Ueno Park, buy souvenirs at Ameyoko, travel to Narita Airport, return to Thailand.</span></p>
+</div>
+<!-- Budget Overview -->
+<div class="day-overview">
+<h3><a href="#budget"><span class="th">ประมาณการค่าใช้จ่ายและสถานะ</span><span class="en">Budget Estimate and Status</span></a></h3>
+<p><span class="th">ข้อมูลการจอง และประมาณการค่าใช้จ่าย.</span><span class="en">Booking information and estimated expenses.</span></p>
+</div>
+</div> <!-- End .day-overviews -->
+<div class="note-box">
+<div class="note-toggle">
+<span class="th">ℹ️ วิธีการใช้งานแผนการเดินทาง</span>
+<span class="en">ℹ️ How to Use the Itinerary</span>
+</div>
+<div class="note-detail">
+<p class="th th-block">แผนการเดินทางรวมอยู่ในไฟล์เดียวเพื่อความสะดวกในการใช้งานออฟไลน์</p>
+<p class="en en-block">The itinerary is consolidated into a single file for easy offline use.</p>
+<p class="th th-block">คลิกที่หัวข้อ <span class="emoji">ℹ️</span> เพื่อขยายดูรายละเอียดเพิ่มเติม และใช้ปุ่ม "กลับไปหน้าหลัก" ด้านล่างขวาเพื่อไปยังสารบัญ</p>
+<p class="en en-block">Click on the <span class="emoji">ℹ️</span> headings to expand for more details, and use the "Back to Top" button at the bottom right to navigate to the table of contents.</p>
+<p class="th th-block">ใช้ปุ่ม TH/EN ที่มุมบนขวา (ลอยอยู่) เพื่อสลับภาษา</p>
+<p class="en en-block">Use the floating TH/EN buttons at the top right to switch languages.</p>
+</div>
+</div>
+</section>
+<!-- ==================== DAY 1 ==================== -->
+<div id="day1"></div>
+<!-- ==================== DAY 2 ==================== -->
+<div id="day2"></div>
+<!-- ==================== DAY 3 ==================== -->
+<div id="day3"></div>
+<!-- ==================== DAY 4 ==================== -->
+<div id="day4"></div>
+<!-- ==================== DAY 5 ==================== -->
+<div id="day5"></div>
+<!-- ==================== DAY 6 ==================== -->
+<div id="day6"></div>
+<!-- ==================== DAY 7 ==================== -->
+<div id="day7"></div>
+<!-- ==================== DAY 8 ==================== -->
+<div id="day8"></div>
+<!-- ==================== BUDGET ==================== -->
+<div id="budget"></div>
+</div> <!-- end .container -->
+<a class="back-to-top" href="#toc">
+<span class="th">🔙 กลับไปหน้าหลัก</span>
+<span class="en">🔙 Back to Top</span>
+</a>
+</body>
+</html>
