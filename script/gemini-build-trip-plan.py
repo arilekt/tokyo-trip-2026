@@ -10,7 +10,7 @@ from datetime import datetime
 SCRIPT_DIR = Path(__file__).parent
 CONTENT_DIR = SCRIPT_DIR.parent / "content"
 BUILD_DIR = SCRIPT_DIR.parent / "build"
-TEMPLATE_FILE = SCRIPT_DIR / "gemini-template-skeleton.html"
+TEMPLATE_FILE = SCRIPT_DIR / "asset/gemini-template-skeleton.html"
 
 # Ensure build directory exists
 BUILD_DIR.mkdir(parents=True, exist_ok=True)
