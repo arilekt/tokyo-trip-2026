@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</title>
+    <style>
+        :root {
+            --primary-color: #ff6b8b; /* Pink */
+            --primary-light: #ffdfd0; /* Light Pink/Peach */
+            --primary-dark: #d6336c; /* Darker Pink */
+            --background: #fff8f0; /* Off-white / Cream */
+            --card-bg: #fff; /* White */
+            --text-color: #333; /* Dark Grey */
+            --border-color: #ffc0cb; /* Light Pink Border */
+            --info-bg: #fff4f7; /* Lighter Pink Info Box */
+            --info-border: #ffa5ba; /* Pink Info Border */
+            --note-bg: #f9f3ff; /* Light Purple Note Box */
+            --note-border: #d4b8ff; /* Purple Note Border */
+            --table-alt: #fff5f7; /* Alternating Table Row Background */
+            --table-header: #ffe0e9; /* Table Header Background */
+            --table-border: #f2c8d9; /* Table Border */
+            --shadow: rgba(255, 192, 203, 0.3); /* Soft Pink Shadow */
+            --success: #28a745; /* Green */
+            --warning: #ffc107; /* Orange */
+            --pending: #6c757d; /* Grey */
+            --danger: #dc3545; /* Red */
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "Noto Sans Thai", "Sarabun", sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            font-size: 16px;
+            line-height: 1.6;
+            padding-bottom: 4rem; /* Space for back-to-top button */
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-light);
+            color: var(--text-color);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            padding-top: 2.5rem; /* Add padding to prevent overlap with fixed switcher */
+        }
+        header h2 {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Headings */
+        h1, h2, h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+        section > h1, section > h2 {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        section > h1 { font-size: 1.6rem; }
+        section > h2 { font-size: 1.4rem; }
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Paragraphs, Lists */
+        p, ul, ol { margin-bottom: 1rem; }
+        ul, ol { padding-left: 1.5rem; }
+        li ul, li ol {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid var(--table-border);
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: var(--table-header);
+            font-weight: bold;
+        }
+        tr:nth-child(even) { background-color: var(--table-alt); }
+        tr.total {
+            font-weight: bold;
+            background-color: var(--info-bg);
+        }
+        tr.remaining {
+            font-weight: bold;
+            background-color: var(--note-bg);
+        }
+
+        /* Status indicators */
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .status-complete { background-color: var(--success); color: white; }
+        .status-pending { background-color: var(--warning); color: var(--text-color); }
+        .status-planning { background-color: var(--pending); color: white; }
+        .status-urgent { background-color: var(--danger); color: white; }
+
+        /* Info/Note boxes */
+        .info-box, .note-box {
+            border-left: 5px solid var(--info-border); /* Default to info border */
+            padding: 0.8rem 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+        .note-box {
+            border-left-color: var(--note-border);
+            background-color: var(--note-bg);
+        }
+
+        .info-toggle, .note-toggle {
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .info-toggle::after, .note-toggle::after {
+            content: "▼";
+            font-size: 0.7em;
+            transition: transform 0.3s;
+            margin-left: 0.5rem;
+        }
+        .info-toggle.collapsed::after, .note-toggle.collapsed::after {
+            transform: rotate(-90deg);
+        }
+        .info-detail, .note-detail {
+            margin-top: 0.8rem;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, margin-top 0.4s ease-out; /* Smooth collapse */
+            max-height: 1000px; /* Max height for expanded state */
+        }
+        .info-detail.collapsed, .note-detail.collapsed {
+            max-height: 0;
+            margin-top: 0;
+        }
+        .info-detail ul, .info-detail ol,
+        .note-detail ul, .note-detail ol {
+            padding-left: 1.5rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            list-style-type: none;
+            margin: 1.5rem 0;
+            padding: 0;
+            position: relative;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: calc(1rem + 7px - 1px);
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--primary-color);
+        }
+        .timeline li {
+            position: relative;
+            padding: 0.5rem 0 1rem 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .timeline li::before {
+            content: "";
+            position: absolute;
+            left: 1rem;
+            top: 0.8rem;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            background-color: var(--primary-color);
+            border: 2px solid var(--background);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline strong {
+            font-weight: bold;
+            color: var(--primary-dark);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        .timeline .emoji {
+            margin-right: 8px;
+        }
+
+        /* Overview Section Flex Style */
+        #overview .day-overviews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        #overview .day-overview {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px var(--shadow);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            flex: 1 1 100%;
+        }
+        #overview .day-overview:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+        #overview .day-overview h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        #overview .day-overview h3 a {
+            color: var(--primary-dark);
+        }
+        #overview .day-overview p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* Back to top */
+        .back-to-top {
+            display: none; /* Hidden by default, shown by JS */
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.2s, opacity 0.3s, visibility 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+        .back-to-top.visible {
+            display: inline-block;
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover { background-color: var(--primary-dark); }
+
+        /* Emoji */
+        .emoji {
+            margin-right: 5px;
+            font-size: 1.1em;
+            vertical-align: middle;
+        }
+
+        /* Birthday badge */
+        .birthday-badge {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            vertical-align: middle;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        /* Language Switcher - Floating/Fixed */
+        .language-switcher {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 0.3rem;
+            border-radius: 20px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+            z-index: 1001;
+        }
+        .language-switcher button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 0.2rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: 0.9rem;
+        }
+        .language-switcher button.active {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+        .language-switcher button:not(.active):hover {
+             background-color: var(--primary-light);
+        }
+
+        /* Language Specific Styles - Optimized for offline loading */
+        /* By default, assume TH is active or inline is TH. En/Jp hidden */
+        .lang-en .th,
+        .lang-jp .th,
+        .lang-th .en,
+        .lang-jp .en,
+        .lang-th .jp,
+        .lang-en .jp {
+            display: none;
+        }
+        /* Show active language */
+        .lang-th .th,
+        .lang-en .en,
+        .lang-jp .jp {
+            display: inline; /* Or block, or list-item as needed per tag */
+        }
+        /* Block elements */
+        .lang-en .en-block, .lang-th .th-block, .lang-jp .jp-block { display: block; }
+        .lang-en .th-block, .lang-th .en-block, .lang-jp .th-block, .lang-en .jp-block, .lang-th .jp-block, .lang-jp .en-block { display: none; }
+        /* List items */
+        .lang-en .en-li, .lang-th .th-li, .lang-jp .jp-li { display: list-item; }
+        .lang-en .th-li, .lang-th .en-li, .lang-jp .th-li, .lang-en .jp-li, .lang-th .jp-li, .lang-jp .en-li { display: none; }
+
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container { padding: 1.5rem; }
+            header h1 { font-size: 2.2rem; }
+            header h2 { font-size: 1.4rem; }
+            section > h1 { font-size: 1.8rem; }
+            section > h2 { font-size: 1.5rem; }
+            #overview .day-overview { flex-basis: calc(50% - 0.5rem); } /* 2 columns with gap */
+        }
+        @media (min-width: 1024px) {
+            .container { padding: 2rem; }
+            header h1 { font-size: 2.5rem; }
+            #overview .day-overview { flex-basis: calc(33.333% - 0.67rem); } /* 3 columns with gap */
+        }
+        @media (max-width: 767px) {
+            th, td { padding: 0.6rem; font-size: 0.9rem; }
+            .timeline li { padding-left: 2rem; }
+            .timeline::before { left: calc(0.5rem + 7px - 1px); }
+            .timeline li::before { left: 0.5rem; }
+            header h1 { font-size: 1.6rem; padding-top: 3rem; }
+            header h2 { font-size: 1.1rem; }
+            section > h1 { font-size: 1.4rem; }
+            section > h2 { font-size: 1.2rem; }
+            .back-to-top { bottom: 1rem; right: 1rem; padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+            .language-switcher { top: 0.5rem; right: 0.5rem; }
+        }
+
+        /* Print styles */
+        @media print {
+            .day-overview, table, .info-box, .note-box, .timeline li {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .back-to-top, .language-switcher { display: none; }
+            body { background-color: white; padding-bottom: 0; }
+            header { box-shadow: none; padding-top: 1.5rem; }
+            header h1 { padding-top: 0; }
+            .table-container { overflow-x: visible; }
+            table { min-width: auto; }
+            /* Optional: expand all details for print if desired */
+            /* .info-detail, .note-detail { max-height: none !important; margin-top: 0 !important; }
+            .info-toggle::after, .note-toggle::after { display: none; } */
+        }
+    </style>
+</head>
+<body class="lang-th"> <div class="language-switcher">
+        <button data-lang="th">TH</button>
+        <button data-lang="en">EN</button>
+        </div>
+
+    <header>
+        <h1 id="toc">
+            <span class="th">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+            <span class="en">Porjai's Japan Trip: Birthday Adventure 2026</span>
+            </h1>
+        <h2>
+            <span class="th">📅 ศุกร์ 6 – ศุกร์ 13 มีนาคม 2026</span>
+            <span class="en">📅 March 6th (Fri) – March 13th (Fri), 2026</span>
+            </h2>
+    </header>
+
+    <div class="container">
+        <p>
+            <span class="th">✈️ ผู้เดินทาง: 🧍 Arilek (คุณพ่อ) 👧 Nuntnaphat (พอใจ)</span><span class="en">✈️ Travelers: 🧍 Arilek (Dad) 👧 Nuntnaphat (Porjai)</span><br/>
+            <span class="th">🗺️ เส้นทาง: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</span><span class="en">🗺️ Itinerary: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</span>
+        </p>
+
+        <section id="overview">
+            <h1>
+                <span class="th th-block">ภาพรวมการเดินทางและกิจกรรม</span>
+                <span class="en en-block">Trip Overview &amp; Activities</span>
+                </h1>
+            <div class="day-overviews">
+                </div>
+            <div class="note-box">
+                <div class="note-toggle">
+                    <span class="th">ℹ️ วิธีการใช้งานแผนการเดินทาง</span>
+                    <span class="en">ℹ️ How to Use the Itinerary</span>
+                    </div>
+                <div class="note-detail">
+                    <p class="th th-block">แผนการเดินทางรวมอยู่ในไฟล์เดียวเพื่อความสะดวกในการใช้งานออฟไลน์</p>
+                    <p class="en en-block">The itinerary is consolidated into a single file for easy offline use.</p>
+                    <p class="th th-block">คลิกที่หัวข้อ <span class="emoji">ℹ️</span> เพื่อขยายดูรายละเอียดเพิ่มเติม และใช้ปุ่ม "กลับไปหน้าหลัก" ด้านล่างขวาเพื่อไปยังสารบัญ</p>
+                    <p class="en en-block">Click on the <span class="emoji">ℹ️</span> headings to expand for more details, and use the "Back to Top" button at the bottom right to navigate to the table of contents.</p>
+                    <p class="th th-block">ใช้ปุ่ม TH/EN ที่มุมบนขวา (ลอยอยู่) เพื่อสลับภาษา</p>
+                    <p class="en en-block">Use the floating TH/EN buttons at the top right to switch languages.</p>
+                    </div>
+            </div>
+        </section>
+
+        <div id="weather_info"></div>
+        <div id="day1"></div>
+        <div id="day2"></div>
+        <div id="day3"></div>
+        <div id="day4"></div>
+        <div id="day5"></div>
+        <div id="day6"></div>
+        <div id="day7"></div>
+        <div id="day8"></div>
+        <div id="budget"></div>
+        <div id="accommodation"></div>
+        <div id="timeline"></div>
+        <div id="food_recommendations"></div>
+        <div id="shopping_guide"></div>
+        <div id="kawaguchiko_guide"></div>
+        <div id="important_updates"></div>
+        <div id="transportation_budget"></div>
+        </div> <a class="back-to-top" href="#toc">
+        <span class="th">🔙 กลับไปหน้าหลัก</span>
+        <span class="en">🔙 Back to Top</span>
+        </a>
+
+    <script>
+        // Currency conversion rate - Keep updated!
+        const JPY_TO_THB_RATE = 0.2346; // 100 JPY ≈ 23.46 THB (as of May 2025, adjust as needed)
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- Collapsible Sections ---
+            document.querySelectorAll(".info-toggle, .note-toggle").forEach(button => {
+                const detail = button.nextElementSibling;
+                if (detail && (detail.classList.contains('info-detail') || detail.classList.contains('note-detail'))) {
+                    // Start collapsed by default
+                    button.classList.add("collapsed");
+                    detail.classList.add("collapsed");
+
+                    button.addEventListener("click", (e) => {
+                        // Prevent link clicks inside toggle from triggering collapse
+                        if (e.target.tagName === 'A') return;
+                        button.classList.toggle("collapsed");
+                        detail.classList.toggle("collapsed");
+                    });
+
+                    // Allow keyboard activation for accessibility
+                    button.setAttribute('role', 'button');
+                    button.setAttribute('tabindex', '0');
+                    button.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault(); // Prevent page scroll on Space
+                            button.click();
+                        }
+                    });
+                } else {
+                    console.warn("Collapsible toggle found without a matching detail element:", button);
+                }
+            });
+
+            // --- Language Switching ---
+            const langButtons = document.querySelectorAll('.language-switcher button');
+            const body = document.body;
+            // Get saved language from localStorage or default to Thai
+            let currentLang = localStorage.getItem('tripLanguage') || 'th';
+
+            function setLanguage(lang) {
+                // Ensure valid language code
+                if (lang !== 'th' && lang !== 'en' && lang !== 'jp') lang = 'th'; // Fallback to Thai
+                localStorage.setItem('tripLanguage', lang);
+                currentLang = lang;
+                body.className = `lang-${lang}`; // Set class on body for CSS styling
+
+                // Update button active state
+                langButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+
+                // Update page title
+                const titleMap = {
+                    'th': "เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026",
+                    'en': "Porjai's Japan Trip: Birthday Adventure 2026",
+                    'jp': "ポルチャイの日本旅行：2026年バースデーアドベンチャー" // Future: Add Japanese title
+                };
+                document.title = titleMap[lang] || titleMap['th'];
+            }
+
+            // Add event listeners to language buttons
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    setLanguage(button.dataset.lang);
+                });
+            });
+
+            // Set initial language on page load
+            setLanguage(currentLang);
+
+            // --- Currency Conversion (JPY to THB) ---
+            const convertCurrency = () => {
+                document.querySelectorAll('[data-jpy]').forEach(el => {
+                    const jpyString = el.dataset.jpy.replace(/,/g, ''); // Remove commas for parsing
+                    const jpy = parseFloat(jpyString);
+                    if (!isNaN(jpy)) {
+                        const thb = (jpy * JPY_TO_THB_RATE).toFixed(0); // Calculate and round to nearest Baht
+                        const jpyFormatted = `¥${jpy.toLocaleString('en-US')}`;
+                        const thbFormatted = `฿${parseInt(thb).toLocaleString('en-US')}`;
+
+                        // Find or create a span for THB amount
+                        let thbSpan = el.querySelector('.thb-amount');
+                        if (!thbSpan) {
+                            if (el.tagName === 'TD' || el.tagName === 'STRONG') {
+                                el.innerHTML = `${thbFormatted}`; // Directly set THB if it's the main content
+                            } else {
+                                thbSpan = document.createElement('span');
+                                thbSpan.className = 'thb-amount';
+                                el.innerHTML = `${jpyFormatted} <span class="thb-amount">(${thbFormatted})</span>`;
+                            }
+                        } else {
+                            el.innerHTML = `${jpyFormatted} <span class="thb-amount">(${thbFormatted})</span>`;
+                        }
+                    } else {
+                        console.warn("Invalid JPY value found:", el.dataset.jpy);
+                    }
+                });
+                // Update the exchange rate display text
+                const rateDisplay = document.getElementById('exchange-rate-info');
+                if (rateDisplay) {
+                    const rateTextTh = `อัตราแลกเปลี่ยน: 100 เยน ≈ ${ (JPY_TO_THB_RATE * 100).toFixed(2) } บาท (ตรวจสอบอัตราปัจจุบัน)`;
+                    const rateTextEn = `Exchange Rate: 100 Yen ≈ ${ (JPY_TO_THB_RATE * 100).toFixed(2) } Baht (Check current rates)`;
+                    const rateTextJp = `為替レート: 100円 ≈ ${ (JPY_TO_THB_RATE * 100).toFixed(2) } バーツ (現在のレートを確認)`; // Future: Add Japanese rate text
+                    rateDisplay.querySelector('.th').textContent = rateTextTh;
+                    rateDisplay.querySelector('.en').textContent = rateTextEn;
+                    if (rateDisplay.querySelector('.jp')) rateDisplay.querySelector('.jp').textContent = rateTextJp;
+                }
+            };
+            convertCurrency(); // Run on load
+
+            // --- Back to Top Button Visibility ---
+            const backToTopBtn = document.querySelector('.back-to-top');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) { // Show after scrolling down 300px
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+            }
+        }); // End DOMContentLoaded
+    </script>
+</body>
+</html>
