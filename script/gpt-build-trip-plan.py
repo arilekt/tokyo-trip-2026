@@ -8,7 +8,7 @@ CONTENT_DIR = BASE_DIR / "content"
 TEMPLATE_FILE = BASE_DIR / "templates" / "gpt-template-skeleton.html"
 CSS_FILE = BASE_DIR / "assets" / "gpt-trip-style.css"
 JS_FILE = BASE_DIR / "assets" / "gpt-trip-script.js"
-BUILD_DIR = BASE_DIR / "build"
+BUILD_DIR = BASE_DIR / "../build"
 
 # === MINIMAL MD TO HTML ===
 def md_to_html(md_text):
