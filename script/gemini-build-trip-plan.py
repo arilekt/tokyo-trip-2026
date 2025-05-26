@@ -52,9 +52,23 @@ class MultiLangRenderer(mistune.HTMLRenderer):
             return f'<h{level}>{text}</h{level}>\n'
         return super().heading(text, level)
 
+# Custom Markdown parser that ensures 'parse' method always returns a string
+
+
+class RobustMarkdownParser(mistune.Markdown):
+    def parse(self, text):
+        # Call the original parse method
+        result = super().parse(text)
+        # Ensure the result is a string, as mistune can sometimes return other types (e.g., tuple in Python 3.13)
+        if not isinstance(result, str):
+            print(
+                f"DEBUG: RobustMarkdownParser detected non-string output from super().parse: {type(result)}. Converting to string.")
+            return str(result)
+        return result
+
 
 # Initialize mistune with the custom renderer globally
-markdown_parser = mistune.Markdown(renderer=MultiLangRenderer())
+markdown_parser = RobustMarkdownParser(renderer=MultiLangRenderer())
 
 
 def process_custom_boxes(text_content):
@@ -93,6 +107,8 @@ def process_custom_boxes(text_content):
         '''
 
         box_content_html = markdown_parser.parse(content_md)
+        # box_content_html should be string due to RobustMarkdownParser
+
         box_content_html = re.sub(
             r'^<p>(.*)</p>$', r'\1', box_content_html, flags=re.DOTALL)
 
@@ -128,21 +144,14 @@ def process_timeline_markup(text_content):
         emoji_part = match.group('emoji') if match.group('emoji') else ''
         content_md = match.group('content').strip()
 
-        # Process the content of the timeline item (which might contain custom boxes)
         inner_processed_content_html = markdown_parser.parse(
             process_custom_boxes(content_md))
 
-        # IMPORTANT: Ensure it's a string before calling re.sub
-        if not isinstance(inner_processed_content_html, str):
-            print(
-                f"Warning: mistune.parse returned non-string type: {type(inner_processed_content_html)}. Attempting to convert to string.")
-            processed_content_html = str(inner_processed_content_html)
-        else:
-            processed_content_html = inner_processed_content_html
+        # inner_processed_content_html should be string due to RobustMarkdownParser
 
         # Remove outer <p> tags if mistune adds them unnecessarily
         processed_content_html = re.sub(
-            r'^<p>(.*)</p>$', r'\1', processed_content_html, flags=re.DOTALL)
+            r'^<p>(.*)</p>$', r'\1', inner_processed_content_html, flags=re.DOTALL)
 
         timeline_html_items.append(f'''
         <li>
@@ -158,18 +167,32 @@ def markdown_to_html_with_structure(markdown_text_input):
     Orchestrates the conversion of markdown to HTML, applying specific structural transformations
     for timelines, info/note boxes, and tables.
     """
-    # Determine if the primary structure is a timeline or general content
-    if re.search(r'^- \*\*[^*]+\*\*:', markdown_text_input, re.MULTILINE):
-        # This looks like a primary timeline section
-        html_content = process_timeline_markup(markdown_text_input)
-    else:
-        # General markdown, might contain tables and non-timeline info/note boxes
-        html_content = markdown_parser.parse(
-            process_custom_boxes(markdown_text_input))
+    html_content = ""
+    try:
+        if re.search(r'^- \*\*[^*]+\*\*:', markdown_text_input, re.MULTILINE):
+            html_content = process_timeline_markup(markdown_text_input)
+        else:
+            html_content = markdown_parser.parse(
+                process_custom_boxes(markdown_text_input))
 
-    soup = BeautifulSoup(html_content, 'html.parser')
+        # This html_content should now always be a string due to RobustMarkdownParser
+        # But as a final defensive step, in case of unexpected types from mistune or its renderer:
+        if not isinstance(html_content, str):
+            print(
+                f"CRITICAL ERROR: html_content entering BeautifulSoup is not a string ({type(html_content)}). Forcing conversion.")
+            html_content = str(html_content)
 
-    # Process tables for responsive design and custom classes
+        soup = BeautifulSoup(html_content, 'html.parser')
+
+    except TypeError as e:
+        print(
+            f"MAJOR ERROR: BeautifulSoup failed to parse HTML content for a section due to TypeError: {e}")
+        print(f"The problematic content type was: {type(html_content)}")
+        print(
+            f"Problematic markdown_text_input (first 200 chars): {markdown_text_input[:200]}...")
+        # Provide a fallback HTML content for this section to prevent total crash
+        soup = BeautifulSoup(f'<div class="error-section note-box"><p class="th">⚠️ ไม่สามารถประมวลผลส่วนนี้ได้ โปรดตรวจสอบ Markdown (TypeError).</p><p class="en">⚠️ Could not process this section. Please check Markdown (TypeError).</p></div>', 'html.parser')
+
     for table in soup.find_all('table'):
         table_container = soup.new_tag(
             'div', attrs={'class': 'table-container'})
@@ -326,7 +349,6 @@ def generate_accommodation_overview(markdown_contents_map):
     flight_info_html = '<div class="agoda-card agoda-flight-card">\n'
     flight_info_html += '<div class="agoda-card-header"><span class="emoji">✈️</span> <span class="th">เที่ยวบิน</span><span class="en">Flights</span></div>\n'
 
-    # Extract flight details from main_info.md and timeline.md
     flight_to_match = re.search(r'ไป:\s*(SL\d+\s+\(.+?\))', main_info_md)
     flight_return_match = re.search(r'กลับ:\s*(XJ\d+\s+\(.+?\))', main_info_md)
 
@@ -363,7 +385,6 @@ def generate_accommodation_overview(markdown_contents_map):
     hotel_data_rows = re.findall(r'\|(.*)\|', accommodation_md)
     hotels = []
     if hotel_data_rows:
-        # Skip header and separator lines
         for i, row in enumerate(hotel_data_rows):
             if i < 2:
                 continue
@@ -391,7 +412,6 @@ def generate_accommodation_overview(markdown_contents_map):
 
         status_map = {
             "✅": {"th": "✅ จ่ายแล้ว", "en": "✅ Paid", "class": "status-complete"},
-            # For Asta Hotel (status '-')
             "-": {"th": "✅ จ่ายแล้ว", "en": "✅ Paid", "class": "status-complete"},
             "❗": {"th": "❗ ต้องซื้อ", "en": "❗ Must Buy", "class": "status-urgent"},
             "⏳": {"th": "⏳ วางแผน", "en": "⏳ Planning", "class": "status-planning"},
@@ -399,33 +419,26 @@ def generate_accommodation_overview(markdown_contents_map):
             "✅ จ่ายแล้ว": {"th": "✅ จ่ายแล้ว", "en": "✅ Paid", "class": "status-complete"},
         }
 
-        # Determine status emoji and text from the "status" cell of accommodation.md
-        # Example status cell: "1891056461 | ✅"
-        # The content in hotel["status"] can be like "1891056461 | ✅" or just "✅" or just "-"
         current_status_cell = hotel["status"]
 
         detected_emoji_match = re.match(r'.*(✅|❗|⏳|🪪)', current_status_cell)
         detected_emoji = detected_emoji_match.group(
-            1) if detected_emoji_match else "-"  # Default for Asta Hotel
+            1) if detected_emoji_match else "-"
 
-        # Default to planning if unknown emoji
         status_entry = status_map.get(detected_emoji, status_map["⏳"])
 
-        # If the status cell has complex text like "1891056461 | ✅"
-        # We need to extract the actual text for TH/EN
         status_text_th = current_status_cell.strip()
-        status_text_en = status_entry["en"]  # Default English text
+        status_text_en = status_entry["en"]
 
         if "✅" in status_text_th and "จองแล้ว" not in status_text_th:
             status_text_th = "✅ จองแล้ว"
             status_text_en = "✅ Booked"
             status_entry["class"] = "status-complete"
-        # Specific for Asta Hotel
         elif "-" in status_text_th and "Asta Hotel" in hotel["hotel"]:
             status_text_th = "✅ จ่ายแล้ว"
             status_text_en = "✅ Paid"
             status_entry["class"] = "status-complete"
-        elif "✅" in status_text_th and "จ่ายแล้ว" not in status_text_th:  # For the original "✅" in status column
+        elif "✅" in status_text_th and "จ่ายแล้ว" not in status_text_th:
             status_text_th = "✅ จ่ายแล้ว"
             status_text_en = "✅ Paid"
             status_entry["class"] = "status-complete"
