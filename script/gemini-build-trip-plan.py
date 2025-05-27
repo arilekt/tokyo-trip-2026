@@ -9,11 +9,10 @@ from datetime import datetime
 SCRIPT_DIR = Path(__file__).parent
 CONTENT_DIR = SCRIPT_DIR.parent / "content"
 BUILD_DIR = SCRIPT_DIR.parent / "build"
-TEMPLATE_FILE = SCRIPT_DIR / "template-skeleton.html"
+TEMPLATE_FILE = SCRIPT_DIR / "assets/gemini-template-skeleton.html"
 
 # Ensure build directory exists
 BUILD_DIR.mkdir(parents=True, exist_ok=True)
-
 
 def read_file(filepath):
     """Reads file content and returns as string."""
@@ -24,10 +23,8 @@ def read_file(filepath):
         print(f"Error: File not found at {filepath}")
         return ""
 
-
 class MultiLangRenderer(mistune.HTMLRenderer):
     """Custom renderer to preserve multi-language spans and handle custom blocks."""
-
     def block_html(self, html):
         # Allow raw HTML blocks (like our custom box placeholders) to pass through
         return html
@@ -41,15 +38,13 @@ class MultiLangRenderer(mistune.HTMLRenderer):
     def list_item(self, text):
         # Preserve multi-language spans within list items
         if '<span class="th-li"' in text or '<span class="en-li"' in text or '<span class="jp-li"' in text:
-            return f'<li class="lang-li-auto">{text}</li>\n'
+            return f'<li class="lang-li-auto">{text}</li>\n' 
         return super().list_item(text)
 
     def heading(self, text, level):
         # Headings are handled by the main script for multi-language, so this might be redundant
         # if the script removes markdown heading before parsing body.
         # But if not, ensure it's not breaking multi-lang spans.
-        # mistune's default heading renderer might add <p> tags, which we need to clean.
-        # This will be handled by the main script's H1 injection and post-processing.
         return super().heading(text, level)
 
 
@@ -60,32 +55,27 @@ class RobustMarkdownParser(mistune.Markdown):
         result = super().parse(text)
         # Ensure the result is a string, as mistune can sometimes return other types (e.g., tuple in Python 3.13)
         if not isinstance(result, str):
-            print(
-                f"DEBUG: RobustMarkdownParser detected non-string output from super().parse: {type(result)}. Converting to string.")
+            print(f"DEBUG: RobustMarkdownParser detected non-string output from super().parse: {type(result)}. Converting to string.")
             return str(result)
         return result
-
 
 # Initialize mistune with the custom renderer globally
 markdown_parser = RobustMarkdownParser(renderer=MultiLangRenderer())
 
-
 def process_custom_boxes(text_content):
     """Identifies and processes custom info/note box markdown into HTML div structures."""
+    # Corrected regex for general box pattern and proper f-string syntax in return.
     box_pattern = re.compile(
-        r'(?:^|\n)(?P<type>info|note)-box\s*\n'
-        # Title: either ```title``` or single line
-        r'(?:```(?P<title_triple_backtick>[^`]+)```|(?P<title_single_line>[^\n]+))\n'
+        r'(?:^|\n)(?P<type>info|note)-box\s*\n' 
+        r'(?:```(?P<title_triple_backtick>[^`]+)```|(?P<title_single_line>[^\n]+))\n' # Title: either ```title``` or single line
         r'(?P<content>.+?)'                # Content of the box
-        # Lookahead for next box or end of string
-        r'(?=\n(?:info|note)-box|\n---|\n\n|\Z)',
+        r'(?=\n(?:info|note)-box|\n---|\n\n|\Z)', # Lookahead for next box or end of string
         re.DOTALL | re.MULTILINE
     )
 
     def replace_box_markup(match):
         box_type = match.group('type')
-        title_md = match.group('title_triple_backtick') if match.group(
-            'title_triple_backtick') else match.group('title_single_line')
+        title_md = match.group('title_triple_backtick') if match.group('title_triple_backtick') else match.group('title_single_line')
         content_md = match.group('content').strip()
 
         # Process title for multi-language spans
@@ -95,8 +85,7 @@ def process_custom_boxes(text_content):
         en_title = title_soup.find('span', class_='en')
         jp_title = title_soup.find('span', class_='jp')
 
-        th_title_text = th_title.decode_contents().strip(
-        ) if th_title else title_soup.get_text(strip=True)
+        th_title_text = th_title.decode_contents().strip() if th_title else title_soup.get_text(strip=True)
         en_title_text = en_title.decode_contents().strip() if en_title else th_title_text
         jp_title_text = jp_title.decode_contents().strip() if jp_title else th_title_text
 
@@ -107,44 +96,50 @@ def process_custom_boxes(text_content):
                 <span class="jp">{jp_title_text}</span>
             </div>
         '''
-
+        
         # Process box content (which may contain nested markdown/lists)
         box_content_html = markdown_parser.parse(content_md)
         # Remove outer <p> tags if mistune adds them unnecessarily
-        box_content_html = re.sub(r'^<p>(.*)</p><span class="math-inline">', r'\\1', box\_content\_html, flags\=re\.DOTALL\)
-return f'''
-<div class\="\{box\_type\}\-box"\>
-\{toggle\_html\}
-<div class\="\{box\_type\}\-detail"\>
-\{box\_content\_html\}
-</div\>
-</div\>
+        # Removed `span class="math-inline"` from regex pattern and fixed f-string syntax
+        box_content_html = re.sub(r'^<p>(.*)</p>$', r'\1', box_content_html, flags=re.DOTALL) 
+
+        return f'''
+<div class="{box_type}-box">
+    {toggle_html}
+    <div class="{box_type}-detail">
+        {box_content_html}
+    </div>
+</div>
 '''
-return box\_pattern\.sub\(replace\_box\_markup, text\_content\)
-def process\_timeline\_markup\(text\_content\)\:
-"""Converts timeline markdown into HTML <ul\><li\> structure, handling nested custom boxes\."""
-\# This regex needs to capture the entire timeline block to be processed as one
-\# and split its items\. It also needs to correctly stop at a blank line or new section\.
-\# Pattern to capture each timeline item\.
-timeline\_item\_pattern \= re\.compile\(
-r'^\- \\\*\\\*\(?P<time\>\[^\*\]\+?\)\\\*\\\*\:\\s\*\(?P<emoji\><span class\="emoji"\>\[^<\]\+?</span\>\)?\\s\*\(?P<content\>\.\+?\)'
-r'\(?\=\\n^\- \\\*\\\*\|\\n\\n\(?\!\[ \\t\]\*\[\-\*\+\\d\]\)\|\\Z\)', \# Lookahead for next item, or two newlines NOT followed by list/heading
-re\.MULTILINE \| re\.DOTALL
-\)
-timeline\_html\_items \= \[\]
-matches \= list\(timeline\_item\_pattern\.finditer\(text\_content\)\)
-if not matches\:
-return text\_content \# No timeline found, return original content
-for match in matches\:
-time\_part \= match\.group\('time'\)\.strip\(\)
-emoji\_part \= match\.group\('emoji'\) if match\.group\('emoji'\) else ''
-content\_md \= match\.group\('content'\)\.strip\(\)
-\# Process content\_md\: it might contain nested markdown, including custom boxes\.
-\# Pass content\_md to process\_custom\_boxes, then parse with markdown\_parser\.
-\# RobustMarkdownParser handles string output from markdown\_parser\.parse
-processed\_content\_html \= markdown\_parser\.parse\(process\_custom\_boxes\(content\_md\)\)
-\# Remove outer <p\> tags if mistune adds them unnecessarily around block elements
-processed\_content\_html \= re\.sub\(r'^<p\>\(\.\*\)</p\></span>', r'\1', processed_content_html, flags=re.DOTALL)
+
+    return box_pattern.sub(replace_box_markup, text_content)
+
+def process_timeline_markup(text_content):
+    """Converts timeline markdown into HTML <ul><li> structure, handling nested custom boxes."""
+    timeline_item_pattern = re.compile(
+        r'^- \*\*(?P<time>[^*]+?)\*\*:\s*(?P<emoji><span class="emoji">[^<]+?</span>)?\s*(?P<content>.+?)'
+        r'(?=\n^- \*\*|\n\n(?![ \t]*[-*+\d])|\Z)', # Lookahead for next item, or two newlines NOT followed by list/heading
+        re.MULTILINE | re.DOTALL
+    )
+    
+    timeline_html_items = []
+    
+    matches = list(timeline_item_pattern.finditer(text_content))
+
+    if not matches:
+        return text_content # No timeline found, return original content
+
+    for match in matches:
+        time_part = match.group('time').strip()
+        emoji_part = match.group('emoji') if match.group('emoji') else ''
+        content_md = match.group('content').strip()
+
+        # Process content_md: it might contain nested markdown, including custom boxes.
+        # Pass content_md to process_custom_boxes, then parse with markdown_parser.
+        processed_content_html = markdown_parser.parse(process_custom_boxes(content_md))
+        
+        # Remove outer <p> tags if mistune adds them unnecessarily around block elements
+        processed_content_html = re.sub(r'^<p>(.*)</p>$', r'\1', processed_content_html, flags=re.DOTALL)
         
         timeline_html_items.append(f'''
         <li>
@@ -168,10 +163,8 @@ def markdown_to_html_with_structure(markdown_text_input):
             # Otherwise, process general markdown with custom boxes
             html_content = markdown_parser.parse(process_custom_boxes(markdown_text_input))
 
-        # This html_content should now always be a string due to RobustMarkdownParser
+        # html_content should now always be a string due to RobustMarkdownParser
         # and explicit handling. BeautifulSoup should receive a valid string.
-        # No explicit str() conversion here as RobustMarkdownParser should handle it.
-        # Remove the deprecation warning for re.sub (count=1 is keyword argument)
         
         soup = BeautifulSoup(html_content, 'html.parser')
 
@@ -236,7 +229,6 @@ def create_day_overview_cards(markdown_contents_map):
         temp_md_for_desc = ""
         for line in markdown_text.splitlines():
             stripped_line = line.strip()
-            # Exclude headings, list items, tables, quotes, and empty lines for description
             if stripped_line and not stripped_line.startswith(('#', '-', '*', '|', '>')) and not re.match(r'^\d+\.', stripped_line):
                 temp_md_for_desc = stripped_line
                 break
@@ -645,7 +637,7 @@ def build_full_html_plan():
             markdown_text = markdown_contents[section_id]
 
             # Find the main section title from Markdown to build the H1 tag
-            section_title_match = re.search(r'#+\s+([^\n]+)', markdown_text)
+            section_title_match = re.match(r'#+\s+([^\n]+)', markdown_text)
             title_html_tag = ""
             if section_title_match:
                 full_title_line = section_title_match.group(1).strip()
@@ -705,7 +697,8 @@ def build_full_html_plan():
 
     # Generate output filename with current date
     today_date_str = datetime.now().strftime("%Y%m%d")
-    output_filename = BUILD_DIR / f"Tokyo-Trip-March-2026-update-{today_date_str}.html"
+    output_filename = BUILD_DIR / \
+        f"Tokyo-Trip-March-2026-Gemini-{today_date_str}.html"
 
     # Write the final beautiful HTML to file
     with open(output_filename, 'w', encoding='utf-8') as f_out:
