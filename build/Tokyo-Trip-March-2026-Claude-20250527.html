@@ -1,0 +1,2618 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</title>
+    <style>
+        
+        :root {
+            --primary-color: #ff6b8b;
+            --primary-light: #ffdfd0;
+            --primary-dark: #d6336c;
+            --background: #fff8f0;
+            --card-bg: #fff;
+            --text-color: #333;
+            --border-color: #ffc0cb;
+            --info-bg: #fff4f7;
+            --info-border: #ffa5ba;
+            --note-bg: #f9f3ff;
+            --note-border: #d4b8ff;
+            --table-alt: #fff5f7;
+            --table-header: #ffe0e9;
+            --table-border: #f2c8d9;
+            --shadow: rgba(255, 192, 203, 0.3);
+            --success: #28a745;
+            --warning: #ffc107;
+            --pending: #6c757d;
+            --danger: #dc3545;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "Noto Sans Thai", "Sarabun", sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            font-size: 16px;
+            line-height: 1.6;
+            padding-bottom: 4rem;
+        }
+
+        header {
+            background-color: var(--primary-light);
+            color: var(--text-color);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            padding-top: 2.5rem;
+        }
+        header h2 {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+        section > h1, section > h2 {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        section > h1 { font-size: 1.6rem; }
+        section > h2 { font-size: 1.4rem; }
+        h3 { font-size: 1.2rem; margin-top: 1.5rem; }
+
+        p, ul, ol { margin-bottom: 1rem; }
+        ul, ol { padding-left: 1.5rem; }
+        li ul, li ol { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+
+        a { color: var(--primary-dark); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .table-container { overflow-x: auto; margin: 1.5rem 0; }
+        table {
+            width: 100%; min-width: 600px; border-collapse: collapse;
+            background-color: var(--card-bg); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 0.75rem; border: 1px solid var(--table-border);
+            text-align: left; vertical-align: top;
+        }
+        th { background-color: var(--table-header); font-weight: bold; }
+        tr:nth-child(even) { background-color: var(--table-alt); }
+        tr.total { font-weight: bold; background-color: var(--info-bg); }
+        tr.remaining { font-weight: bold; background-color: var(--note-bg); }
+
+        .info-box, .note-box {
+            border-left: 5px solid var(--info-border);
+            padding: 0.8rem 1rem; margin: 1rem 0;
+            border-radius: 0 8px 8px 0; transition: all 0.3s ease;
+            background-color: var(--info-bg);
+        }
+        .note-box {
+            border-left-color: var(--note-border);
+            background-color: var(--note-bg);
+        }
+
+        .info-toggle, .note-toggle {
+            cursor: pointer; font-weight: bold;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .info-toggle::after, .note-toggle::after {
+            content: "▼"; font-size: 0.7em; transition: transform 0.3s;
+            margin-left: 0.5rem;
+        }
+        .info-toggle.collapsed::after, .note-toggle.collapsed::after {
+            transform: rotate(-90deg);
+        }
+        .info-detail, .note-detail {
+            margin-top: 0.8rem; overflow: hidden;
+            transition: max-height 0.4s ease-out; max-height: 1000px;
+        }
+        .info-detail.collapsed, .note-detail.collapsed {
+            max-height: 0; margin-top: 0;
+        }
+
+        .timeline {
+            list-style-type: none; margin: 1.5rem 0; padding: 0; position: relative;
+        }
+        .timeline::before {
+            content: ''; position: absolute; left: calc(1rem + 7px - 1px);
+            top: 0; bottom: 0; width: 2px; background-color: var(--primary-color);
+        }
+        .timeline li {
+            position: relative; padding: 0.5rem 0 1rem 2.5rem; margin-bottom: 1rem;
+        }
+        .timeline li::before {
+            content: ""; position: absolute; left: 1rem; top: 0.8rem;
+            transform: translateY(-50%); width: 14px; height: 14px;
+            background-color: var(--primary-color); border: 2px solid var(--background);
+            border-radius: 50%; z-index: 1;
+        }
+        .timeline strong {
+            font-weight: bold; color: var(--primary-dark);
+            display: block; margin-bottom: 0.3rem;
+        }
+        .timeline .emoji { margin-right: 8px; }
+
+        #overview .day-overviews {
+            display: flex; flex-wrap: wrap; gap: 1rem;
+        }
+        #overview .day-overview {
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 1rem; box-shadow: 0 2px 5px var(--shadow);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            flex: 1 1 100%;
+        }
+        #overview .day-overview:hover {
+            transform: translateY(-3px); box-shadow: 0 4px 10px var(--shadow);
+        }
+        #overview .day-overview h3 {
+            margin-top: 0; margin-bottom: 0.5rem; font-size: 1.1rem;
+        }
+        #overview .day-overview h3 a { color: var(--primary-dark); }
+        #overview .day-overview p { font-size: 0.95rem; margin-bottom: 0; }
+
+        .back-to-top {
+            display: none; position: fixed; bottom: 1.5rem; right: 1.5rem;
+            background-color: var(--primary-color); color: white;
+            padding: 0.6rem 1rem; border-radius: 50px; text-decoration: none;
+            font-weight: bold; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.2s, opacity 0.3s, visibility 0.3s;
+            opacity: 0; visibility: hidden; z-index: 1000;
+        }
+        .back-to-top.visible {
+            display: inline-block; opacity: 1; visibility: visible;
+        }
+        .back-to-top:hover { background-color: var(--primary-dark); }
+
+        .emoji { margin-right: 5px; font-size: 1.1em; vertical-align: middle; }
+
+        .birthday-badge {
+            display: inline-block; background-color: var(--primary-color);
+            color: white; font-weight: bold; padding: 0.3rem 0.8rem;
+            border-radius: 20px; margin-left: 1rem; font-size: 0.9rem;
+            vertical-align: middle; animation: pulse 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        .language-switcher {
+            position: fixed; top: 1rem; right: 1rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 0.3rem; border-radius: 20px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.2); z-index: 1001;
+        }
+        .language-switcher button {
+            background: none; border: none; color: var(--text-color);
+            font-weight: bold; cursor: pointer; margin: 0 0.2rem;
+            padding: 0.3rem 0.8rem; border-radius: 15px;
+            transition: background-color 0.2s, color 0.2s; font-size: 0.9rem;
+        }
+        .language-switcher button.active {
+            background-color: var(--primary-dark); color: white;
+        }
+        .language-switcher button:not(.active):hover {
+             background-color: var(--primary-light);
+        }
+
+        .lang-en .th, .lang-th .en { display: none; }
+        .lang-th .th, .lang-en .en { display: inline; }
+        .lang-en .en-block, .lang-th .th-block { display: block; }
+        .lang-en .th-block, .lang-th .en-block { display: none; }
+
+        @media (min-width: 768px) {
+            .container { padding: 1.5rem; }
+            header h1 { font-size: 2.2rem; }
+            header h2 { font-size: 1.4rem; }
+            section > h1 { font-size: 1.8rem; }
+            section > h2 { font-size: 1.5rem; }
+            #overview .day-overview { flex-basis: calc(50% - 0.5rem); }
+        }
+        @media (min-width: 1024px) {
+            .container { padding: 2rem; }
+            header h1 { font-size: 2.5rem; }
+            #overview .day-overview { flex-basis: calc(33.333% - 0.67rem); }
+        }
+        @media (max-width: 767px) {
+            th, td { padding: 0.6rem; font-size: 0.9rem; }
+            .timeline li { padding-left: 2rem; }
+            .timeline::before { left: calc(0.5rem + 7px - 1px); }
+            .timeline li::before { left: 0.5rem; }
+            header h1 { font-size: 1.6rem; padding-top: 3rem; }
+            header h2 { font-size: 1.1rem; }
+            section > h1 { font-size: 1.4rem; }
+            section > h2 { font-size: 1.2rem; }
+            .back-to-top { bottom: 1rem; right: 1rem; padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+            .language-switcher { top: 0.5rem; right: 0.5rem; }
+        }
+
+        @media print {
+            .day-overview, table, .info-box, .note-box, .timeline li {
+                break-inside: avoid; page-break-inside: avoid;
+            }
+            .back-to-top, .language-switcher { display: none; }
+            body { background-color: white; padding-bottom: 0; }
+            header { box-shadow: none; padding-top: 1.5rem; }
+            header h1 { padding-top: 0; }
+            .table-container { overflow-x: visible; }
+            table { min-width: auto; }
+        }
+        
+    </style>
+</head>
+<body class="lang-th">
+    <div class="language-switcher">
+        <button data-lang="th" class="active">TH</button>
+        <button data-lang="en">EN</button>
+    </div>
+
+    <header>
+        <h1 id="toc">
+            <span class="th">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+            <span class="en">Porjai's Japan Trip: Birthday Adventure 2026</span>
+        </h1>
+        <h2>
+            <span class="th">📅 ศุกร์ 6 – ศุกร์ 13 มีนาคม 2026</span>
+            <span class="en">📅 March 6th (Fri) – March 13th (Fri), 2026</span>
+        </h2>
+    </header>
+
+    <div class="container">
+        <p>
+            <span class="th">✈️ ผู้เดินทาง: 🧍 Arilek (คุณพ่อ) 👧 Nuntnaphat (พอใจ)</span>
+            <span class="en">✈️ Travelers: 🧍 Arilek (Dad) 👧 Nuntnaphat (Porjai)</span><br/>
+            <span class="th">🗺️ เส้นทาง: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</span>
+            <span class="en">🗺️ Itinerary: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</span>
+        </p>
+
+        <section id="overview">
+            <h1>
+                <span class="th th-block">ภาพรวมการเดินทางและกิจกรรม</span>
+                <span class="en en-block">Trip Overview & Activities</span>
+            </h1>
+            <div class="day-overviews">
+
+            <div class="day-overview">
+                <h3><a href="#day1">
+                    <span class="th">วันที่ 1: 6 มีนาคม 2569 (ศุกร์)</span>
+                    <span class="en">เดินทางถึงนาริตะ & ชินากาวะ</span>
+                </a></h3>
+                <p>
+                    <span class="th">📍 สถานที่แนะนำ: Bic Camera Gotanda</span>
+                    <span class="en">📍 สถานที่แนะนำ: Bic Camera Gotanda</span>
+                </p>
+            </div>
+            
+            <div class="day-overview">
+                <h3><a href="#day2">
+                    <span class="th">วันที่ 2: 7 มีนาคม 2569 (เสาร์)</span>
+                    <span class="en">อาซากุสะ (Asakusa), ล่องเรือ & ช้อปอนิเมะ</span>
+                </a></h3>
+                <p>
+                    <span class="th">กิจกรรมต่างๆ ในวันนี้</span>
+                    <span class="en">กิจกรรมต่างๆ ในวันนี้</span>
+                </p>
+            </div>
+            
+            <div class="day-overview">
+                <h3><a href="#day3">
+                    <span class="th">วันที่ 3: 8 มีนาคม 2569 (อาทิตย์)</span>
+                    <span class="en">คาวากุจิโกะ & เจดีย์แดง</span>
+                </a></h3>
+                <p>
+                    <span class="th">กิจกรรมต่างๆ ในวันนี้</span>
+                    <span class="en">กิจกรรมต่างๆ ในวันนี้</span>
+                </p>
+            </div>
+            
+            <div class="day-overview">
+                <h3><a href="#day4-additional">
+                    <span class="th">วันที่ 4: 9 มีนาคม 2569 (จันทร์)</span>
+                    <span class="en">วันเกิดพอใจที่คาวากุจิโกะ 🎂</span>
+                </a><span class="birthday-badge">🎂 Happy Birthday!</span></h3>
+                <p>
+                    <span class="th">1. 09:45: บ่อน้ำใส Oshino Hakkai + ฟูจิ (แสงเช้านุ่ม)</span>
+                    <span class="en">1. 09:45: บ่อน้ำใส Oshino Hakkai + ฟูจิ (แสงเช้านุ่ม)</span>
+                </p>
+            </div>
+            
+            <div class="day-overview">
+                <h3><a href="#day4">
+                    <span class="th">วันที่ 4: 9 มีนาคม 2569 (จันทร์)</span>
+                    <span class="en">วันเกิดพอใจที่คาวากุจิโกะ 🎂</span>
+                </a><span class="birthday-badge">🎂 Happy Birthday!</span></h3>
+                <p>
+                    <span class="th">กิจกรรมต่างๆ ในวันนี้</span>
+                    <span class="en">กิจกรรมต่างๆ ในวันนี้</span>
+                </p>
+            </div>
+            
+            <div class="day-overview">
+                <h3><a href="#day5">
+                    <span class="th">วันที่ 5: 10 มีนาคม 2569 (อังคาร)</span>
+                    <span class="en">กลับโตเกียว & ช้อปปิ้งอุเอโนะ</span>
+                </a></h3>
+                <p>
+                    <span class="th">กิจกรรมต่างๆ ในวันนี้</span>
+                    <span class="en">กิจกรรมต่างๆ ในวันนี้</span>
+                </p>
+            </div>
+            
+            <div class="day-overview">
+                <h3><a href="#day6">
+                    <span class="th">วันที่ 6: 11 มีนาคม 2569 (พุธ)</span>
+                    <span class="en">สนุกกับหิมะที่ Gala Yuzawa</span>
+                </a></h3>
+                <p>
+                    <span class="th">กิจกรรมต่างๆ ในวันนี้</span>
+                    <span class="en">กิจกรรมต่างๆ ในวันนี้</span>
+                </p>
+            </div>
+            
+            <div class="day-overview">
+                <h3><a href="#day7">
+                    <span class="th">วันที่ 7: 12 มีนาคม 2569 (พฤหัสบดี)</span>
+                    <span class="en">ตามรอยอนิเมะ & ชมวิวโตเกียว</span>
+                </a></h3>
+                <p>
+                    <span class="th">กิจกรรมต่างๆ ในวันนี้</span>
+                    <span class="en">กิจกรรมต่างๆ ในวันนี้</span>
+                </p>
+            </div>
+            
+            <div class="day-overview">
+                <h3><a href="#day8">
+                    <span class="th">วันที่ 8: 13 มีนาคม 2569 (ศุกร์)</span>
+                    <span class="en">ช้อปปิ้ง & เดินทางกลับไทย</span>
+                </a></h3>
+                <p>
+                    <span class="th">กิจกรรมต่างๆ ในวันนี้</span>
+                    <span class="en">กิจกรรมต่างๆ ในวันนี้</span>
+                </p>
+            </div>
+            
+        <div class="day-overview">
+            <h3><a href="#budget">
+                <span class="th">ประมาณการค่าใช้จ่ายและสถานะ</span>
+                <span class="en">Budget Estimate and Status</span>
+            </a></h3>
+            <p>
+                <span class="th">ข้อมูลการจอง และประมาณการค่าใช้จ่าย</span>
+                <span class="en">Booking information and estimated expenses</span>
+            </p>
+        </div>
+        </div>
+
+            
+            <div class="note-box">
+                <div class="note-toggle">
+                    <span class="th">ℹ️ วิธีการใช้งานแผนการเดินทาง</span>
+                    <span class="en">ℹ️ How to Use the Itinerary</span>
+                </div>
+                <div class="note-detail">
+                    <p class="th th-block">แผนการเดินทางรวมอยู่ในไฟล์เดียวเพื่อความสะดวกในการใช้งานออฟไลน์</p>
+                    <p class="en en-block">The itinerary is consolidated into a single file for easy offline use.</p>
+                    <p class="th th-block">คลิกที่หัวข้อ <span class="emoji">ℹ️</span> เพื่อขยายดูรายละเอียดเพิ่มเติม และใช้ปุ่ม "กลับไปหน้าหลัก" ด้านล่างขวาเพื่อไปยังสารบัญ</p>
+                    <p class="en en-block">Click on the <span class="emoji">ℹ️</span> headings to expand for more details, and use the "Back to Top" button at the bottom right to navigate to the table of contents.</p>
+                    <p class="th th-block">ใช้ปุ่ม TH/EN ที่มุมบนขวา (ลอยอยู่) เพื่อสลับภาษา</p>
+                    <p class="en en-block">Use the floating TH/EN buttons at the top right to switch languages.</p>
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="day1">
+            <h1>
+                <span class="th th-block">วันที่ 1: 6 มีนาคม 2569 (ศุกร์)</span>
+                <span class="en en-block">เดินทางถึงนาริตะ & ชินากาวะ</span>
+                
+            </h1>
+            <ul class="timeline">
+<li><strong>02:00</strong>: <span class="emoji">🚗 ออกเดินทางจากบ้านไปสนามบินดอนเมือง</span> - <strong>06:15</strong>: 🛫 เที่ยวบิน SL394 (Thai Lion Air) ไปนาริตะ</li>
+<li><strong>16:20</strong>: <span class="emoji">🛬 ถึงสนามบินนาริตะ (NRT)</span> - <strong>17:00-18:30</strong>: 🚄 เดินทางโดย Narita Express (N'EX) ไปยังสถานีชินากาวะ</li>
+<li><strong>รายละเอียดการเดินทาง (N'EX)</strong>: <span class="emoji"></span> - ซื้อตั๋ว Narita Express ได้ที่ JR East Travel Service Center (Terminal 1 หรือ Terminal 2-3) หลังผ่าน ตม.</li>
+<p>- ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="3070">¥3070</span>, เด็ก <span data-jpy="1530">¥1530</span> (โดยประมาณ)</p>
+<p>- เวลาเดินทาง: ประมาณ 70 นาที</p>
+<p>- ขึ้นรถไฟ: ตามป้าย "JR Line" ที่สถานี Narita Airport ลงไปชั้นใต้ดิน ขึ้นชานชาลา N'EX</p>
+<li><strong>18:30</strong>: <span class="emoji">🏨 เช็คอินโรงแรม Shinagawa Tobu Hotel</span> - <strong>ข้อมูลโรงแรม</strong>:</li>
+- ที่พัก: <a href="https://www.agoda.com/th-th/shinagawa-tobu-hotel/hotel/tokyo-jp.html?cid=1844104&ds=PoSIgwEvEDvM0BpG" target="_blank">Shinagawa Tobu Hotel</a>
+<li><strong>19:00</strong>: <span class="emoji">🍽️ กิจกรรมช่วงเย็น: ซื้อของขวัญ/อาหารเย็น</span> - <strong>แผนช่วงเย็น (Gotanda)</strong>:</li>
+- <strong>18:45 – 19:30:</strong> เดินทางไป Bic Camera Gotanda ซื้อกล้อง (ของขวัญวันเกิดพอใจ)
+- <strong>19:30 – 20:00:</strong> เข้าร้าน GU Gotanda (Marui ชั้น 3) ดู/ซื้อเสื้อกันหนาว
+- <strong>20:00 – 20:45:</strong> ทานมื้อเย็นแถว Gotanda (เช่น Saizeriya, MOS Burger)
+- <strong>~21:00:</strong> กลับที่พัก
+<li><strong>การเดินทาง Shinagawa ↔ Gotanda</strong>: <span class="emoji"></span> - รถไฟ JR Yamanote Line (สายสีเขียว) 1 สถานี</li>
+<p>- ค่าใช้จ่าย: <span data-jpy="140">¥140</span> ต่อคน/เที่ยว</p>
+<p>- ใช้ IC Card (Suica/Pasmo) หรือซื้อตั๋วเที่ยวเดียว</p>
+<li><strong>21:00</strong>: <span class="emoji">😴 กลับโรงแรมพักผ่อน</span> <h3>รายการเตรียมพร้อม</h3></li>
+<p>- หนังสือเดินทาง (Passport) และสำเนา</p>
+<p>- ตั๋วเครื่องบิน E-ticket / Boarding Pass</p>
+<p>- เอกสารยืนยันการจองโรงแรม</p>
+<p>- กระเป๋าเดินทาง (สัมภาระโหลด)</p>
+<p>- กระเป๋าถือขึ้นเครื่อง (Carry-on)</p>
+<p>- เงินเยน (แลกไปบางส่วน) และบัตรเครดิต</p>
+<p>- อุปกรณ์อิเล็กทรอนิกส์พร้อมที่ชาร์จ</p>
+<p>- ยาประจำตัวและยาสามัญ</p>
+<p>- เสื้อผ้าสำหรับอากาศเย็น</p>
+
+<h3>รายละเอียด: ซื้อกล้องของขวัญ</h3>
+- <strong>วัตถุประสงค์:</strong> ของขวัญวันเกิดล่วงหน้าให้พอใจ ใช้ถ่ายรูประหว่างทริป
+- <strong>งบประมาณ:</strong> ไม่เกิน 10,000 บาท (<span data-jpy="45000">¥45000</span>)
+- <strong>รุ่นกล้องที่แนะนำ:</strong>
+- <strong>Ricoh WG-80:</strong> กันน้ำ, กันกระแทก (<span data-jpy="35000">¥35000</span>–<span data-jpy="42000">¥42000</span>)
+- <strong>Canon PowerShot SX740 HS:</strong> ซูม 40x, 4K, Wi-Fi (<span data-jpy="40000">¥40000</span>–<span data-jpy="45000">¥45000</span>)
+- <strong>Sony Cyber-shot DSC-WX500:</strong> ซูม 30x, จอพับได้ (<span data-jpy="35000">¥35000</span>–<span data-jpy="40000">¥40000</span>)
+- <strong>Fujifilm FinePix XP140:</strong> กันน้ำลึก 25ม. (<span data-jpy="30000">¥30000</span>–<span data-jpy="38000">¥38000</span>)
+
+<strong>📍 สถานที่แนะนำ:</strong> Bic Camera Gotanda
+<p>- เวลาทำการ: 10:00 – 21:00</p>
+<p>- การเดินทางจากโรงแรม: เดิน 5 นาทีไป JR Shinagawa → JR Yamanote Line 1 สถานีไป Gotanda → ออก East Exit เดิน 1 นาที</p>
+
+<strong>🍴 ร้านอาหารใกล้เคียง:</strong>
+- <strong>Saizeriya:</strong> อิตาเลียนราคาประหยัด, เหมาะกับเด็ก
+- <strong>Yoshinoya:</strong> ข้าวหน้าเนื้อญี่ปุ่น
+- <strong>MOS Burger:</strong> เบอร์เกอร์ญี่ปุ่น
+
+<strong>เคล็ดลับ:</strong> ขอ Tax-Free ได้เมื่อซื้อเกิน <span data-jpy="5,000">¥5,000</span> (แสดงพาสปอร์ต)
+</ul>
+        </section>
+            
+        <section id="day2">
+            <h1>
+                <span class="th th-block">วันที่ 2: 7 มีนาคม 2569 (เสาร์)</span>
+                <span class="en en-block">อาซากุสะ (Asakusa), ล่องเรือ & ช้อปอนิเมะ</span>
+                
+            </h1>
+            <ul class="timeline">
+<li><strong>10:00</strong>: <span class="emoji">🚶‍♀️ เที่ยวอาซากุสะ (Asakusa) & วัดเซ็นโซจิ (Senso</span> -ji)</li>
+<li><strong>การเดินทางไปวัดเซ็นโซจิ</strong>: <span class="emoji"></span> - จากสถานีชินากาวะ (Shinagawa): JR Yamanote Line ไปอุเอโนะ (Ueno) (≈20 นาที) → Tokyo Metro Ginza Line ไปอาซากุสะ (Asakusa) (≈5 นาที)</li>
+<p>- ลงสถานี Asakusa (G19), ออก Exit 1, เดิน 5 นาที</p>
+<li><strong>11:30</strong>: <span class="emoji">🚢 ล่องเรือ Tokyo Cruise (Himiko/Emeraldas)</span> - <strong>รายละเอียดเรือ</strong>:</li>
+<p>- ขึ้นเรือจากท่าเรืออาซากุสะ (Asakusa Pier) ไปสวนริมทะเลโอไดบะ (Odaiba Seaside Park) (~50 นาที)</p>
+<p>- ค่าโดยสาร: ผู้ใหญ่ <span data-jpy="1720">¥1720</span>, เด็ก <span data-jpy="860">¥860</span></p>
+<li><strong>13:00</strong>: <span class="emoji">🚆 เดินทางจากโอไดบะ (Odaiba) ไปอากิฮาบาระ (Akihabara)</span> - <strong>เส้นทางแนะนำ</strong>:</li>
+<p>- ขึ้น Yurikamome Line จากไดบะ (Daiba) → ชิมบาชิ (Shimbashi)</p>
+<p>- เปลี่ยนเป็น JR Yamanote Line → ลงอากิฮาบาระ (Akihabara)</p>
+<p>- ใช้เวลารวม ~30 นาที | ค่าเดินทาง <span data-jpy="400">¥400</span></p>
+<li><strong>13:45</strong>: <span class="emoji">🛍️ เดินเล่น & ช้อปปิ้งที่ Animate Akihabara (อนิเมท อากิฮาบาระ)</span> - <strong>รายละเอียด Animate</strong>:</li>
+<p>- ร้านอนิเมะอันดับ 1 ของญี่ปุ่น มีของจาก Ghibli, Your Name ฯลฯ</p>
+<p>- ที่ตั้ง: เดิน 3 นาทีจาก JR Akihabara (ทางออก Electric Town)</p>
+<p>- เปิด 11:00–21:00</p>
+<li><strong>15:30</strong>: <span class="emoji">🎁 เลือกซื้อของฝาก/ของขวัญพอใจ เช่น Totoro (โทโทโร่), Ghibli (จิบลิ)</span> - <strong>16:30</strong>: 🗼 เดินทางไป Tokyo Skytree (โตเกียว สกายทรี)</li>
+<li><strong>การเดินทาง</strong>: <span class="emoji"></span> - จาก Akihabara: Metro Hibiya Line → เปลี่ยนเป็น Hanzomon Line → สถานี Oshiage (โอชิอาเกะ)</li>
+<p>- เวลาเดินทาง ≈30 นาที | ค่าใช้จ่าย <span data-jpy="370">¥370</span></p>
+<li><strong>17:30</strong>: <span class="emoji">🌆 ชมวิวพระอาทิตย์ตกจาก Tokyo Skytree (โตเกียว สกายทรี)</span> - <strong>19:00</strong>: 🏨 เข้าที่พัก Super Hotel JR Ikebukuro (ซูเปอร์โฮเทล เจอาร์ อิเคะบุคุโระ)</li>
+<li><strong>แนะนำที่พักย่าน Ikebukuro</strong>: <span class="emoji"></span> - <strong>Super Hotel JR Ikebukuro:</strong> ห้องพักมีห้องน้ำในตัว, รวมอาหารเช้า, ใกล้สถานี JR Ikebukuro (~5 นาที), ราคา ~<span data-jpy="10,000">¥10,000</span>/คืน</li>
+<p>- ทางเลือกสำรอง:</p>
+<p>- • Daiwa Roynet Hotel Ikebukuro (ไดวะ รอยเน็ต): โรงแรมใหม่ ใกล้สถานี, ห้องน้ำในตัว, ~<span data-jpy="11,000">¥11,000</span></p>
+<p>- • Hotel Wing International Ikebukuro (โฮเทล วิง อินเตอร์): ราคาย่อมเยา, ทำเลสะดวก, ~<span data-jpy="9,000">¥9,000</span></p>
+
+<h3>ฝากกระเป๋าที่โรงแรมใหม่ (Super Hotel JR Ikebukuro)</h3>
+<p>- ก่อนเริ่มเที่ยววันนี้ แนะนำเดินทางไป Super Hotel JR Ikebukuro และฝากกระเป๋าไว้ล่วงหน้า (เช็คอินได้หลัง 15:00)</p>
+<p>- จากสถานี Shinagawa → JR Yamanote Line → Ikebukuro (~30 นาที)</p>
+<p>- เดินจากสถานีไปโรงแรม ~5 นาที แล้วเดินทางไป Asakusa ต่อ</p>
+</ul>
+        </section>
+            
+        <section id="day3">
+            <h1>
+                <span class="th th-block">วันที่ 3: 8 มีนาคม 2569 (อาทิตย์)</span>
+                <span class="en en-block">คาวากุจิโกะ & เจดีย์แดง</span>
+                
+            </h1>
+            <ul class="timeline">
+<li><strong>07:00</strong>: <span class="emoji">🏨 เช็คเอาท์จาก Shinagawa Tobu Hotel</span> - <strong>08:00</strong>: 🚌 เดินทางไป Busta Shinjuku</li>
+<li><strong>การเดินทางไปชินจูกุ</strong>: <span class="emoji"></span> - เดิน 5 นาทีไปสถานี JR Shinagawa</li>
+<p>- ขึ้น JR Yamanote Line ไปสถานี Shinjuku (<span data-jpy="200">¥200</span> ต่อคน)</p>
+<p>- เดินไปอาคาร NEWoMan (ชั้น 4) → Busta Shinjuku</p>
+<li><strong>08:40</strong>: <span class="emoji">🚌 ขึ้นรถบัส Fujikyu/Keio จาก Busta Shinjuku ไปสถานี Kawaguchiko</span> - <strong>รายละเอียดรถบัสไปคาวากุจิโกะ</strong>:</li>
+<p>- ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="2000">¥2000</span>, เด็ก <span data-jpy="1000">¥1000</span> ต่อเที่ยว (โดยประมาณ)</p>
+- แนะนำจองล่วงหน้า: <a href="https://japanbusonline.com/en" target="_blank">Japan Bus Online</a> หรือ <a href="https://highway-buses.jp/jpy/hwbtop/sp/" target="_blank">Highway Buses Japan</a>
+<p>- เวลาเดินทาง: ≈1 ชม. 50 นาที - 2 ชม.</p>
+<li><strong>10:30</strong>: <span class="emoji">🚶‍♀️ ถึงสถานี Kawaguchiko, ฝากกระเป๋า</span> - <strong>ล็อกเกอร์ฝากของ</strong>:</li>
+<p>- มีล็อกเกอร์หยอดเหรียญที่สถานี</p>
+<p>- ค่าบริการ: <span data-jpy="300">¥300</span>-<span data-jpy="700">¥700</span> ต่อวัน (ตามขนาด)</p>
+<li><strong>10:40</strong>: <span class="emoji">🚃 ขึ้นรถไฟ Fujikyu Line ไปสถานี Shimoyoshida</span> - <strong>รายละเอียดรถไฟ Fujikyu Line</strong>:</li>
+<p>- ค่าใช้จ่าย: <span data-jpy="300">¥300</span> ต่อคน</p>
+<p>- เวลาเดินทาง: ≈10-15 นาที</p>
+<p>- รถไฟออกทุก 30-60 นาที (ตรวจสอบตารางเวลา)</p>
+<li><strong>11:00</strong>: <span class="emoji">🚶‍♀️ เดินขึ้นเจดีย์แดง (Chureito Pagoda) ชมวิวฟูจิ</span> - <strong>รายละเอียดเจดีย์แดง</strong>:</li>
+<p>- จากสถานี Shimoyoshida เดิน ≈15-20 นาที (ขึ้นบันได 398 ขั้น)</p>
+<p>- เป็นส่วนหนึ่งของศาลเจ้า Arakura Sengen</p>
+<p>- จุดชมวิวฟูจิยอดนิยม</p>
+<p>- เข้าชมฟรี</p>
+<li><strong>12:30</strong>: <span class="emoji">🚃 นั่งรถไฟกลับสถานี Kawaguchiko, รับกระเป๋า, เช็คอินที่พัก</span> - <strong>ที่พักแนะนำ (Kawaguchiko)</strong>:</li>
+- <strong>เป้าหมาย:</strong> ราคาไม่เกิน 5,000 บาท/คืน, วิวฟูจิ, เดินทางสะดวก
+- <strong>ตัวเลือก:</strong> K's House Fuji View (Hostel), Hotel Regina Kawaguchiko (ใกล้สถานี), Fuji View Hotel (ริมทะเลสาบ)
+- <strong>คำแนะนำ:</strong> จองล่วงหน้านานๆ (4-6 เดือน) เพราะเต็มเร็ว
+<li><strong>บ่าย</strong>: <span class="emoji">🚶‍♀️ เดินเล่นริมทะเลสาบ, ขึ้นกระเช้า Mt. Fuji Ropeway, แวะคาเฟ่</span> - <strong>กิจกรรมยามบ่าย</strong>:</li>
+- <strong>Mt. Fuji Ropeway (Kachi Kachi Ropeway):</strong>
+<p>- ค่ากระเช้า: ผู้ใหญ่ <span data-jpy="900">¥900</span> (ไป-กลับ), เด็ก <span data-jpy="450">¥450</span> (ไป-กลับ)</p>
+<p>- เวลาทำการ: 9:00-17:00 (อาจเปลี่ยนแปลง)</p>
+<p>- ชมวิวทะเลสาบและฟูจิจากยอดเขา Tenjo</p>
+- <strong>Oishi Park:</strong> สวนริมทะเลสาบฝั่งเหนือ วิวฟูจิสวย ดอกไม้ตามฤดูกาล
+- <strong>คาเฟ่แนะนำ:</strong> Kawaguchiko Herbkan, Cafe Lake Kawaguchiko
+</ul>
+        </section>
+            
+        <section id="day4-additional">
+            <h1>
+                <span class="th th-block">วันที่ 4: 9 มีนาคม 2569 (จันทร์)</span>
+                <span class="en en-block">วันเกิดพอใจที่คาวากุจิโกะ 🎂</span>
+                <span class="birthday-badge">🎂 Happy Birthday!</span>
+            </h1>
+            <ul class="timeline">
+<li><strong>08:30</strong>: <span class="emoji">🚶‍♀️ เตรียมตัวที่ Kawaguchiko Station, ซื้อ Bus Pass</span> - <strong>Mt. Fuji World Heritage Tour Pass</strong>:</li>
+<p>- ราคา: ผู้ใหญ่ <span data-jpy="2,000">¥2,000</span> | เด็ก <span data-jpy="1,000">¥1,000</span> = <span data-jpy="3,000">¥3,000</span> (฿704)</p>
+<p>- ระยะเวลา: 2 วัน</p>
+<p>- ครอบคลุม: Red Line, Green Line, Blue Line ทุกเส้นทาง</p>
+<li><strong>09:00</strong>: <span class="emoji">🚌 ขึ้น Green Line เที่ยวแรก ไปหมู่บ้านน้ำใส Oshino Hakkai (ป้าย #12)</span> - <strong>การเดินทางไป Oshino Hakkai</strong>:</li>
+<p>- เวลาเดินทาง: ≈25 นาที</p>
+<p>- รถออก: ทุก 30 นาที (09:00, 09:30, 10:00...)</p>
+<p>- เที่ยวแรก: 09:00 | เที่ยวสุดท้าย: 17:00</p>
+<li><strong>09:30 – 11:00</strong>: <span class="emoji">🚶‍♀️ เที่ยวชม Oshino Hakkai, ถ่ายรูปวันเกิด, ชิมน้ำแร่</span> - <strong>รายละเอียด Oshino Hakkai</strong>:</li>
+<p>- หมู่บ้านที่มีบ่อน้ำใส 8 บ่อจากน้ำละลายของฟูจิ</p>
+<p>- ร้านค้าของที่ระลึกและอาหารท้องถิ่น</p>
+<p>- ค่าเข้าชมบ่อหลัก: <span data-jpy="300">¥300</span> ต่อคน = <span data-jpy="600">¥600</span> (฿141)</p>
+<p>- เวลาทำการ: 9:00-17:00</p>
+<p>- ไฮไลท์: ถ่ายรูปบ่อน้ำกับฟูจิ, ชิมน้ำแร่, ซื้อของที่ระลึกวันเกิด</p>
+<li><strong>11:30</strong>: <span class="emoji">🚌 เดินทางกลับสถานี Kawaguchiko</span> - <strong>12:30</strong>: 🍽️ ทานอาหารกลางวันวันเกิดพิเศษใกล้สถานี Kawaguchiko</li>
+<li><strong>ร้านอาหารแนะนำ</strong>: <span class="emoji"></span> - <strong>Houtou Fudou:</strong> ร้านดัง เมนู Houtou (คล้ายอุด้งในซุปฟักทอง) - <span data-jpy="1,800">¥1,800</span>/คน</li>
+- <strong>Lake Kawaguchiko Restaurant:</strong> ร้านอาหารวิวทะเลสาบ/ฟูจิ - <span data-jpy="2,500">¥2,500</span>/คน
+- <strong>Tempura Restaurant Ninja:</strong> ร้านเทมปุระชื่อดัง - <span data-jpy="2,200">¥2,200</span>/คน
+<li><strong>13:30</strong>: <span class="emoji">🚌 ขึ้นรถบัส Red Line ไป Mt. Fuji Ropeway (ป้าย #11)</span> - <strong>การเดินทาง Red Line</strong>:</li>
+<p>- ความถี่: ทุก 15 นาที (13:30, 13:45, 14:00...)</p>
+<p>- เวลาให้บริการ: 09:00-17:30</p>
+<p>- เวลาเดินทาง: ≈15 นาที</p>
+<li><strong>14:00 – 15:00</strong>: <span class="emoji">🚠 ขึ้นกระเช้า Mt. Fuji Ropeway ชมวิวฟูจิ</span> - <strong>Mt. Fuji Ropeway (Kachi Kachi Ropeway)</strong>:</li>
+<p>- ค่ากระเช้า: ผู้ใหญ่ <span data-jpy="900">¥900</span> | เด็ก <span data-jpy="450">¥450</span> = <span data-jpy="1,350">¥1,350</span> (฿317)</p>
+<p>- เวลาทำการ: 9:00-17:00 (อาจเปลี่ยนแปลงตามฤดูกาล)</p>
+<p>- ชมวิวพาโนรามา 360° จากยอดเขา Tenjo</p>
+<p>- ถ่ายรูปวันเกิดมุมสูงกับฟูจิ</p>
+<li><strong>15:15</strong>: <span class="emoji">🚌 ขึ้น Red Line ไป Oishi Park (ป้าย #20)</span> - <strong>15:30 – 16:15</strong>: 🌸 เดินเล่น Oishi Park </li>
+<li><strong>รายละเอียด Oishi Park</strong>: <span class="emoji"></span> - สวนดอกไม้ริมทะเลสาบ วิวฟูจิสวยที่สุด</li>
+<p>- มีคาเฟ่ Oishi Park Cafe - วิวฟูจิ 180°</p>
+<p>- ช่วงมีนาคม: อาจเห็นดอกไม้เริ่มบาน</p>
+<p>- เข้าชมฟรี</p>
+<li><strong>16:30</strong>: <span class="emoji">🚌 ขึ้น Red Line เที่ยวสุดท้าย ไป Fujiyama Onsen (ป้าย #18)</span> - <strong>เที่ยวสุดท้าย Red Line</strong>: 17:30 จาก Kawaguchiko Station</li>
+<li><strong>17:00 – 19:00</strong>: <span class="emoji">♨️ แช่ออนเซ็นชมพระอาทิตย์ตกที่ Fujiyama Onsen</span> - <strong>รายละเอียด Fujiyama Onsen</strong>:</li>
+<p>- ค่าเข้า: ผู้ใหญ่ <span data-jpy="1,800">¥1,800</span> | เด็ก <span data-jpy="900">¥900</span> = <span data-jpy="2,700">¥2,700</span> (฿633)</p>
+<p>- เวลาทำการ: 10:00-22:00</p>
+<p>- มีบ่อในร่ม/กลางแจ้ง (Rotemburo) วิวฟูจิ</p>
+<li><strong>Golden Hour</strong>: <span class="emoji">17:30</span> -18:30 - แสงสีทองสะท้อนฟูจิ ✨</li>
+<p>- ปฏิบัติตามมารยาทออนเซ็น (อาบน้ำก่อนแช่, ห้ามใส่ชุดว่ายน้ำ)</p>
+<li><strong>19:00 – 20:00</strong>: <span class="emoji">🍽️ ทานอาหารเย็นพิเศษวันเกิดที่ร้านในออนเซ็น</span> - <strong>เมนูแนะนำ</strong>:</li>
+- <strong>Kaiseki Set</strong> (อาหารญี่ปุ่นโบราณ): <span data-jpy="3,500">¥3,500</span>/คน
+<li><strong>Sashimi & Tempura Set</strong>: <span class="emoji"><span data-jpy="2,800">¥2,800</span>/คน  </span> - <strong>Houtou Special</strong>: <span data-jpy="2,200">¥2,200</span>/คน</li>
+<li><strong>ขอเค้กวันเกิดพิเศษ</strong>: <span class="emoji"><span data-jpy="1,500">¥1,500</span> 🎂</span> - รวมอาหารเย็น: <span data-jpy="6,000">¥6,000</span> (฿1,407)</li>
+<li><strong>20:30</strong>: <span class="emoji">🚖 Taxi กลับที่พักและฉลองวันเกิดต่อ</span> - <strong>รายละเอียด Taxi</strong>:</li>
+<p>- เส้นทาง: Fujiyama Onsen → Kawaguchiko Country Cottage Ban</p>
+<p>- ระยะทาง: ~5 กม.</p>
+<p>- ค่าใช้จ่าย: <span data-jpy="1,800">¥1,800</span> (฿422)</p>
+<p>- เวลา: 10-15 นาที</p>
+<p>- วิธีเรียก: ขอร้านออนเซ็นช่วยเรียก หรือใช้แอป GO Taxi</p>
+<li><strong>21:00</strong>: <span class="emoji">🎂 กิจกรรมฉลองวันเกิดต่อที่โรงแรม</span> - <strong>ไอเดียฉลองวันเกิด</strong>:</li>
+<p>- ดูรูปถ่ายจากกล้องใหม่ที่ซื้อวันแรก</p>
+<p>- เปิดของขวัญเล็กๆ น้อยๆ</p>
+<p>- ชิมขนมจากหมู่บ้าน Oshino Hakkai</p>
+
+<h3>💰 สรุปค่าใช้จ่ายวันเกิดพอใจ</h3>
+
+<p>| รายการ | ราคา (¥) | บาท (≈) |</p>
+<p>|--------|---------|---------|</p>
+<p>| Mt. Fuji World Heritage Tour Pass | <span data-jpy="3,000">¥3,000</span> | ฿704 |</p>
+<p>| ค่าเข้าชม Oshino Hakkai | <span data-jpy="600">¥600</span> | ฿141 |</p>
+<p>| อาหารกลางวัน | <span data-jpy="2,000">¥2,000</span> | ฿469 |</p>
+<p>| Mt. Fuji Ropeway | <span data-jpy="1,350">¥1,350</span> | ฿317 |</p>
+<p>| Fujiyama Onsen | <span data-jpy="2,700">¥2,700</span> | ฿633 |</p>
+<p>| อาหารเย็นพิเศษ + เค้กวันเกิด | <span data-jpy="6,000">¥6,000</span> | ฿1,407 |</p>
+<p>| Taxi กลับที่พัก | <span data-jpy="1,800">¥1,800</span> | ฿422 |</p>
+| <strong>รวมทั้งหมด</strong> | <strong><span data-jpy="17,450">¥17,450</span></strong> | <strong>฿4,093</strong> |
+
+<h3>🚌 ตารางเวลารถบัสสำคัญ</h3>
+
+<h4>Green Line (ไป Oshino Hakkai)</h4>
+<li><strong>เวลาให้บริการ</strong>: <span class="emoji">09:00 </span> - 17:00</li>
+<li><strong>ความถี่</strong>: <span class="emoji">ทุก 30 นาที</span> - <strong>เที่ยวแรก</strong>: 09:00 | <strong>เที่ยวสุดท้าย</strong>: 17:00</li>
+
+<h4>Red Line (Mt. Fuji Ropeway, Oishi Park, Fujiyama Onsen)</h4>
+<li><strong>เวลาให้บริการ</strong>: <span class="emoji">09:00 </span> - 17:30  </li>
+<li><strong>ความถี่</strong>: <span class="emoji">ทุก 15 นาที</span> - <strong>เที่ยวแรก</strong>: 09:00 | <strong>เที่ยวสุดท้าย</strong>: 17:30</li>
+
+<h3>📸 จุดถ่ายรูปพิเศษวันเกิด</h3>
+1. <strong>09:45</strong>: บ่อน้ำใส Oshino Hakkai + ฟูจิ (แสงเช้านุ่ม)
+2. <strong>14:30</strong>: บนกระเช้า Ropeway มุม 360° (แสงแจ่มใส)
+3. <strong>18:00</strong>: Rotemburo ออนเซ็น Golden Hour (แสงสีทอง) ⭐⭐⭐
+4. <strong>20:45</strong>: ระหว่างทาง Taxi - บรรยากาศยามค่ำคืน
+
+<h3>🎂 Birthday Highlights</h3>
+- <strong>กล้อง Canon ใหม่</strong> ถ่ายรูปความทรงจำตลอดวัน
+- <strong>3 มุมมองฟูจิ</strong> ที่แตกต่างกัน (ระดับน้ำ, มุมสูง, ออนเซ็น)
+- <strong>Rotemburo Sunset</strong> ประสบการณ์ที่หาไม่ได้ที่อื่น
+- <strong>Kaiseki Dinner</strong> อาหารญี่ปุ่นแท้ + เค้กวันเกิด
+- <strong>Slow Living</strong> ไม่รีบร้อน ซึมซับบรรยากาศอย่างเต็มที่
+</ul>
+        </section>
+            
+        <section id="day4">
+            <h1>
+                <span class="th th-block">วันที่ 4: 9 มีนาคม 2569 (จันทร์)</span>
+                <span class="en en-block">วันเกิดพอใจที่คาวากุจิโกะ 🎂</span>
+                <span class="birthday-badge">🎂 Happy Birthday!</span>
+            </h1>
+            <ul class="timeline">
+<li><strong>09:00</strong>: <span class="emoji">🚌 ขึ้นรถบัส (สาย F หรือ Green Line) ไปหมู่บ้านน้ำใส Oshino Hakkai</span> - <strong>การเดินทางไป Oshino Hakkai</strong>:</li>
+<p>- ค่าใช้จ่าย: <span data-jpy="560">¥560</span> ต่อเที่ยว</p>
+<p>- ขึ้นที่ป้าย #5 สถานี Kawaguchiko</p>
+<p>- เวลาเดินทาง: ≈30 นาที</p>
+<p>- รถออกทุก 30-60 นาที</p>
+<li><strong>09:45 – 11:30</strong>: <span class="emoji">🚶‍♀️ เที่ยวชม Oshino Hakkai, ถ่ายรูป, ชิมน้ำแร่</span> - <strong>รายละเอียด Oshino Hakkai</strong>:</li>
+<p>- หมู่บ้านที่มีบ่อน้ำใส 8 บ่อจากน้ำละลายของฟูจิ</p>
+<p>- ร้านค้าของที่ระลึกและอาหารท้องถิ่น</p>
+<p>- ค่าเข้าชมบ่อหลัก: <span data-jpy="300">¥300</span> ต่อคน</p>
+<p>- เวลาทำการ: 9:00-17:00</p>
+<p>- ไฮไลท์: ถ่ายรูปบ่อน้ำกับฟูจิ, ชิมน้ำแร่</p>
+<li><strong>11:30</strong>: <span class="emoji">🚌 เดินทางกลับสถานี Kawaguchiko</span> - <strong>12:30</strong>: 🍽️ ทานอาหารกลางวันใกล้สถานี Kawaguchiko</li>
+<li><strong>ร้านอาหารแนะนำ</strong>: <span class="emoji"></span> - <strong>Houtou Fudou:</strong> ร้านดัง เมนู Houtou (คล้ายอุด้งในซุปฟักทอง)</li>
+- <strong>Lake Kawaguchiko Restaurant:</strong> ร้านอาหารวิวทะเลสาบ/ฟูจิ
+- <strong>Tempura Restaurant Ninja:</strong> ร้านเทมปุระชื่อดัง
+<li><strong>14:00</strong>: <span class="emoji">🚌 ขึ้นรถบัส Red Line เที่ยว Mt. Fuji Ropeway & Oishi Park</span> - <strong>การเดินทาง & กิจกรรม (Red Line)</strong>:</li>
+<p>- แนะนำซื้อ Kawaguchiko Red Line 1-Day Pass: ผู้ใหญ่ <span data-jpy="1500">¥1500</span> / เด็ก <span data-jpy="750">¥750</span></p>
+- <strong>Mt. Fuji Ropeway (Kachi Kachi Ropeway):</strong>
+<p>- ลงป้าย #11 (Kachi Kachi Ropeway)</p>
+<p>- ค่ากระเช้า: ผู้ใหญ่ <span data-jpy="900">¥900</span> (ไป-กลับ), เด็ก <span data-jpy="450">¥450</span> (ไป-กลับ)</p>
+<p>- ชมวิวพาโนรามา</p>
+- <strong>Oishi Park:</strong>
+<p>- ลงป้าย #20 (Oishi Park)</p>
+<p>- สวนดอกไม้ริมทะเลสาบ วิวฟูจิ</p>
+<p>- มีคาเฟ่/ร้านค้า</p>
+<li><strong>17:00</strong>: <span class="emoji">♨️ แช่ออนเซ็นที่ Fujiyama Onsen</span> - <strong>รายละเอียด Fujiyama Onsen</strong>:</li>
+<p>- ค่าเข้า: ผู้ใหญ่ <span data-jpy="1500">¥1500</span> (โดยประมาณ)</p>
+<p>- การเดินทาง: รถบัส Fujikyu หรือแท็กซี่จากสถานี Kawaguchiko</p>
+<p>- มีบ่อในร่ม/กลางแจ้ง (rotemburo) วิวฟูจิ</p>
+<p>- ปฏิบัติตามมารยาทออนเซ็น (อาบน้ำก่อนแช่, ห้ามใส่ชุดว่ายน้ำ/ผ้าลงบ่อ)</p>
+<li><strong>19:00</strong>: <span class="emoji">🎂 กลับที่พัก / พักผ่อน & ฉลองวันเกิดพอใจ</span> - <strong>ไอเดียฉลองวันเกิด</strong>:</li>
+<p>- ร้านเค้กใกล้สถานี: Fujisan Sweets Factory หรือ Mont Blanc</p>
+<p>- จองมื้อค่ำพิเศษที่ร้านอาหารวิวฟูจิ</p>
+<p>- เตรียมของขวัญเล็กๆ น้อยๆ</p>
+</ul>
+        </section>
+            
+        <section id="day5">
+            <h1>
+                <span class="th th-block">วันที่ 5: 10 มีนาคม 2569 (อังคาร)</span>
+                <span class="en en-block">กลับโตเกียว & ช้อปปิ้งอุเอโนะ</span>
+                
+            </h1>
+            <ul class="timeline">
+<li><strong>08:00</strong>: <span class="emoji">🍳 อาหารเช้า, เดินเล่น, ถ่ายรูปในคาวากุจิโกะ</span> - <strong>11:00</strong>: 🏨 เช็คเอาท์, เดินทางกลับโตเกียว</li>
+<li><strong>การเดินทางกลับโตเกียว</strong>: <span class="emoji"></span> - <strong>วิธีแนะนำ:</strong> รถบัส Fujikyu/Keio จากสถานี Kawaguchiko ไป Busta Shinjuku</li>
+<p>- ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="2000">¥2000</span>, เด็ก <span data-jpy="1000">¥1000</span> ต่อเที่ยว</p>
+<p>- เวลาเดินทาง: ≈1 ชม. 45 นาที - 2 ชม.</p>
+<p>- จองตั๋วรถบัสล่วงหน้า</p>
+<p>- (วิธีอื่น: รถไฟ JR ต้องต่อหลายสาย อาจนานกว่าและแพงกว่า)</p>
+<li><strong>13:00</strong>: <span class="emoji">🏨 ถึง Busta Shinjuku, เดินทางไปโรงแรมอุเอโนะ, เช็คอิน</span> - <strong>การเดินทาง & ที่พัก (อุเอโนะ)</strong>:</li>
+- <strong>จาก Shinjuku ไป Ueno:</strong> JR Yamanote Line (สายสีเขียว) ≈25 นาที
+<p>- ค่าใช้จ่าย: <span data-jpy="200">¥200</span> ต่อคน</p>
+- <strong>โรงแรมแนะนำ (อุเอโนะ, <5000 บาท/คืน):</strong> Hotel Sardonyx Ueno, Mitsui Garden Hotel Ueno, Centurion Hotel Ueno
+<li><strong>14:00</strong>: <span class="emoji">🛍️ ช้อปปิ้งเสื้อผ้าที่ GU Marui Ueno</span> - <strong>รายละเอียด GU Marui Ueno</strong>:</li>
+<p>- แบรนด์เสื้อผ้าราคาประหยัด (น้องสาว UNIQLO)</p>
+<p>- อยู่ในห้าง Marui Ueno</p>
+<p>- เวลาทำการ: ≈10:00-21:00 (ตรวจสอบล่าสุด)</p>
+<li><strong>15:00</strong>: <span class="emoji">🧸 ช้อปปิ้ง Sanrio ที่ Akihabara</span> - <strong>การเดินทาง & Sanrio Akihabara</strong>:</li>
+- <strong>จาก Ueno ไป Akihabara:</strong> JR Keihin-Tohoku หรือ Yamanote Line ≈5 นาที
+<p>- ค่าใช้จ่าย: <span data-jpy="140">¥140</span> ต่อคน</p>
+<p>- ร้าน Sanrio Akihabara: ขายสินค้า Hello Kitty, My Melody, etc.</p>
+<p>- มีเครื่องเขียน, กระเป๋า, พวงกุญแจ, ของที่ระลึก</p>
+<li><strong>16:30</strong>: <span class="emoji">🚶‍♀️ เดินเล่น Ameyoko Market</span> - <strong>รายละเอียด Ameyoko Market</strong>:</li>
+<p>- ตลาดกลางแจ้งใต้ทางรถไฟระหว่าง Ueno และ Okachimachi</p>
+<p>- แหล่งช้อปปิ้งราคาถูก: อาหาร, เสื้อผ้า, รองเท้า, กระเป๋า, ของฝาก</p>
+<p>- บรรยากาศตลาดญี่ปุ่นดั้งเดิม</p>
+<p>- เวลาทำการ: ส่วนใหญ่ 10:00-19:00</p>
+<li><strong>17:30</strong>: <span class="emoji">📸 ช้อปปิ้ง Bic Camera และ Donki (Don Quijote) ในอุเอโนะ</span> - <strong>รายละเอียดร้านค้า</strong>:</li>
+- <strong>Bic Camera Ueno:</strong> ร้านอิเล็กทรอนิกส์ใหญ่ ใกล้สถานี Ueno (East Exit), เวลา ≈10:00-21:00
+- <strong>Don Quijote (Donki) Ueno:</strong> ห้างลดราคา ขายทุกอย่าง, บางสาขาเปิด 24 ชม., เหมาะซื้อขนม/ของฝาก
+<li><strong>เย็น</strong>: <span class="emoji">🚶‍♀️ กลับที่พักในอุเอโนะ</span> <h3>ฝากกระเป๋าที่โรงแรมอุเอโนะ (หลังเดินทางจากคาวากุจิโกะ)</h3></li>
+<p>- เมื่อถึงสถานี Ueno หลังเดินทางจาก Kawaguchiko แนะนำเดินไปโรงแรมเพื่อฝากกระเป๋าก่อนออกไปช้อปปิ้ง</p>
+<p>- โรงแรมส่วนใหญ่รับฝากกระเป๋าก่อนเช็คอิน</p>
+</ul>
+        </section>
+            
+        <section id="day6">
+            <h1>
+                <span class="th th-block">วันที่ 6: 11 มีนาคม 2569 (พุธ)</span>
+                <span class="en en-block">สนุกกับหิมะที่ Gala Yuzawa</span>
+                
+            </h1>
+            <ul class="timeline">
+<li><strong>06:30</strong>: <span class="emoji">🚄 เดินทางจาก Ueno/Tokyo ไป Gala Yuzawa (JR Joetsu Shinkansen)</span> - <strong>รายละเอียด Shinkansen</strong>:</li>
+<p>- รถไฟ: Max Tanigawa หรือ Toki</p>
+<p>- เวลาเดินทาง: ≈1 ชม. 15 นาที - 1 ชม. 30 นาที</p>
+<p>- ใช้ Tokyo Wide Pass ได้ (ซื้อล่วงหน้า)</p>
+<p>- แนะนำจองที่นั่ง</p>
+<p>- ราคา (ถ้าไม่ใช้ Pass): <span data-jpy="6000">¥6000</span>-<span data-jpy="7000">¥7000</span> ต่อคน/เที่ยว</p>
+<p>- Tokyo Wide Pass: <span data-jpy="10180">¥10180</span> ต่อคน (3 วัน)</p>
+<li><strong>08:00</strong>: <span class="emoji">🏂 ถึงสถานี Gala Yuzawa (ติดกับลานสกี)</span> - <strong>รายละเอียดสถานี</strong>:</li>
+<p>- สถานีเชื่อมต่อโดยตรงกับลานสกี</p>
+<p>- มีร้านเช่าอุปกรณ์, ล็อกเกอร์, ร้านอาหารในสถานี</p>
+<p>- ขึ้นลิฟต์จากชานชาลาไปลานสกี</p>
+<li><strong>08:30 – 15:30</strong>: <span class="emoji">🏂 สนุกกับกิจกรรมที่ Gala Yuzawa: เล่นหิมะ, ขึ้นกระเช้า, ทานอาหาร</span> - <strong>กิจกรรม & ค่าใช้จ่าย (Gala Yuzawa)</strong>:</li>
+- <strong>กิจกรรมแนะนำ:</strong>
+<p>- เช่าอุปกรณ์เล่นหิมะ (เช่น บอร์ดเลื่อน)</p>
+<p>- ขึ้นกระเช้าชมวิว (Gondola)</p>
+<p>- ถ่ายรูปที่ Snow Park</p>
+<p>- เรียนสกี/สโนว์บอร์ด (มีคอร์ส)</p>
+- <strong>ค่าใช้จ่ายโดยประมาณ:</strong>
+<p>- บัตร Lift Pass (กระเช้า): ผู้ใหญ่ <span data-jpy="5200">¥5200</span>, เด็ก <span data-jpy="2500">¥2500</span></p>
+<p>- เช่าชุดสกี/บอร์ด: <span data-jpy="5000">¥5000</span>-<span data-jpy="6000">¥6000</span></p>
+<p>- เช่าชุดกันหิมะ: <span data-jpy="2000">¥2000</span>-<span data-jpy="3000">¥3000</span></p>
+<p>- เช่าบอร์ดเลื่อน: <span data-jpy="1500">¥1500</span></p>
+- <strong>สิ่งที่ต้องเตรียม:</strong> เสื้อผ้าอุ่น, ถุงมือกันน้ำ, ผ้าพันคอ, หมวก, แว่นกันแดด, ครีมกันแดด
+<p>- มีร้านอาหารในลานสกี</p>
+<li><strong>16:00</strong>: <span class="emoji">🚄 ขึ้น Shinkansen กลับ Tokyo/Ueno</span> - <strong>การเดินทางกลับ</strong>:</li>
+<p>- กลับไปสถานี Gala Yuzawa</p>
+<p>- ตรวจสอบตารางรถไฟกลับ (Max Tanigawa หรือ Toki)</p>
+<p>- ใช้ Tokyo Wide Pass หรือซื้อตั๋วกลับ</p>
+<p>- เวลาเดินทาง: ≈1 ชม. 15 นาที - 1 ชม. 30 นาที</p>
+<li><strong>17:30</strong>: <span class="emoji">🚶‍♀️ ถึงสถานีอุเอโนะ, พักผ่อน/เดินเล่</span> น</li>
+</ul>
+        </section>
+            
+        <section id="day7">
+            <h1>
+                <span class="th th-block">วันที่ 7: 12 มีนาคม 2569 (พฤหัสบดี)</span>
+                <span class="en en-block">ตามรอยอนิเมะ & ชมวิวโตเกียว</span>
+                
+            </h1>
+            <ul class="timeline">
+<li><strong>09:00</strong>: <span class="emoji">🚆 เดินทางจาก Ikebukuro ไปศาลเจ้า Suga (ตามรอย Your Name)</span> - <strong>การเดินทางไปศาลเจ้า Suga</strong>:</li>
+<p>- จาก Ikebukuro: JR Yamanote Line ไป Yotsuya, เดิน ≈10 นาที</p>
+<p>- เวลาเดินทาง: ≈25 นาที</p>
+<p>- ค่าใช้จ่าย: <span data-jpy="200">¥200</span> ต่อคน</p>
+<li><strong>10:00</strong>: <span class="emoji">📸 ถ่ายรูปบันไดศาลเจ้า Suga (ฉาก Your Name)</span> - <strong>11:00</strong>: 🚆 เดินทางไป Shiodome → ชม Ghibli Clock</li>
+<li><strong>การเดินทางไป Shiodome</strong>: <span class="emoji"></span> - จาก Yotsuya: Tokyo Metro Marunouchi Line ไป Ginza → Toei Oedo Line ไป Shiodome</li>
+<p>- เวลาเดินทาง: ≈25–30 นาที</p>
+<p>- ค่าใช้จ่าย: <span data-jpy="300">¥300</span> ต่อคน</p>
+<p>- Ghibli Clock อยู่หน้าตึก Nippon TV</p>
+<li><strong>12:30</strong>: <span class="emoji">🍽️ ทานกลางวันแถว Shimbashi หรือ Nippon TV Tower</span> - <strong>14:00</strong>: 🗼 ขึ้นชมวิว Tokyo Tower (Tembo Deck)</li>
+<li><strong>การเดินทางไป Tokyo Tower</strong>: <span class="emoji"></span> - จาก Shiodome: เดิน หรือ Toei Oedo Line ไปสถานี Akabanebashi</li>
+<p>- เวลาเดินทาง: ≈10–15 นาที</p>
+<p>- ค่าใช้จ่าย: <span data-jpy="220">¥220</span> ต่อคน</p>
+<p>- ค่าเข้า Main Deck (150m): ผู้ใหญ่ <span data-jpy="1200">¥1200</span>, เด็ก <span data-jpy="700">¥700</span> (<em>ตรวจสอบล่าสุด</em>)</p>
+<li><strong>16:00</strong>: <span class="emoji">🌇 ไป Sky Deck @ Roppongi Hills ชมวิว Tokyo Tower ตอนพระอาทิตย์ตก</span> - <strong>การเดินทางไป Roppongi Hills</strong>:</li>
+<p>- จาก Tokyo Tower: เดิน ≈20 นาที หรือ Toei Oedo Line</p>
+<p>- เวลาเดินทาง: ≈10–20 นาที</p>
+<p>- ค่าใช้จ่าย: <span data-jpy="220">¥220</span> ต่อคน</p>
+<p>- ค่าเข้า Sky Deck (+Mori Art Museum): ผู้ใหญ่ <span data-jpy="2200">¥2200</span>, เด็ก <span data-jpy="1000">¥1000</span> (<em>ตรวจสอบล่าสุด</em>)</p>
+<li><strong>18:30</strong>: <span class="emoji">🚆 กลับ Ikebukuro, เดินเล่น/หาข้าวเย็น</span> - <strong>การเดินทางกลับ Ikebukuro</strong>:</li>
+<p>- จาก Roppongi Hills: Tokyo Metro Hibiya Line → เปลี่ยนสายที่ Naka-Meguro เป็น Fukutoshin Line</p>
+<p>- เวลาเดินทาง: ≈25–30 นาที</p>
+<p>- ค่าใช้จ่าย: <span data-jpy="270">¥270</span> ต่อคน</p>
+<li><strong>20:00</strong>: <span class="emoji">🚶‍♀️ กลับเข้าที่พัก พักผ่อ</span> น</li>
+</ul>
+        </section>
+            
+        <section id="day8">
+            <h1>
+                <span class="th th-block">วันที่ 8: 13 มีนาคม 2569 (ศุกร์)</span>
+                <span class="en en-block">ช้อปปิ้ง & เดินทางกลับไทย</span>
+                
+            </h1>
+            <ul class="timeline">
+<li><strong>09:00</strong>: <span class="emoji">🏨 เช็คเอาท์ & ฝากกระเป๋าที่โรงแรม (อุเอโนะ)</span> - <strong>การฝากกระเป๋า</strong>:</li>
+<p>- โรงแรมส่วนใหญ่รับฝากหลังเช็คเอาท์ (รับคืนวันเดียวกัน)</p>
+<p>- ตรวจสอบเวลาปิดรับกระเป๋า (มักจะ 20:00-22:00)</p>
+<p>- ทางเลือก: ล็อกเกอร์สถานี Ueno (<span data-jpy="500">¥500</span>-<span data-jpy="800">¥800</span>/วัน)</p>
+<li><strong>10:00</strong>: <span class="emoji">🌳 เดินเล่นในสวนอุเอโนะ (Ueno Park)</span> - <strong>รายละเอียดสวนอุเอโนะ</strong>:</li>
+<p>- สวนสาธารณะใหญ่ใจกลางโตเกียว มีพิพิธภัณฑ์, สวนสัตว์</p>
+<p>- เข้าสวนฟรี (พิพิธภัณฑ์/สวนสัตว์มีค่าเข้า)</p>
+<p>- ต้นมีนาคม อาจเห็นซากุระเริ่มบาน</p>
+<p>- จุดน่าสนใจ: ทะเลสาบ Shinobazu, ศาลเจ้า Ueno Toshogu</p>
+<li><strong>11:00</strong>: <span class="emoji">🛍️ ซื้อของฝากที่ Ameyoko Market (อีกครั้ง)</span> - <strong>ของฝากแนะนำ</strong>:</li>
+- <strong>ขนม:</strong> Tokyo Banana, Shiroi Koibito, KitKat รสพิเศษ, Royce', Pocky
+- <strong>เครื่องสำอาง/สกินแคร์:</strong> มาส์กหน้า, ครีม (Shiseido, DHC, Canmake)
+- <strong>ของใช้:</strong> ผ้าเช็ดตัว, กระดาษซับมัน, ถุงเท้า, ตะเกียบ
+- <strong>อาหารแห้ง:</strong> สาหร่าย, ปลาแห้ง, ชาเขียว
+- <strong>ร้านใน Ameyoko:</strong> Kaneso (ขนม), Ameyoko Center Bldg, Kawamoto
+<li><strong>16:00</strong>: <span class="emoji">🚄 รับกระเป๋า, เดินทางไปสนามบินนาริตะ (NRT) ด้วย Keisei Skyliner</span> - <strong>การเดินทางไปสนามบิน (Skyliner)</strong>:</li>
+<p>- จากสถานี Keisei Ueno ไปสนามบินนาริตะ (Terminal 2)</p>
+<p>- เวลาเดินทาง: ≈40-50 นาที</p>
+<p>- ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="2570">¥2570</span>, เด็ก <span data-jpy="1290">¥1290</span> ต่อคน</p>
+<p>- แนะนำซื้อตั๋วล่วงหน้า (ออนไลน์/สถานี)</p>
+<p>- สถานี Keisei Ueno ใกล้ JR Ueno (เดิน ≈5 นาที)</p>
+<p>- รถออกทุก 30-40 นาที</p>
+<li><strong>17:00</strong>: <span class="emoji">✈️ ถึงสนามบินนาริตะ, เช็คอิน, เตรียมขึ้นเครื่อง</span> - <strong>ข้อมูลสนามบิน</strong>:</li>
+<p>- ควรถึงสนามบินล่วงหน้า 2-3 ชม. สำหรับเที่ยวบินระหว่างประเทศ</p>
+<p>- หลังผ่าน ตม./Security สามารถช้อป Duty Free ได้</p>
+<p>- มีบริการ Tax Refund (ต้องมีใบเสร็จและสินค้า)</p>
+<p>- ตรวจสอบ Terminal และเคาน์เตอร์เช็คอินของสายการบิน</p>
+<li><strong>21:15</strong>: <span class="emoji">🛫 เที่ยวบินกลับไทย (XJ607) จาก Narita Terminal 2</span> <h3>ฝากกระเป๋าหลังเช็คเอาท์เพื่อเที่ยวต่อวันสุดท้าย</h3></li>
+<p>- หลังเช็คเอาท์โรงแรมอุเอโนะ (Ueno) ขอฝากกระเป๋าไว้ก่อนเพื่อไปเที่ยวสวนอุเอโนะ/ช้อปปิ้ง</p>
+<p>- ควรกลับมาเอากระเป๋าภายในเวลาที่โรงแรมกำหนด (ส่วนใหญ่ก่อน 20:00)</p>
+</ul>
+        </section>
+            
+        <section id="accommodation">
+            <h1>
+                <span class="th th-block">ที่พัก</span>
+                <span class="en en-block">สถานะการจอง</span>
+                
+            </h1>
+            
+
+<p>## ✅ สรุปการจองที่พัก (เสร็จสิ้น 100%)</p>
+
+<p>| วันที่ | โรงแรม | สถานที่ | คืน | ราคา | หมายเลขจอง | สถานะ |</p>
+<p>|--------|---------|---------|-----|------|-------------|--------|</p>
+<p>| 6 มี.ค. | Shinagawa Tobu Hotel | ชินากาวะ | 1 | ฿3,200 | 1891056461 | ✅ |</p>
+<p>| 7 มี.ค. | Asta Hotel | อิเคะบุคุโระ | 1 | ฿3,224 | - | ✅ |</p>
+<p>| 8-10 มี.ค. | Kawaguchiko Country Cottage Ban | คาวากุจิโกะ | 2 | ฿12,400 | 1902671581 | ✅ |</p>
+<p>| 10-12 มี.ค. | Mitsui Garden Hotel Ueno | อุเอโนะ | 2 | ฿14,118 | 1902817802 | ✅ |</p>
+<p>| 12-13 มี.ค. | Hotel Gracery Shinjuku 🦖 | ชินจูกุ | 1 | ฿5,790 | 1902819383 | ✅ |</p>
+
+<strong>รวมค่าที่พัก</strong>: ฿38,732 (7 คืน)
+
+<p>## รายละเอียดที่พักแต่ละคืน</p>
+
+<h3>คืนที่ 1: Shinagawa Tobu Hotel</h3>
+<ul>
+<li><strong>Check-in</strong>: 6 มี.ค. 18:30 → Check-out: 7 มี.ค. 11:00</li>
+<li><strong>ห้อง</strong>: Semi-Double Non-Smoking</li>
+<li><strong>จุดเด่น</strong>: ใกล้สถานี, สะดวกจากสนามบิน N'EX</li>
+<li><strong>กิจกรรมใกล้เคียง</strong>: ซื้อกล้องที่ Bic Camera Gotanda</li>
+
+<h3>คืนที่ 2: Asta Hotel (Ikebukuro)</h3>
+<li><strong>Check-in</strong>: 7 มี.ค. 15:00 → Check-out: 8 มี.ค. 11:00  </li>
+<li><strong>ห้อง</strong>: Double Room</li>
+<li><strong>จุดเด่น</strong>: ใกล้แหล่งช้อปปิ้ง, Animate</li>
+<li><strong>กิจกรรมใกล้เคียง</strong>: Asakusa, Skytree, Akihabara</li>
+
+<h3>คืนที่ 3-4: Kawaguchiko Country Cottage Ban ⭐</h3>
+<li><strong>Check-in</strong>: 8 มี.ค. 14:00 → Check-out: 10 มี.ค. 11:00 (2 คืน)</li>
+<li><strong>ห้อง</strong>: Modern Twin Room  </li>
+<li><strong>จุดเด่น</strong>: วิวฟูจิ, รถรับส่งฟรี</li>
+<li><strong>พิเศษ</strong>: ฉลองวันเกิดพอใจ 🎂 (9 มี.ค.)</li>
+
+<h3>คืนที่ 5-6: Mitsui Garden Hotel Ueno</h3>
+<li><strong>Check-in</strong>: 10 มี.ค. 15:00 → Check-out: 12 มี.ค. 11:00 (2 คืน)</li>
+<li><strong>ห้อง</strong>: Standard Double (18 ตร.ม.)</li>
+<li><strong>จุดเด่น</strong>: ติดสถานี JR Ueno, สะดวกไป Gala Yuzawa</li>
+<li><strong>พิเศษ</strong>: มี Panda Room theme 🐼</li>
+
+<h3>คืนที่ 7: Hotel Gracery Shinjuku</h3>
+<li><strong>Check-in</strong>: 12 มี.ค. 15:00 → Check-out: 13 มี.ค. 09:00</li>
+<li><strong>ห้อง</strong>: Standard Room</li>
+<li><strong>จุดเด่น</strong>: โรงแรมธีม Godzilla 🦖, ใจกลางเมือง</li>
+<li><strong>ข้อดี</strong>: สะดวกไปสนามบิน</li>
+
+<p>## การเปลี่ยนที่พัก - Timeline</p>
+<li><strong>7 มี.ค.</strong>: เช้าเช็คเอาท์ชินากาวะ → บ่ายเช็คอินอิเคะบุคุโระ</li>
+<li><strong>8 มี.ค.</strong>: เช้าเช็คเอาท์อิเคะบุคุโระ → บ่ายเช็คอินคาวากุจิโกะ  </li>
+<li><strong>10 มี.ค.</strong>: เช้าเช็คเอาท์คาวากุจิโกะ → บ่ายเช็คอินอุเอโนะ</li>
+<li><strong>12 มี.ค.</strong>: เช้าเช็คเอาท์อุเอโนะ → บ่ายเช็คอินชินจูกุ</li>
+<li><strong>13 มี.ค.</strong>: เช้าเช็คเอาท์ชินจูกุ → เดินทางไปสนามบิน</li>
+
+<p>## ข้อควรระวัง</p>
+<li>ฝากกระเป๋าก่อนเช็คอิน (ส่วนใหญ่รับฝากได้)</li>
+<li>ตรวจสอบเวลารับกระเป๋าคืน (มักปิดก่อน 20:00-22:00)</li>
+<li>ที่คาวากุจิโกะมีรถรับส่งฟรี (ต้องแจ้งล่วงหน้า)</li></ul>
+
+        </section>
+            
+        <section id="budget">
+            <h1>
+                <span class="th th-block">ประมาณการค่าใช้จ่ายและสถานะ (อัปเดตล่าสุด)</span>
+                <span class="en en-block">ประมาณการค่าใช้จ่ายและสถานะ (อัปเดตล่าสุด)</span>
+                
+            </h1>
+            
+
+<p>💰 อัตราแลกเปลี่ยน: 100 เยน ≈ 23.46 บาท (ตรวจสอบอัตราปัจจุบัน)</p>
+
+<h3>💳 ประมาณการค่าใช้จ่าย</h3>
+
+<p>| รายการ | รายละเอียด | ยอด (เยน) | บาท (≈) | สถานะ |</p>
+<p>|--------|-----------|-----------|---------|--------|</p>
+<p>| ✈️ ตั๋วเครื่องบิน | ไป–กลับ Narita | - | ฿37,568 | ✅ จองแล้ว |</p>
+<p>| 🏨 ที่พักรวม | 7 คืน ทุกโรงแรม | - | ฿38,732 | ✅ จองครบแล้ว |</p>
+<p>| 🚄 Tokyo Wide Pass | 2 ใบ | <span data-jpy="20,360">¥20,360</span> | ฿4,776 | ❗ ต้องซื้อ |</p>
+<p>| 🚇 Subway Pass | 2 คน 2 วัน | <span data-jpy="6,000">¥6,000</span> | ฿1,408 | ❗ ต้องซื้อ |</p>
+<p>| 🚌 รถบัส Kawaguchiko | ไป–กลับ | <span data-jpy="4,000">¥4,000</span> | ฿938 | ❗ ต้องจอง |</p>
+<p>| 🎿 Gala Yuzawa | บัตรเข้า + เช่าอุปกรณ์ | <span data-jpy="9,000">¥9,000</span> | ฿2,111 | ⏳ วางแผน |</p>
+<p>| 🚄 Skyliner | 2 คน | <span data-jpy="5,140">¥5,140</span> | ฿1,206 | ❗ ต้องซื้อ |</p>
+<p>| 📱 WiFi / SIM | เช่า 5–7 วัน | <span data-jpy="1,600">¥1,600</span> | ฿375 | ❗ ยังไม่ซื้อ |</p>
+<p>| 🛍️ ช้อปปิ้ง / เงินสำรอง | รวมของฝาก เสื้อผ้า | - | ~฿12,500 | 🪪 ประมาณ |</p>
+| <strong>รวมค่าใช้จ่ายโดยประมาณ (ไม่รวมตั๋วเครื่องบิน)</strong> | | | <strong>~฿62,046</strong> <div class="table-container"><table><tr><td><strong>รวมค่าใช้จ่ายทั้งหมดโดยประมาณ</strong></td></tr></table></div> | | <strong>~฿99,614</strong> <div class="table-container"><table><tr><td><strong>งบประมาณที่เหลือ (ประมาณ)</strong></td></tr></table></div> | | <strong>~฿386</strong> | |องบินและประกัน)<strong> | | | </strong>~฿50,142<strong> | |
+| </strong>รวมค่าใช้จ่ายทั้งหมดโดยประมาณ<strong> | | | </strong>~฿87,710<strong> <div class="table-container"><table><tr><td></strong>งบประมาณที่เหลือ (ประมาณ)<strong></td></tr></table></div> | | </strong>~฿12,290<strong> | |
+
+<h3>หมายเหตุเกี่ยวกับงบประมาณ</h3>
+<ul>
+<li>ค่าที่พักเป็นการประมาณการสำหรับ 7 คืน (รวมภาษี/ค่าธรรมเนียม)</li>
+<li>ค่าอาหารประมาณ <span data-jpy="3,000">¥3,000</span>/คน/วัน (รวมในช่องช้อปปิ้ง/สำรอง)</li>
+<li>ค่าเข้าชมสถานที่ต่างๆ คำนวณรวมในงบแล้ว (จ่ายหน้างาน)</li>
+<li>ควรแลกเงินเยนไปประมาณ 70% ของค่าใช้จ่าย (ไม่รวมที่จ่ายบัตรแล้ว)</li>
+
+<h3>📋 รายการที่ต้องจองล่วงหน้า</h3>
+
+<p>| รายการ | วันที่ควรจอง/ซื้อ | เว็บไซต์ | หมายเหตุ |</p>
+<p>|-------|----------------|----------|----------|</p>
+<p>| ที่พักชินากาวะ | 3 เดือนล่วงหน้า | Agoda, Booking.com, เว็บไซต์โรงแรม | ควรจองแบบยกเลิกได้ |</p>
+<p>| ที่พักคาวากุจิโกะ | 4-6 เดือนล่วงหน้า | Agoda, Booking.com, เว็บไซต์โรงแรม | เต็มเร็ว (โดยเฉพาะวิวฟูจิ) |</p>
+<p>| ที่พักอุเอโนะ | 3 เดือนล่วงหน้า | Agoda, Booking.com, เว็บไซต์โรงแรม | เลือกใกล้สถานี |</p>
+<p>| รถบัส Kawaguchiko | 1-2 เดือนล่วงหน้า | Japan Bus Online, Highway Buses Japan | ควรจองช่วงฤดูท่องเที่ยว |</p>
+<p>| Tokyo Wide Pass | ซื้อที่สนามบินนาริตะเมื่อถึง | JR East Travel Service Center | ต้องใช้พาสปอร์ต |</p>
+<p>| WiFi/SIM Card | 1-2 เดือนล่วงหน้า | Klook, KKday, ผู้ให้บริการในไทย | แนะนำจองล่วงหน้า รับที่สนามบิน |</p>
+
+<h3>💱 เงินที่ควรแลกไป</h3>
+<li></strong>จำนวนเงินที่ควรแลก:<strong> ~30,000-35,000 บาท ต่อ 2 คน (<span data-jpy="150">¥150</span>,000-<span data-jpy="175">¥175</span>,000)</li>
+<li></strong>สถานที่แลกเงิน:<strong> แลกในไทยได้เรทดีกว่า</li>
+
+</strong>การชำระเงินในญี่ปุ่น:<strong>
+<li>ร้านใหญ่/โรงแรมรับบัตรเครดิต, ร้านเล็กๆ มักรับเงินสด</li>
+<li>ควรพกเงินสดติดตัว ≈5,000-10,000 เยน/วัน</li>
+<li>ร้านสะดวกซื้อ (7-Eleven, Lawson, Family Mart) มี ATM รองรับบัตรต่างประเทศ</li>
+
+</strong>การใช้บัตรเครดิต:<strong>
+<li>แจ้งธนาคารก่อนเดินทาง</li>
+<li>ตรวจสอบค่าธรรมเนียม FX</li>
+<li>บางร้านอาจขอดูบัตรประชาชน/พาสปอร์ต</li>
+
+<h3>📅 กำหนดการชำระเงิน</h3>
+
+<p>| ระยะเวลา | รายการที่ต้องชำระ | ประมาณการค่าใช้จ่าย |</p>
+<p>|----------|-------------------|---------------------|</p>
+<p>| 6 เดือนก่อนเดินทาง | ตั๋วเครื่องบิน | ฿37,568 |</p>
+<p>| 3-4 เดือนก่อนเดินทาง | ที่พักทั้งหมด | ~฿20,000 |</p>
+<p>| 1-2 เดือนก่อนเดินทาง | ตั๋วรถบัส และ WiFi/SIM | ~฿1,232 |</p>
+<p>| ระหว่างการเดินทาง | ค่าเดินทางในญี่ปุ่น, กิจกรรม, อาหาร, ช้อปปิ้ง | ~฿28,910 |</p>
+
+<h3>📝 รายการที่ต้องเตรียม</h3>
+
+</strong>เอกสารสำคัญ:<strong>
+<li>หนังสือเดินทาง (Passport) อายุเหลือ > 6 เดือน</li>
+<li>สำเนาหนังสือเดินทาง</li>
+<li>ตั๋วเครื่องบินไป-กลับ (E-ticket)</li>
+<li>เอกสารยืนยันการจองโรงแรม</li>
+<li>บัตรเครดิต และเงินสดเยน</li>
+<li>ประกันการเดินทาง</li>
+<li>ใบขับขี่สากล (หากเช่ารถ)</li>
+
+</strong>สิ่งของจำเป็น:<strong>
+<li></strong>เสื้อผ้า:<strong> เสื้อกันหนาว/ลม, ถุงมือ, ผ้าพันคอ, หมวก (มี.ค. ≈5-12°C)</li>
+<li></strong>รองเท้า:<strong> รองเท้าเดินสบาย, รองเท้ากันน้ำ (ถ้าเล่นหิมะ)</li>
+<li></strong>อิเล็กทรอนิกส์:<strong> มือถือ, กล้อง, ที่ชาร์จ, แบตสำรอง</li>
+<li></strong>ยา:<strong> ยาประจำตัว, ยาแก้ปวด/หวัด, พลาสเตอร์</li>
+<li></strong>อื่นๆ:<strong> กระเป๋าสะพายเล็ก, กระเป๋าล้อลาก, อะแดปเตอร์ปลั๊ก</li>
+
+</ul>
+<h3>🧾 สรุปงบประมาณรวมทั้งทริป (อัปเดตล่าสุด)</h3>
+
+<p>| รายการ | ราคา (¥) | บาท (≈) | สถานะ |</p>
+<p>|--------|---------|---------|--------|</p>
+<p>| ✈️ ตั๋วเครื่องบิน (2 คน) | - | ฿37,568 | ✅ จ่ายแล้ว |</p>
+<p>| 🏨 ที่พักรวม 7 คืน | - | ฿38,732 | ✅ จ่ายแล้ว |</p>
+<p>| 🚆 ตั๋วเดินทาง (Pass / IC) | <span data-jpy="8,000">¥8,000</span> | ฿1,877 | ❗ ต้องซื้อ |</p>
+<p>| 🎫 ค่ากิจกรรม & เข้าชม | <span data-jpy="10,000">¥10,000</span> | ฿2,346 | ⏳ จ่ายหน้างาน |</p>
+<p>| 🍜 ค่าอาหาร (เฉลี่ย 2 มื้อ/วัน) | <span data-jpy="25,000">¥25,000</span> | ฿5,865 | ⏳ จ่ายหน้างาน |</p>
+<p>| 🧸 ของฝาก & ช้อปปิ้ง | <span data-jpy="15,000">¥15,000</span> | ฿3,519 | ⏳ จ่ายหน้างาน |</p>
+<p>| 🚌 รถบัส & Skyliner | <span data-jpy="9,140">¥9,140</span> | ฿2,144 | ❗ ต้องซื้อ |</p>
+<p>| 📱 WiFi/SIM | <span data-jpy="1,600">¥1,600</span> | ฿375 | ❗ ต้องซื้อ |</p>
+<p>| 🎿 Gala Yuzawa | <span data-jpy="9,000">¥9,000</span> | ฿2,111 | ⏳ จ่ายหน้างาน |</p>
+| </strong>รวมที่จ่ายแล้ว<strong> | | </strong>฿76,300<strong> | ✅ |
+| </strong>รวมที่ยังต้องจ่าย<strong> | | </strong>฿16,852<strong> | ⏳ |
+| </strong>รวมทั้งหมด<strong> | | </strong>฿93,152<strong> | |
+| </strong>งบประมาณคงเหลือ<strong> | | </strong>฿6,848** | 💰 |
+        </section>
+            
+        <section id="food_recommendations">
+            <h1>
+                <span class="th th-block">คู่มืออาหารและร้านแนะนำ</span>
+                <span class="en en-block">คู่มืออาหารและร้านแนะนำ</span>
+                
+            </h1>
+            
+
+<p>## ร้านอาหารแต่ละวัน</p>
+
+<h3>วันที่ 1 - ย่านชินากาวะ/โกะตันดะ</h3>
+<h4>อาหารเย็น (Gotanda)</h4>
+<ul>
+<li><strong>Saizeriya</strong> - อิตาเลียนราคาประหยัด, เหมาะกับเด็ก</li>
+<li>เมนูแนะนำ: Pizza, Pasta, Salad</li>
+<li>ราคา: ~<span data-jpy="1,500">¥1,500</span>/คน</li>
+<li><strong>MOS Burger</strong> - เบอร์เกอร์ญี่ปุ่น</li>
+<li>เมนูแนะนำ: Teriyaki Burger, Rice Burger</li>
+<li>ราคา: ~<span data-jpy="800">¥800</span>/คน</li>
+<li><strong>Yoshinoya</strong> - ข้าวหน้าเนื้อญี่ปุ่น</li>
+<li>เมนูแนะนำ: Gyudon, Chicken Teriyaki</li>
+<li>ราคา: ~<span data-jpy="600">¥600</span>/คน</li>
+
+<h3>วันที่ 2 - อาซากุสะ/อากิฮาบาระ</h3>
+<h4>อาหารกลางวัน (Asakusa)</h4>
+<li><strong>Daikokuya Tempura</strong> (ร้านเก่าแก่ 150 ปี)</li>
+<li>เมนูแนะนำ: Tempura Set, Ebi Tempura</li>
+<li>ราคา: ~<span data-jpy="2,000">¥2,000</span>/คน</li>
+<li><strong>Asakusa Kagari</strong> - ราเมน</li>
+<li>เมนูแนะนำ: Tori Paitan Ramen</li>
+<li>ราคา: ~<span data-jpy="1,200">¥1,200</span>/คน</li>
+
+<h4>ขนมเด็ด Asakusa</h4>
+<li><strong>Melon Pan Ice</strong> - เมลอนปังไอศกรีม</li>
+<li><strong>Ningyo-yaki</strong> - ขนมรูปตุ๊กตา</li>
+<li><strong>Dango</strong> - ลูกชิ้นข้าวเหนียว</li>
+
+<h4>อาหารเย็น (Ikebukuro)</h4>
+<li><strong>Ichiran Ramen</strong> - ราเมนโซโล่บูธ</li>
+<li><strong>Torikizoku</strong> - ยากิโทริราคาถูก</li>
+<li><strong>Family Restaurant</strong> - Gusto, Jonathan's</li>
+
+<h3>วันที่ 3 - คาวากุจิโกะ</h3>
+<h4>อาหารกลางวัน</h4>
+<li><strong>Kawaguchiko Herbkan</strong> - คาเฟ่วิวฟูจิ</li>
+<li>เมนูแนะนำ: Pasta, Sandwich, Coffee</li>
+<li>ราคา: ~<span data-jpy="1,500">¥1,500</span>/คน</li>
+<li><strong>Cafe Lake Kawaguchiko</strong> - ริมทะเลสาบ</li>
+<li>เมนูแนะนำ: Curry Rice, Pancake</li>
+<li>ราคา: ~<span data-jpy="1,200">¥1,200</span>/คน</li>
+
+<h4>อาหารเย็น</h4>
+<li><strong>Convenience Store</strong> - 7-Eleven, Lawson</li>
+<li>Onigiri, Bento, ผลไม้</li>
+<li>ราคา: ~<span data-jpy="800">¥800</span>/คน</li>
+
+<h3>วันที่ 4 - วันเกิดพอใจ (คาวากุจิโกะ)</h3>
+<h4>อาหารกลางวันพิเศษ</h4>
+<li><strong>Houtou Fudou</strong> - ร้านดัง เมนู Houtou</li>
+<li>เมนูแนะนำ: Houtou (คล้ายอุด้งในซุปฟักทอง)</li>
+<li>ราคา: ~<span data-jpy="1,800">¥1,800</span>/คน</li>
+<li><strong>Lake Kawaguchiko Restaurant</strong> - วิวทะเลสาบ/ฟูจิ</li>
+<li>เมนูแนะนำ: Kaiseki Set, Fresh Fish</li>
+<li>ราคา: ~<span data-jpy="3,000">¥3,000</span>/คน</li>
+
+<h4>เค้กวันเกิด</h4>
+<li><strong>Fujisan Sweets Factory</strong></li>
+<li>เค้กวันเกิดพิเศษ: ~<span data-jpy="3,000">¥3,000</span></li>
+<li><strong>Mont Blanc</strong> - ร้านขนมฝรั่งเศส</li>
+<li>Birthday Cake: ~<span data-jpy="2,500">¥2,500</span></li>
+
+<h4>อาหารค่ำวันเกิด (พิเศษ)</h4>
+<li><strong>โรงแรมหรือร้านอาหารวิวฟูจิ</strong></li>
+<li>Wagyu Steak Set: ~<span data-jpy="8,000">¥8,000</span></li>
+<li>Sushi Omakase: ~<span data-jpy="6,000">¥6,000</span></li>
+
+<h3>วันที่ 5 - อุเอโนะ</h3>
+<h4>อาหารกลางวัน</h4>
+<li><strong>Ameya-Yokocho</strong> (ในตลาด Ameyoko)</li>
+<li>Takoyaki, Okonomiyaki</li>
+<li>ราคา: ~<span data-jpy="800">¥800</span>/คน</li>
+<li><strong>Ueno Park Food Court</strong></li>
+<li>Japanese Curry, Katsu Sandwich</li>
+<li>ราคา: ~<span data-jpy="1,000">¥1,000</span>/คน</li>
+
+<h4>อาหารเย็น</h4>
+<li><strong>Torikizoku Ueno</strong> - ยากิโทริ</li>
+<li><strong>Sukiya</strong> - ข้าวหน้าเนื้อ 24 ชม.</li>
+<li><strong>Ramen Yokocho</strong> - ถนนราเมน</li>
+
+<h3>วันที่ 6 - Gala Yuzawa</h3>
+<h4>อาหารในลานสกี</h4>
+<li><strong>Gala Yuzawa Base Lodge</strong></li>
+<li>Ski Resort Curry: ~<span data-jpy="1,500">¥1,500</span></li>
+<li>Hot Udon: ~<span data-jpy="1,200">¥1,200</span></li>
+<li>Ramen: ~<span data-jpy="1,000">¥1,000</span></li>
+<li><strong>Snow Resort Cafe</strong></li>
+<li>Hot Chocolate: ~<span data-jpy="500">¥500</span></li>
+<li>Sandwich Set: ~<span data-jpy="1,200">¥1,200</span></li>
+
+<h4>อาหารเย็น (กลับ Ueno)</h4>
+<li><strong>Station Bento</strong> - เบนโตะสถานี</li>
+<li><strong>Ueno Restaurant District</strong></li>
+
+<h3>วันที่ 7 - โตเกียว City Tour</h3>
+<h4>อาหารกลางวัน (Shimbashi/Ginza)</h4>
+<li><strong>Sukiyabashi Jiro Honten</strong> (ถ้าจองได้)</li>
+<li>Sushi Omakase: ~<span data-jpy="30,000">¥30,000</span>/คน (แพงมาก!)</li>
+<li><strong>Ginza Kyoboshi</strong> - ทางเลือกประหยัด</li>
+<li>Sushi Set: ~<span data-jpy="3,000">¥3,000</span>/คน</li>
+<li><strong>Tokyo Station Ramen Street</strong></li>
+<li>Famous Ramen: ~<span data-jpy="1,200">¥1,200</span>/คน</li>
+
+<h4>ขนมบ่าย (Tokyo Tower)</h4>
+<li><strong>Tokyo Tower Cafe</strong></li>
+<li>Tokyo Tower Parfait: ~<span data-jpy="1,500">¥1,500</span></li>
+<li>Matcha Latte: ~<span data-jpy="600">¥600</span></li>
+
+<h4>อาหารเย็น (Roppongi)</h4>
+<li><strong>Roppongi Hills Restaurant Floor</strong></li>
+<li>International Cuisine: ~<span data-jpy="2,500">¥2,500</span>/คน</li>
+<li><strong>Conveyor Belt Sushi</strong></li>
+<li>Sushi Train: ~<span data-jpy="1,500">¥1,500</span>/คน</li>
+
+<h3>วันที่ 8 - วันสุดท้าย</h3>
+<h4>อาหารเช้า (Ueno)</h4>
+<li><strong>Hotel Breakfast</strong> หรือ</li>
+<li><strong>Doutor Coffee</strong> - กาแฟและแซนวิช</li>
+<li>Morning Set: ~<span data-jpy="800">¥800</span>/คน</li>
+
+<h4>อาหารกลางวัน (Ameyoko)</h4>
+<li><strong>Kaneso</strong> - ร้านขนมในตลาด</li>
+<li><strong>Street Food</strong> - Taiyaki, Imagawayaki</li>
+<li><strong>Final Meal</strong>: Conveyor Sushi หรือ Yoshinoya</li>
+
+<h4>สนามบิน Narita</h4>
+<li><strong>Narita Airport Food Court</strong></li>
+<li>Sushi, Ramen, Bento</li>
+<li>ราคา: ~<span data-jpy="1,500">¥1,500</span>-2,500/คน</li>
+
+<p>## อาหารที่ต้องลอง (Must-Try)</p>
+<h3>สำหรับเด็ก (พอใจ)</h3>
+1. <strong>Taiyaki</strong> - ขนมปลาไทยากิ
+2. <strong>Crepe</strong> - เครปญี่ปุ่น (Harajuku style)
+3. <strong>Pocky & Kit-Kat</strong> - รสชาติพิเศษ
+4. <strong>Mochi Ice Cream</strong> - ไอศกรีมโมจิ
+5. <strong>Character Bento</strong> - เบนโตะการ์ตูน
+
+<h3>สำหรับผู้ใหญ่</h3>
+1. <strong>Authentic Ramen</strong> - ราเมนแท้
+2. <strong>Sushi/Sashimi</strong> - ซูชิสดๆ
+3. <strong>Wagyu Beef</strong> - เนื้อวากิว
+4. <strong>Tempura</strong> - เทมปุระ
+5. <strong>Sake/Japanese Beer</strong> - สาเกญี่ปุ่น
+
+<p>## ของฝาก/ขนม (Omiyage)</p>
+<h3>จาก Tokyo</h3>
+<li><strong>Tokyo Banana</strong> - ขนมโตเกียวแบนานา</li>
+<li><strong>Shiroi Koibito</strong> - คุกกี้ช็อกโกแลต</li>
+<li><strong>KitKat รสพิเศษ</strong> - Wasabi, Matcha, Sake</li>
+<li><strong>Royce' Chocolate</strong> - ช็อกโกแลตพรีเมียม</li>
+
+<h3>จาก Kawaguchiko</h3>
+<li><strong>Fuji Apple Products</strong> - ผลิตภัณฑ์แอปเปิ้ลฟูจิ</li>
+<li><strong>Local Manju</strong> - ขนมมันจูท้องถิ่น</li>
+<li><strong>Fuji Water</strong> - น้ำแร่ฟูจิ</li>
+
+<h3>จาก Ameyoko Market</h3>
+<li><strong>Dried Seafood</strong> - อาหารทะเลแห้ง</li>
+<li><strong>Japanese Tea</strong> - ชาเขียวคุณภาพดี</li>
+<li><strong>Traditional Sweets</strong> - ขนมญี่ปุ่นโบราณ</li>
+
+<p>## Budget อาหารรวม 8 วัน</p>
+<li><strong>วันปกติ</strong>: ~<span data-jpy="3,000">¥3,000</span>-4,000/คน/วัน</li>
+<li><strong>วันพิเศษ (วันเกิด)</strong>: ~<span data-jpy="6,000">¥6,000</span>/คน</li>
+<li><strong>รวม 8 วัน</strong>: ~<span data-jpy="30,000">¥30,000</span>/คน (฿7,038/คน)</li>
+<li><strong>รวม 2 คน</strong>: ~<span data-jpy="60,000">¥60,000</span> (฿14,076)</li>
+
+<p>## Tips การกินในญี่ปุ่น</p>
+<h3>Etiquette</h3>
+<li>ไม่ต้องทิปในร้านอาหาร</li>
+<li>บอก "Itadakimasu" ก่อนกิน</li>
+<li>บอก "Gochisousama" หลังกิน</li>
+<li>ไม่เสียงดังเวลากิน (ยกเว้นราเมน)</li>
+
+<h3>การสั่งอาหาร</h3>
+<li>ใช้ Plastic Food Models ชี้</li>
+<li>ใช้แอป Google Translate กล้อง</li>
+<li>เรียนคำพื้นฐาน: "Kore kudasai" (ขอสิ่งนี้)</li>
+
+<h3>ร้านสะดวกซื้อ (Convenience Store Food)</h3>
+<li><strong>7-Eleven, Lawson, Family Mart</strong></li>
+<li>อาหารสดใหม่ทุกวัน</li>
+<li>Onigiri, Bento, Sandwich ราคาถูก</li>
+<li>เหมาะสำหรับอาหารเช้าหรือกินเร็ว</li></ul>
+
+        </section>
+            
+        <section id="important_updates">
+            <h1>
+                <span class="th th-block">ข้อมูลสำคัญที่เปลี่ยนแปลง 2025-2026</span>
+                <span class="en en-block">ข้อมูลสำคัญที่เปลี่ยนแปลง 2025-2026</span>
+                
+            </h1>
+            
+
+<p>## 🚨 การเปลี่ยนแปลงสำคัญสำหรับนักท่องเที่ยว</p>
+
+<h3>1. J-ESTA (Japan Electronic Travel Authorization)</h3>
+<strong>สถานะ</strong>: คาดว่าจะเริ่มใช้ปี 2030 (ไม่ใช่ 2025)
+<ul>
+<li><strong>คล้ายกับ</strong>: ESTA ของสหรัฐอเมริกา</li>
+<li><strong>กลุ่มเป้าหมาย</strong>: ประเทศที่ไม่ต้องใช้วีซ่า (รวมไทย)</li>
+<li><strong>กระบวนการ</strong>: สมัครออนไลน์ล่วงหน้า</li>
+<li><strong>ผลกระทบต่อทริป</strong>: ยังไม่มี (เดินทาง มีนาคม 2026)</li>
+
+<h3>2. Tourist Tax - ภาษีนักท่องเที่ยว</h3>
+<strong>สถานะ</strong>: อยู่ระหว่างพิจารณา เป็นไปได้เริ่ม 2026
+<li><strong>รูปแบบ</strong>: ค่าธรรมเนียมรายวันที่ที่พัก</li>
+<li><strong>จำนวนเงิน</strong>: ยังไม่กำหนด (คาดว่า <span data-jpy="200">¥200</span>-500/คืน)</li>
+<li><strong>วัตถุประสงค์</strong>: จัดการ Over-tourism</li>
+<li><strong>ผลกระทบต่อทริป</strong>: เพิ่มค่าใช้จ่าย ~<span data-jpy="1,500">¥1,500</span>-3,500 (7 คืน)</li>
+
+<h3>3. Tax-Free System Changes</h3>
+<strong>มีผลตั้งแต่</strong>: พฤศจิกายน 2026
+<li><strong>ระบบใหม่</strong>: จ่ายภาษีเต็มก่อน → ขอคืนเงินที่สนามบิน</li>
+<li><strong>ผลกระทบต่อทริป</strong>: ไม่มี (เดินทางก่อนพฤศจิกายน 2026)</li>
+<li><strong>ข้อแนะนำ</strong>: ยังใช้ระบบเดิมได้ (ลดภาษี ตอนซื้อ)</li>
+
+<h3>4. Shinkansen Nozomi Changes (มีผล 15 มีนาคม 2025)</h3>
+<strong>การเปลี่ยนแปลง</strong>: ลดที่นั่งไม่จองล่วงหน้า
+<li><strong>ผลกระทบต่อทริป</strong>: ไม่มี (ใช้ Tokyo Wide Pass = จองที่นั่งได้)</li>
+<li><strong>ข้อแนะนำ</strong>: จองที่นั่ง Shinkansen ล่วงหน้า</li>
+
+<h3>5. Suica/Pasmo Card Availability</h3>
+<strong>สถานะ</strong>: กลับมาขายปกติแล้ว (มีนาคม 2025)
+<li><strong>Non-registered Suica</strong>: มีขายแล้ว</li>
+<li><strong>สำหรับนักท่องเที่ยว</strong>: ไม่มีปัญหา</li>
+<li><strong>ซื้อที่</strong>: สถานีรถไฟทุกแห่ง</li>
+
+<p>## 📍 สถานที่เฉพาะ - ราคาเพิ่มขึ้น</p>
+
+<h3>Himeji Castle (มีผล มีนาคม 2026)</h3>
+<li><strong>คนญี่ปุ่น</strong>: <span data-jpy="1,000">¥1,000</span> (เดิม)</li>
+<li><strong>นักท่องเที่ยว</strong>: <span data-jpy="2,000">¥2,000</span>-3,000 (เพิ่มขึ้น)</li>
+<li><strong>ผลกระทบต่อทริป</strong>: ไม่มี (ไม่ได้วางแผนไป Himeji)</li>
+
+<h3>Mount Fuji Climbing Fee (เริ่ม พฤษภาคม 2024)</h3>
+<li><strong>ค่าเข้า</strong>: <span data-jpy="4,000">¥4,000</span> (เพิ่มขึ้นจาก <span data-jpy="2,000">¥2,000</span>)</li>
+<li><strong>คนญี่ปุ่น</strong>: ฟรี</li>
+<li><strong>ผลกระทบต่อทริป</strong>: ไม่มี (ไม่ได้วางแผนปีนฟูจิ)</li>
+
+<p>## 🏨 Expo 2025 Osaka Impact</p>
+<strong>วันที่</strong>: 13 เมษายน - 13 ตุลาคม 2025
+<li><strong>ผลกระทบต่อทริป</strong>: ไม่มี (ไปโตเกียว ไม่ไปโอซาก้า)</li>
+<li><strong>ข้อสังเกต</strong>: ที่พักญี่ปุ่นอาจแพงขึ้นทั่วไป</li>
+
+<p>## 📱 Visit Japan Web Enhancement</p>
+<strong>สถานะ</strong>: ใช้งานได้แล้ว
+<li><strong>ประโยชน์</strong>: ลงทะเบียนล่วงหน้า ผ่านด่านเร็วขึ้น</li>
+<li><strong>กระบวนการ</strong>: </li>
+<p>1. ลงทะเบียนออนไลน์ก่อนเดินทาง</p>
+<p>2. อัปโหลดรูปหน้า + พาสปอร์ต</p>
+<p>3. สแกน QR Code ที่สนามบิน</p>
+<li><strong>ข้อแนะนำ</strong>: ควรใช้ (ประหยัดเวลา 30-60 นาที)</li>
+
+<p>## 💰 ผลกระทบต่องบประมาณ</p>
+
+<h3>เพิ่มขึ้น (อาจเกิดขึ้น)</h3>
+<li><strong>Tourist Tax</strong>: +<span data-jpy="1,500">¥1,500</span>-3,500 (ถ้ามีผล)</li>
+<li><strong>ค่าอาหาร</strong>: เพิ่มขึ้น 5-10% (เงินเฟ้อ)</li>
+<li><strong>ค่าที่พัก</strong>: เพิ่มขึ้น 10-15% (Expo effect)</li>
+
+<h3>คงที่/ลดลง</h3>
+<li><strong>ค่าเดินทาง</strong>: Tokyo Wide Pass ราคาเดิม</li>
+<li><strong>Tax-Free</strong>: ยังใช้ระบบเดิมได้</li>
+<li><strong>สถานที่ท่องเที่ยว</strong>: ส่วนใหญ่ราคาเดิม</li>
+
+<h3>งบประมาณปรับแล้ว</h3>
+<p>| รายการ | งบเดิม | งบปรับ | หมายเหตุ |</p>
+<p>|--------|--------|--------|---------|</p>
+<p>| ที่พัก | ฿38,732 | ฿42,605 | เพิ่ม 10% |</p>
+<p>| Tourist Tax | ฿0 | ฿1,172 | คาดการณ์ <span data-jpy="500">¥500</span>/คืน |</p>
+<p>| อาหาร | ฿14,076 | ฿15,484 | เพิ่ม 10% |</p>
+| <strong>รวมเพิ่ม</strong> | | <strong>+฿6,453</strong> | |
+
+<strong>งบประมาณใหม่</strong>: ฿111,818 + ฿6,453 = <strong>฿118,271</strong>
+
+<p>## 🔄 การปรับแผนการเดินทาง</p>
+
+<h3>ไม่ต้องเปลี่ยน</h3>
+<li><strong>เส้นทางการเดินทาง</strong>: ยังเหมาะสม</li>
+<li><strong>การจองที่พัก</strong>: ดำเนินการต่อได้</li>
+<li><strong>กิจกรรม</strong>: ไม่มีผลกระทบ</li>
+
+<h3>ควรเตรียมพิเศษ</h3>
+1. <strong>Visit Japan Web</strong>: ลงทะเบียนก่อนเดินทาง 1 สัปดาห์
+2. <strong>เงินสำรอง</strong>: เพิ่ม ฿10,000 เผื่อค่าใช้จ่ายเพิ่ม
+3. <strong>ข้อมูลล่าสุด</strong>: ติดตามข่าวก่อนเดินทาง
+
+<h3>Timeline การเตรียมการ</h3>
+
+<h4>3 เดือนก่อน (ธันวาคม 2025)</h4>
+<li>[ ] ติดตามข่าว Tourist Tax อย่างใกล้ชิด</li>
+<li>[ ] ตรวจสอบราคาที่พักอีกครั้ง</li>
+<li>[ ] จองรถบัส Kawaguchiko</li>
+
+<h4>1 เดือน ก่อน (กุมภาพันธ์ 2026)</h4>
+<li>[ ] ลงทะเบียน Visit Japan Web</li>
+<li>[ ] ซื้อ WiFi/SIM Card</li>
+<li>[ ] เช็คข้อมูล J-ESTA (เผื่อมีการเปลี่ยนแปลง)</li>
+
+<h4>1 สัปดาห์ก่อน</h4>
+<li>[ ] เช็คสภาพอากาศล่าสุด</li>
+<li>[ ] ปริ้นท์เอกสารสำคัญ</li>
+<li>[ ] แลกเงินเยน</li>
+
+<p>## ⚠️ สิ่งที่ต้องระวัง</p>
+
+<h3>ข้อมูลที่อาจเปลี่ยน</h3>
+<li><strong>Tourist Tax</strong>: ยังไม่ยืนยันแน่นอน</li>
+<li><strong>J-ESTA</strong>: วันที่เริ่มใช้อาจเปลี่ยน</li>
+<li><strong>ราคาต่างๆ</strong>: อาจปรับตามสถานการณ์</li>
+
+<h3>แหล่งข้อมูลอัปเดต</h3>
+<li><strong>Official</strong>: <a href="https://www.jnto.go.jp" target="_blank">Japan National Tourism Organization</a></li>
+<li><strong>Embassy</strong>: สถานทูตญี่ปุ่นในไทย</li>
+<li><strong>News</strong>: NHK World, Japan Times</li>
+<li><strong>Travel</strong>: Japan-guide.com</li>
+
+<h3>การติดตาม</h3>
+<li><strong>ตั้งแจ้งเตือน Google</strong>: "Japan tourist tax 2026"</li>
+<li><strong>Follow Social Media</strong>: @visitjapan_th</li>
+<li><strong>เช็คก่อนเดินทาง</strong>: 1 สัปดาห์ล่าสุด</li>
+
+<p>## 📞 Contact Information for Updates</p>
+
+<h3>Official Sources</h3>
+<li><strong>Japan Tourism Agency</strong>: +81-3-5253-8111</li>
+<li><strong>Thai Embassy in Japan</strong>: +81-3-3441-1386</li>
+<li><strong>Tourist Hotline</strong>: +81-50-3816-2787 (24h, Multi-language)</li>
+
+<h3>Emergency Contacts</h3>
+<li><strong>Police</strong>: 110</li>
+<li><strong>Ambulance/Fire</strong>: 119</li>
+<li><strong>Tourist Emergency</strong>: +81-3-3201-3331</li>
+
+</ul>
+<strong>สรุป</strong>: การเปลี่ยนแปลงส่วนใหญ่ไม่ส่งผลกระทบต่อทริปในเดือนมีนาคม 2026 แต่ควรเตรียมงบเพิ่ม ฿10,000-15,000 เผื่อค่าใช้จ่ายที่อาจเพิ่มขึ้น 🇯🇵✈️
+        </section>
+            
+        <section id="kawaguchiko_guide">
+            <h1>
+                <span class="th th-block">คู่มือคาวากุจิโกะ</span>
+                <span class="en en-block">รถบัสและออนเซ็น</span>
+                
+            </h1>
+            
+
+<p>## 🚌 ระบบรถบัสคาวากุจิโกะ</p>
+
+<h3>🎫 Mt. Fuji World Heritage Tour Pass (แนะนำ!)</h3>
+<strong>ราคา</strong>: ผู้ใหญ่ <span data-jpy="2,000">¥2,000</span> | เด็ก <span data-jpy="1,000">¥1,000</span> = <strong><span data-jpy="3,000">¥3,000</span> (฿704)</strong> สำหรับ 2 คน
+<strong>ระยะเวลา</strong>: 2 วัน
+<strong>ซื้อที่</strong>: Kawaguchiko Station หรือจองออนไลน์
+
+<h3>ครอบคลุมเส้นทาง</h3>
+✅ <strong>Red Line</strong> - Mt. Fuji Ropeway, Oishi Park, Fujiyama Onsen
+✅ <strong>Green Line</strong> - Oshino Hakkai, Saiko Lake
+✅ <strong>Blue Line</strong> - Narusawa, Shojiko, Motosuko
+✅ <strong>รถไฟ Fujikyu Line</strong> Kawaguchiko ↔ Shimoyoshida (เจดีย์แดง)
+
+<h3>🕐 เวลาให้บริการรถบัส</h3>
+
+<h4>🔴 Red Line</h4>
+<ul>
+<li><strong>เวลา</strong>: 09:00 - 17:30</li>
+<li><strong>ความถี่</strong>: ทุก 15 นาที</li>
+<li><strong>เที่ยวแรก</strong>: 09:00 จาก Kawaguchiko Station</li>
+<li><strong>เที่ยวสุดท้าย</strong>: 17:30 จาก Kawaguchiko Station</li>
+<li><strong>จุดหมายสำคัญ</strong>: </li>
+<li>ป้าย #11: Mt. Fuji Ropeway (Kachi Kachi Ropeway)</li>
+<li>ป้าย #18: Fujiyama Onsen</li>
+<li>ป้าย #20: Oishi Park</li>
+
+<h4>🟢 Green Line  </h4>
+<li><strong>เวลา</strong>: 09:00 - 17:00</li>
+<li><strong>ความถี่</strong>: ทุก 30 นาที</li>
+<li><strong>เที่ยวแรก</strong>: 09:00 จาก Kawaguchiko Station</li>
+<li><strong>เที่ยวสุดท้าย</strong>: 17:00 จาก Kawaguchiko Station</li>
+<li><strong>จุดหมายสำคัญ</strong>:</li>
+<li>ป้าย #12: Oshino Hakkai (หมู่บ้านน้ำใส)</li>
+
+<h4>🔵 Blue Line</h4>
+<li><strong>เวลา</strong>: 09:00 - 16:30</li>
+<li><strong>ความถี่</strong>: ทุก 1-2 ชั่วโมง</li>
+<li><strong>จุดหมายสำคัญ</strong>: Lake Shojiko, Lake Motosuko</li>
+
+<h3>💰 คำนวณความคุ้มค่า Bus Pass</h3>
+
+<strong>ถ้าไม่ซื้อ Pass (จ่ายแยก):</strong>
+<p>| เส้นทาง | ราคา (¥) | ไป-กลับ (¥) |</p>
+<p>|---------|---------|-------------|</p>
+<p>| Kawaguchiko → Oshino Hakkai | 560 | 1,120 |</p>
+<p>| Kawaguchiko → Fujiyama Onsen | 300 | 600 |</p>
+<p>| Kawaguchiko → Mt. Fuji Ropeway | 400 | 800 |</p>
+<p>| Kawaguchiko → Oishi Park | 300 | 600 |</p>
+| <strong>รวม</strong> | | <strong>3,120</strong> |
+
+<strong>Mt. Fuji Pass</strong>: <span data-jpy="3,000">¥3,000</span>
+<strong>ประหยัด</strong>: <span data-jpy="120">¥120</span> + ความสะดวก ✅
+
+<p>---</p>
+
+<p>## ♨️ ออนเซ็นแนะนำคาวากุจิโกะ</p>
+
+<h3>🏔️ Fujiyama Onsen (แนะนำ ⭐⭐⭐)</h3>
+
+<h4>ข้อมูลพื้นฐาน</h4>
+<li><strong>ชื่อญี่ปุ่น</strong>: ふじやま温泉</li>
+<li><strong>ที่ตั้ง</strong>: ใกล้ Fuji-Q Highland</li>
+<li><strong>เวลาทำการ</strong>: 10:00-22:00 (ปิดวันจันทร์บางครั้ง)</li>
+
+<h4>ค่าใช้จ่าย</h4>
+<li><strong>ผู้ใหญ่</strong>: <span data-jpy="1,800">¥1,800</span></li>
+<li><strong>เด็ก (6-12 ปี)</strong>: <span data-jpy="900">¥900</span>  </li>
+<li><strong>รวม 2 คน</strong>: <span data-jpy="2,700">¥2,700</span> (฿633)</li>
+
+<h4>จุดเด่น</h4>
+✨ <strong>วิวฟูจิสวยที่สุด</strong> - โดยเฉพาะ Rotemburo (บ่อกลางแจ้ง)
+🏢 <strong>ใหญ่ที่สุดในพื้นที่</strong> - มีทั้งในร่ม/กลางแจ้ง
+🍽️ <strong>ร้านอาหารคุณภาพดี</strong> - Kaiseki, Sashimi, Houtou
+🛍️ <strong>ร้านของที่ระลึก</strong> - ของฝากท้องถิ่น
+🌅 <strong>Golden Hour</strong> 17:30-18:30 - แสงสีทองสะท้อนฟูจิ
+
+<h4>การเดินทาง</h4>
+<strong>จาก Kawaguchiko Station:</strong>
+<li>🚌 <strong>Red Line</strong> ป้าย #18 "Fujiyama Onsen"</li>
+<li><strong>เวลา</strong>: ~15 นาที  </li>
+<li><strong>ค่าโดยสาร</strong>: รวมใน Bus Pass</li>
+<li><strong>ระยะเดิน</strong>: ติดป้ายรถบัส</li>
+
+<h4>สิ่งอำนวยความสะดวก</h4>
+<li>🅿️ <strong>ที่จอดรถฟรี</strong> (สำหรับผู้ขับรถ)</li>
+<li>🥋 <strong>เช่า Yukata</strong> (ชุดกิโมโนง่าย)  </li>
+<li>🧴 <strong>อุปกรณ์อาบน้ำครบ</strong> (แชมพู, ครีมอาบน้ำ)</li>
+<li>🏪 <strong>ตู้ล็อกเกอร์</strong> ฟรี</li>
+<li>💆‍♀️ <strong>บริการนวด</strong> (เสียค่าใช้จ่ายเพิ่ม)</li>
+
+<h3>🌿 Tensui Kawaguchiko (ทางเลือกธรรมชาติ)</h3>
+
+<h4>ข้อมูลพื้นฐาน  </h4>
+<li><strong>บรรยากาศ</strong>: ธรรมชาติมากกว่า, น้อยคนกว่า</li>
+<li><strong>ขนาด</strong>: บ่อเล็กกว่า แต่เป็นส่วนตัวมากกว่า</li>
+
+<h4>ค่าใช้จ่าย</h4>
+<li><strong>ผู้ใหญ่</strong>: <span data-jpy="1,200">¥1,200</span></li>
+<li><strong>เด็ก</strong>: <span data-jpy="600">¥600</span></li>
+<li><strong>รวม 2 คน</strong>: <span data-jpy="1,800">¥1,800</span> (฿422)</li>
+
+<h4>การเดินทาง</h4>
+<li><strong>รถบัส + เดิน</strong>: ~15 นาที รวมกัน</li>
+<li><strong>Taxi</strong>: <span data-jpy="1,500">¥1,500</span> จาก Kawaguchiko Station</li>
+
+<p>---</p>
+
+<p>## 🗺️ เส้นทางแนะนำวันเกิดพอใจ</p>
+
+<h3>🌄 ช่วงเช้า (08:30-12:00)</h3>
+<p>```</p>
+<p>08:30 Kawaguchiko Station</p>
+<p>↓ เตรียมตัว, ซื้อ Bus Pass</p>
+<p>09:00 Green Line → Oshino Hakkai (30 นาที)</p>
+<p>↓ เที่ยวชม, ถ่ายรูป</p>
+<p>11:30 Green Line → กลับ Kawaguchiko (30 นาที)</p>
+<p>12:00 ถึงสถานี</p>
+<p>```</p>
+
+<h3>🌅 ช่วงบ่าย (12:30-16:30)</h3>
+<p>```</p>
+<p>12:30 อาหารกลางวันวันเกิด</p>
+<p>↓</p>
+<p>13:30 Red Line → Mt. Fuji Ropeway (15 นาที)</p>
+<p>↓ ขึ้นกระเช้า, ถ่ายรูป</p>
+<p>15:15 Red Line → Oishi Park (10 นาที)</p>
+<p>↓ สวนดอกไม้, คาเฟ่</p>
+<p>16:30 Red Line → Fujiyama Onsen (15 นาที)</p>
+<p>```</p>
+
+<h3>♨️ ช่วงเย็น (17:00-20:30)</h3>
+<p>```</p>
+<p>17:00 เข้าออนเซ็น</p>
+<p>↓ แช่ Rotemburo ชม Golden Hour</p>
+<p>19:00 อาหารเย็นพิเศษ + เค้กวันเกิด</p>
+<p>↓</p>
+<p>20:30 Taxi กลับที่พัก (15 นาที)</p>
+<p>21:00 ถึงโรงแรม</p>
+<p>```</p>
+
+<p>---</p>
+
+<p>## 🚖 ข้อมูล Taxi สำรอง</p>
+
+<h3>จุดเรียก Taxi</h3>
+<li><strong>หน้า Fujiyama Onsen</strong> - มี Taxi Stand</li>
+<li><strong>โทรเรียก</strong>: ขอร้านออนเซ็นช่วยเรียกให้</li>
+<li><strong>แอป GO Taxi</strong>: เหมือน Grab ญี่ปุ่น (ต้องลงทะเบียน)</li>
+
+<h3>ค่าใช้จ่าย Taxi</h3>
+<li><strong>Fujiyama Onsen → โรงแรม</strong>: <span data-jpy="1,500">¥1,500</span>-2,000</li>
+<li><strong>ระยะทาง</strong>: ~5-7 กม.</li>
+<li><strong>เวลา</strong>: 10-15 นาที</li>
+<li><strong>ทิป</strong>: ไม่ต้องให้ทิปในญี่ปุ่น</li>
+
+<h3>Plan B (ถ้า Taxi ไม่มี)</h3>
+1. <strong>รถรับส่งโรงแรม</strong> - โทรขอ (บางโรงแรมมีบริการเย็น)
+2. <strong>รถบัสทั่วไป</strong> - ถ้ายังมีให้บริการ
+3. <strong>เดินไปสถานี</strong> - ~20 นาที + รถไฟ Fujikyu Line
+
+<p>---</p>
+
+<p>## 📸 จุดถ่ายรูปสำคัญ</p>
+
+<h3>📷 Oshino Hakkai (เช้า 09:45)</h3>
+<li><strong>มุมเด็ด</strong>: บ่อน้ำใส + ฟูจิเบื้องหลัง</li>
+<li><strong>แสง</strong>: เช้านุ่ม เหมาะถ่ายคน</li>
+<li><strong>Props</strong>: น้ำแร่ฟูจิ, ขนมดั้งเดิม</li>
+
+<h3>📷 Mt. Fuji Ropeway (บ่าย 14:30)  </h3>
+<li><strong>มุมเด็ด</strong>: 360° จากยอด Tenjo Mountain</li>
+<li><strong>แสง</strong>: แจ่มใส เห็นรายละเอียดชัด</li>
+<li><strong>Props</strong>: ป้ายชื่อยอดเขา, กล้องโทรทัศน์</li>
+
+<h3>📷 Oishi Park (บ่าย 15:45)</h3>
+<li><strong>มุมเด็ด</strong>: ทุ่งหญ้า + ทะเลสาบ + ฟูจิ  </li>
+<li><strong>แสง</strong>: บ่ายสาย อบอุ่น</li>
+<li><strong>Props</strong>: ดอกไม้ตามฤดู, ม้านั่งริมทะเลสาบ</li>
+
+<h3>📷 Fujiyama Onsen (เย็น 18:00) ⭐⭐⭐</h3>
+<li><strong>มุมเด็ด</strong>: Rotemburo + Golden Hour ฟูจิ</li>
+<li><strong>แสง</strong>: สีทองสะท้อนน้ำ <strong>ห้ามพลาด!</strong></li>
+<li><strong>ข้อจำกัด</strong>: ไม่สามารถถ่ายรูปในออนเซ็นได้ (กฎญี่ปุ่น)</li>
+<li><strong>ทางเลือก</strong>: ถ่ายบรรยากาศภายนอก, อาหารเย็น</li>
+
+<p>---</p>
+
+<p>## 🍽️ ร้านอาหารแนะนำ</p>
+
+<h3>ใน Fujiyama Onsen</h3>
+<h4>🥢 Kaiseki Set (อาหารญี่ปุ่นโบราณ)</h4>
+<li><strong>ราคา</strong>: <span data-jpy="3,500">¥3,500</span>/คน</li>
+<li><strong>เมนู</strong>: Sashimi, Tempura, Chawanmushi, ข้าวญี่ปุ่น</li>
+<li><strong>จุดเด่น</strong>: วิวฟูจิขณะทานข้าว</li>
+
+<h4>🍜 Houtou Special  </h4>
+<li><strong>ราคา</strong>: <span data-jpy="2,200">¥2,200</span>/คน</li>
+<li><strong>คือ</strong>: อุด้งหนาในซุปฟักทอง (เมนูดังคาวากุจิโกะ)</li>
+<li><strong>เหมาะ</strong>: เด็กๆ ชอบ</li>
+
+<h4>🎂 เค้กวันเกิด</h4>
+<li><strong>ขอได้</strong>: แจ้งตอนสั่งอาหาร</li>
+<li><strong>ราคา</strong>: <span data-jpy="1,500">¥1,500</span></li>
+<li><strong>รูปแบบ</strong>: เค้กญี่ปุ่นน่ารัก</li>
+
+<h3>ใกล้ Kawaguchiko Station</h3>
+<h4>🥢 Houtou Fudou (ร้านดัง)</h4>
+<li><strong>ระยะ</strong>: เดิน 5 นาทีจากสถานี  </li>
+<li><strong>เมนูดัง</strong>: Houtou <span data-jpy="1,800">¥1,800</span>/คน</li>
+<li><strong>บรรยากาศ</strong>: แบบดั้งเดิม</li>
+
+<h4>🍱 Lake Kawaguchiko Restaurant</h4>
+<li><strong>ระยะ</strong>: ริมทะเลสาบ เดิน 10 นาที</li>
+<li><strong>จุดเด่น</strong>: วิวฟูจิขณะทานข้าว</li>
+<li><strong>ราคา</strong>: <span data-jpy="2,500">¥2,500</span>-3,500/คน</li>
+
+<p>---</p>
+
+<p>## ⚠️ ข้อควรระวัง</p>
+
+<h3>มารยาทออนเซ็น</h3>
+1. <strong>อาบน้ำสะอาด</strong> ก่อนลงบ่อ (นั่งบนเก้าอี้เล็ก)
+2. <strong>ห้ามใส่ชุดว่ายน้ำ</strong> - เปลือยกายเท่านั้น
+3. <strong>ห้ามเอาผ้าเช็ดตัว</strong> ลงในบ่อน้ำ
+4. <strong>ห้ามถ่ายรูป</strong> ในบริเวณออนเซ็น
+5. <strong>เก็บของส่วนตัว</strong> ในตู้ล็อกเกอร์
+
+<h3>เวลารถบัส</h3>
+<li><strong>จำเวลาเที่ยวสุดท้าย</strong>: Red Line 17:30, Green Line 17:00</li>
+<li><strong>ถ้าพลาด</strong>: ต้องใช้ Taxi (แพงกว่า ~<span data-jpy="1,800">¥1,800</span>)</li>
+<li><strong>วันหยุด</strong>: ตารางอาจเปลี่ยนแปลง</li>
+
+<h3>สภาพอากาศ</h3>
+<li><strong>มีนาคม</strong>: อุณหภูมิ 5-10°C </li>
+<li><strong>เตรียม</strong>: เสื้อกันหนาว, ผ้าพันคอ</li>
+<li><strong>ออนเซ็น</strong>: อากาศหนาว + น้ำร้อน = สวรรค์!</li>
+
+<p>---</p>
+
+<p>## 💡 เคล็ดลับเพิ่มเติม</p>
+
+<h3>ประหยัดเงิน</h3>
+<li><strong>ซื้อ Bus Pass</strong> แน่นอน (คุ้มแม้ไปแค่ 2-3 ที่)</li>
+<li><strong>ทานข้าวในออนเซ็น</strong> แทนร้านแยก (สะดวก + ประหยัดเวลา)</li>
+<li><strong>เก็บใบเสร็จ</strong> Tax-Free ถ้าซื้อของ ><span data-jpy="5,000">¥5,000</span></li>
+
+<h3>ประหยัดเวลา  </h3>
+<li><strong>เตรียม IC Card</strong> หรือเงินสดพอดี</li>
+<li><strong>Download แผนที่ออฟไลน์</strong> (Google Maps)</li>
+<li><strong>บันทึกเบอร์โรงแรม</strong> ในโทรศัพท์</li>
+
+<h3>ความทรงจำ</h3>
+<li><strong>เก็บตั๋วรถบัส</strong> เป็นที่ระลึก</li>
+<li><strong>ซื้อโปสการ์ด</strong> ส่งให้ตัวเอง  </li>
+<li><strong>บันทึกวิดีโอ</strong> Rotemburo (ภายนอก) เป็นความทรงจำ</li>
+
+</ul>
+<strong>วันเกิดปีนี้จะน่าจดจำมากแน่นอน! 🎂🏔️♨️</strong>
+        </section>
+            
+        <section id="main_info">
+            <h1>
+                <span class="th th-block">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+                <span class="en en-block">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+                
+            </h1>
+            
+
+<p>## ข้อมูลพื้นฐาน</p>
+<ul>
+<li><strong>วันเดินทาง</strong>: 6-13 มีนาคม 2026 (8 วัน 7 คืน)</li>
+<li><strong>ผู้เดินทาง</strong>: </li>
+<li>🧍 Arilek Thummontree (คุณพ่อ) - ผู้จัดการทุกอย่างในทริป</li>
+<li>👧 Nuntnaphat Thummontree (พอใจ) - อายุจะครบ 11 ขวบ วันที่ 9 มีนาคม 2026</li>
+<li><strong>เส้นทาง</strong>: Narita → Tokyo → Kawaguchiko → Gala Yuzawa → Tokyo</li>
+<li><strong>งบประมาณรวม</strong>: ประมาณ 100,000 บาท</li>
+
+<p>## ความสนใจของพอใจ</p>
+<li>ชอบอนิเมะ โดยเฉพาะจาก Ghibli Studio, Your Name</li>
+<li>ชอบ Sanrio (Hello Kitty, My Melody)</li>
+<li>วันเกิด: 9 มีนาคม 2026 (จะฉลองที่คาวากุจิโกะ)</li>
+
+<p>## ไฮไลท์หลักของทริป</p>
+1. <strong>ของขวัญวันเกิด</strong>: กล้องดิจิตอล (วันแรก)
+2. <strong>วันเกิดพิเศษ</strong>: ฉลองที่คาวากุจิโกะพร้อมวิวฟูจิ
+3. <strong>อนิเมะ pilgrimage</strong>: Akihabara, Suga Shrine (Your Name)
+4. <strong>ธรรมชาติ</strong>: เจดีย์แดง, หมู่บ้านน้ำใส, เล่นหิมะ
+5. <strong>ช้อปปิ้ง</strong>: Sanrio, GU, Ameyoko Market
+
+<p>## การเดินทาง</p>
+<li><strong>ไป</strong>: SL394 (06:15 DMK → 16:20 NRT) - รหัสจอง MYOWFY</li>
+<li><strong>กลับ</strong>: XJ607 (21:15 NRT → 02:40+1 DMK) - รหัสจอง GY76YF</li></ul>
+
+        </section>
+            
+        <section id="overview">
+            <h1>
+                <span class="th th-block">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+                <span class="en en-block">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+                
+            </h1>
+            
+
+<p>📅 ศุกร์ 6 – ศุกร์ 13 มีนาคม 2026</p>
+
+<p>✈️ ผู้เดินทาง: 🧍 Arilek (คุณพ่อ) 👧 Nuntnaphat (พอใจ)</p>
+<p>🗺️ เส้นทาง: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</p>
+
+<p>## ภาพรวมการเดินทางและกิจกรรม</p>
+
+<h3>วิธีการใช้งานแผนการเดินทาง</h3>
+<p>แผนการเดินทางรวมอยู่ในไฟล์เดียวเพื่อความสะดวกในการใช้งานออฟไลน์</p>
+
+<p>คลิกที่หัวข้อ ℹ️ เพื่อขยายดูรายละเอียดเพิ่มเติม และใช้ปุ่ม "กลับไปหน้าหลัก" ด้านล่างขวาเพื่อไปยังสารบัญ</p>
+
+<p>ใช้ปุ่ม TH/EN ที่มุมบนขวา (ลอยอยู่) เพื่อสลับภาษา</p>
+
+<h3>ไทม์ไลน์การเข้าพักโรงแรมแต่ละคืน</h3>
+
+<strong>6 มี.ค. 18:30:</strong> 🏨 เข้าพัก <strong>Shinagawa Tobu Hotel</strong> (ย่านชินากาวะ)
+<p>➜ เดินทางสะดวกจากสนามบินนาริตะ → N'EX → ใกล้สถานี Shinagawa</p>
+⏰ <em>Check-out: 7 มี.ค. 07:00</em>
+<p>🔍 โรงแนะนำ: Shinagawa Tobu Hotel, Mitsui Garden Gotanda, JR Tokyu Meguro</p>
+
+<strong>7 มี.ค. 15:00:</strong> 🏨 เข้าพัก <strong>Super Hotel JR Ikebukuro</strong> (อิเคะบุคุโระ)
+<p>➜ เที่ยวสะดวก: Asakusa, Skytree, Akihabara / มี Animate, Ghibli shop</p>
+⏰ <em>Check-out: 8 มี.ค. 07:00</em>
+<p>🔍 โรงแนะนำ: Super Hotel JR Ikebukuro, Daiwa Roynet Ikebukuro, Hotel Wing Ikebukuro</p>
+
+<strong>8 มี.ค. 14:00:</strong> 🏨 เข้าพัก <strong>Fuji View Hotel</strong> หรือเทียบเท่า (คาวากุจิโกะ)
+<p>➜ ใกล้เจดีย์แดง Chureito / หมู่บ้านน้ำใส / วิวฟูจิสวย / ฉลองวันเกิดพอใจ</p>
+⏰ <em>Check-out: 10 มี.ค. 11:00</em>
+<p>🔍 โรงแนะนำ: Fuji View Hotel, Fujikawaguchiko Resort Hotel, K's House Mt.Fuji</p>
+
+<strong>10 มี.ค. 13:00:</strong> 🏨 เข้าพัก <strong>Hotel Sardonyx Ueno</strong> หรือเทียบเท่า (อุเอโนะ)
+<p>➜ ไป Gala Yuzawa ง่าย / ใกล้ Donki, GU, Bic / เดิน Ueno Park สะดวก</p>
+⏰ <em>Check-out: 13 มี.ค. 08:00</em>
+<p>🔍 โรงแนะนำ: Hotel Sardonyx Ueno, Mitsui Garden Ueno, APA Hotel Keisei-Ueno Ekimae</p>
+        </section>
+            
+        <section id="shopping_guide">
+            <h1>
+                <span class="th th-block">คู่มือช้อปปิ้งและของฝาก</span>
+                <span class="en en-block">คู่มือช้อปปิ้งและของฝาก</span>
+                
+            </h1>
+            
+
+<p>## 🎯 Shopping List สำหรับพอใจ (อนิเมะ & Sanrio)</p>
+
+<h3>Akihabara - อนิเมะเมกก้า</h3>
+<h4>Animate Akihabara (หลัก)</h4>
+<ul>
+<li><strong>Studio Ghibli</strong>: </li>
+<li>Totoro ตุ๊กตา, พวงกุญแจ (<span data-jpy="800">¥800</span>-3,000)</li>
+<li>Princess Mononoke สินค้า (<span data-jpy="500">¥500</span>-2,500)</li>
+<li>Spirited Away ของสะสม (<span data-jpy="1,000">¥1,000</span>-5,000)</li>
+<li><strong>Your Name (Kimi no Na wa)</strong>:</li>
+<li>Mitsuha & Taki figure (<span data-jpy="2,000">¥2,000</span>-8,000)</li>
+<li>Soundtrack CD (<span data-jpy="3,000">¥3,000</span>)</li>
+<li>Art Book (<span data-jpy="2,500">¥2,500</span>)</li>
+<li><strong>สินค้าทั่วไป</strong>:</li>
+<li>Anime Poster (<span data-jpy="300">¥300</span>-800)</li>
+<li>Character Badge (<span data-jpy="200">¥200</span>-500)</li>
+<li>Stationery Set (<span data-jpy="800">¥800</span>-2,000)</li>
+
+<h4>ร้านอื่นๆ ใน Akihabara</h4>
+<li><strong>Mandarake</strong> - มังงะและของเก่า</li>
+<li><strong>Yodobashi Akiba</strong> - ของเล่นและเกม</li>
+<li><strong>Amiami</strong> - Figure และโมเดล</li>
+
+<h3>Sanrio Shopping</h3>
+<h4>Sanrio Akihabara Store</h4>
+<li><strong>Hello Kitty</strong>:</li>
+<li>กระเป๋าใส่ดินสอ (<span data-jpy="800">¥800</span>-1,500)</li>
+<li>ตุ๊กตาเล็ก (<span data-jpy="1,200">¥1,200</span>-3,000)</li>
+<li>เสื้อผ้า (<span data-jpy="2,000">¥2,000</span>-5,000)</li>
+<li><strong>My Melody</strong>:</li>
+<li>สมุด & เครื่องเขียน (<span data-jpy="500">¥500</span>-1,200)</li>
+<li>พวงกุญแจ (<span data-jpy="600">¥600</span>-1,000)</li>
+<li><strong>Pompompurin</strong>:</li>
+<li>หมอน, ผ้าห่ม (<span data-jpy="2,000">¥2,000</span>-4,000)</li>
+
+<h4>Sanrio Puroland Store (ถ้ามีเวลา)</h4>
+<li>สินค้าพิเศษที่หาที่อื่นไม่ได้</li>
+<li>ของที่ระลึกจากธีมปาร์ค</li>
+
+<p>## 👕 เสื้อผ้า - Japanese Fashion</p>
+
+<h3>GU (ราคาประหยัด)</h3>
+<h4>สำหรับพอใจ</h4>
+<li><strong>Kids Collection</strong>:</li>
+<li>เสื้อยืดการ์ตูน (<span data-jpy="790">¥790</span>-1,290)</li>
+<li>เสื้อกันหนาวน่ารัก (<span data-jpy="1,990">¥1,990</span>-2,990)</li>
+<li>กางเกงยีนส์ (<span data-jpy="1,290">¥1,290</span>-1,990)</li>
+<li><strong>Accessories</strong>:</li>
+<li>หมวก, ถุงเท้า (<span data-jpy="290">¥290</span>-590)</li>
+<li>กระเป๋าสะพาย (<span data-jpy="1,290">¥1,290</span>-1,990)</li>
+
+<h4>สำหรับผู้ใหญ่</h4>
+<li>เสื้อกันหนาว Heattech style (<span data-jpy="1,990">¥1,990</span>-2,990)</li>
+<li>Jacket & Coat (<span data-jpy="2,990">¥2,990</span>-4,990)</li>
+
+<h3>UNIQLO (คุณภาพดี)</h3>
+<li><strong>Heattech</strong>: เสื้อชั้นในกันหนาว (<span data-jpy="990">¥990</span>-1,290)</li>
+<li><strong>Ultra Light Down</strong>: เสื้อกันหนาวบาง (<span data-jpy="3,990">¥3,990</span>-5,990)</li>
+<li><strong>UT Collection</strong>: เสื้อยืดลิขสิทธิ์ (<span data-jpy="1,290">¥1,290</span>-1,990)</li>
+
+<p>## 🛍️ ช้อปปิ้งแต่ละวัน</p>
+
+<h3>วันที่ 1 - Gotanda</h3>
+<li><strong>Bic Camera</strong>: กล้องดิจิตอล (<span data-jpy="35,000">¥35,000</span>-45,000)</li>
+<li><strong>GU Gotanda</strong>: เสื้อกันหนาว (<span data-jpy="2,000">¥2,000</span>-3,000)</li>
+
+<h3>วันที่ 2 - Akihabara  </h3>
+<li><strong>Animate</strong>: อนิเมะสินค้า (<span data-jpy="5,000">¥5,000</span>-10,000)</li>
+<li><strong>Akihabara Radio Kaikan</strong>: Figure และของสะสม</li>
+
+<h3>วันที่ 5 - Ueno District</h3>
+<li><strong>GU Marui Ueno</strong>: เสื้อผ้าเพิ่มเติม (<span data-jpy="3,000">¥3,000</span>-5,000)</li>
+<li><strong>Sanrio Akihabara</strong>: ของ Hello Kitty (<span data-jpy="3,000">¥3,000</span>-8,000)</li>
+<li><strong>Ameyoko Market</strong>: ของฝากราคาถูK (<span data-jpy="2,000">¥2,000</span>-5,000)</li>
+
+<h3>วันที่ 8 - สุดท้าย</h3>
+<li><strong>Ameyoko</strong>: ของฝากสำหรับเพื่อน ครอบครัว</li>
+<li><strong>Narita Duty Free</strong>: สินค้าปลอดภาษี</li>
+
+<p>## 🍫 ของฝาก (Omiyage)</p>
+
+<h3>ขนมและอาหาร</h3>
+<h4>Must-Buy Sweets</h4>
+<li><strong>Tokyo Banana</strong>: <span data-jpy="1,080">¥1,080</span>/8 ชิ้น</li>
+<li><strong>Shiroi Koibito</strong>: <span data-jpy="1,296">¥1,296</span>/18 ชิ้น  </li>
+<li><strong>KitKat รสพิเศษ</strong>: <span data-jpy="500">¥500</span>-800/กล่อง</li>
+<li>Matcha, Sake, Wasabi, Purple Sweet Potato</li>
+<li><strong>Royce' Nama Chocolate</strong>: <span data-jpy="756">¥756</span>-1,080</li>
+<li><strong>Pocky Limited Edition</strong>: <span data-jpy="200">¥200</span>-400</li>
+
+<h4>จาก Ameyoko Market</h4>
+<li><strong>อาหารทะเลแห้ง</strong>: <span data-jpy="800">¥800</span>-2,000</li>
+<li><strong>ชาเขียวคุณภาพดี</strong>: <span data-jpy="1,000">¥1,000</span>-3,000</li>
+<li><strong>สาหร่ายแผ่น</strong>: <span data-jpy="300">¥300</span>-800</li>
+<li><strong>ข้าวญี่ปุ่น</strong>: ฿500-1,200/ถุง</li>
+
+<h3>เครื่องสำอาง/สกินแคร์</h3>
+<h4>จาก Don Quijote</h4>
+<li><strong>มาส์กหน้า</strong>: <span data-jpy="500">¥500</span>-1,500/แพ็ค</li>
+<li><strong>ครีมบำรุง</strong>: <span data-jpy="800">¥800</span>-2,500</li>
+<li><strong>เซรั่ม</strong>: <span data-jpy="1,200">¥1,200</span>-3,000</li>
+<li><strong>แบรนด์แนะนำ</strong>: Shiseido, DHC, Canmake</li>
+
+<h3>ของใช้ในบ้าน</h3>
+<li><strong>ผ้าเช็ดตัวญี่ปุ่น</strong>: <span data-jpy="800">¥800</span>-2,000</li>
+<li><strong>กระดาษซับมัน</strong>: <span data-jpy="200">¥200</span>-500</li>
+<li><strong>ถุงเท้าน่ารัก</strong>: <span data-jpy="300">¥300</span>-800</li>
+<li><strong>ตะเกียบแฟนซี</strong>: <span data-jpy="500">¥500</span>-1,500</li>
+
+<p>## 💰 งบประมาณช้อปปิ้ง</p>
+
+<h3>แบ่งตามหมวด</h3>
+<p>| หมวด | งบเดิม | งบปรับ | หมายเหตุ |</p>
+<p>|------|--------|--------|---------|</p>
+<p>| 📷 กล้อง (ของขวัญ) | <span data-jpy="45,000">¥45,000</span> | <span data-jpy="40,000">¥40,000</span> | ลดสเป็ครุ่นนิดหน่อย |</p>
+<p>| 🎌 อนิเมะ/Sanrio | <span data-jpy="15,000">¥15,000</span> | <span data-jpy="12,000">¥12,000</span> | เลือกของสำคัญ |</p>
+<p>| 👕 เสื้อผ้า | <span data-jpy="8,000">¥8,000</span> | <span data-jpy="6,000">¥6,000</span> | GU แทน UNIQLO |</p>
+<p>| 🍭 ของฝาก/ขนม | <span data-jpy="12,000">¥12,000</span> | <span data-jpy="10,000">¥10,000</span> | เลือกแบรนด์ดัง |</p>
+<p>| 💄 เครื่องสำอาง | <span data-jpy="8,000">¥8,000</span> | <span data-jpy="6,000">¥6,000</span> | Don Quijote ราคาดี |</p>
+<p>| 🏠 ของใช้ | <span data-jpy="5,000">¥5,000</span> | <span data-jpy="3,000">¥3,000</span> | จำเป็นเท่านั้น |</p>
+| <strong>รวม</strong> | <strong><span data-jpy="93,000">¥93,000</span></strong> | <strong><span data-jpy="77,000">¥77,000</span></strong> | <strong>ประหยัด <span data-jpy="16,000">¥16,000</span></strong> |
+
+<h3>แบ่งตามวัน</h3>
+<p>| วัน | สถานที่ | งบประมาณ | ของที่ซื้อ |</p>
+<p>|-----|---------|-----------|-----------|</p>
+<p>| 1 | Gotanda | <span data-jpy="42,000">¥42,000</span> | กล้อง + เสื้อกันหนาว |</p>
+<p>| 2 | Akihabara | <span data-jpy="12,000">¥12,000</span> | อนิเมะสินค้า |</p>
+<p>| 5 | Ueno/Akihabara | <span data-jpy="15,000">¥15,000</span> | Sanrio + เสื้อผ้า |</p>
+<p>| 8 | Ameyoko/Airport | <span data-jpy="8,000">¥8,000</span> | ของฝาก + Duty Free |</p>
+| <strong>รวม</strong> | | <strong><span data-jpy="77,000">¥77,000</span></strong> | <strong>(<span data-jpy="18,066">¥18,066</span>)</strong> |
+
+<p>## 🛒 ร้านและห้างสรรพสินค้าแนะนำ</p>
+
+<h3>Electronics & Cameras</h3>
+<h4>Bic Camera (หลัก)</h4>
+<li><strong>สาขา</strong>: Gotanda, Shinjuku, Akihabara</li>
+<li><strong>Tax-Free</strong>: ซื้อเกิน <span data-jpy="5,000">¥5,000</span></li>
+<li><strong>Point Card</strong>: สะสมแต้มได้</li>
+<li><strong>การันตี</strong>: สินค้าของแท้</li>
+
+<h4>Yodobashi Camera</h4>
+<li><strong>ข้อดี</strong>: สต็อกเยอะ, ราคาแข่งขัน</li>
+<li><strong>สาขาใหญ่</strong>: Akihabara, Shinjuku</li>
+
+<h3>Discount Stores</h3>
+<h4>Don Quijote (Donki) ⭐</h4>
+<li><strong>เปิด</strong>: 24 ชั่วโมง (บางสาขา)</li>
+<li><strong>สินค้า</strong>: ทุกอย่าง - ขนม, เครื่องสำอาง, ของใช้</li>
+<li><strong>ราคา</strong>: ถูกกว่าห้างทั่วไป 20-30%</li>
+<li><strong>สาขาแนะนำ</strong>: Ueno, Shibuya, Shinjuku</li>
+
+<h4>ダイソー Daiso (<span data-jpy="100">¥100</span> Shop)</h4>
+<li><strong>ราคา</strong>: ส่วนใหญ่ <span data-jpy="110">¥110</span> (รวมภาษี)</li>
+<li><strong>สินค้า</strong>: เครื่องใช้, เครื่องเขียน, ของตกแต่ง</li>
+<li><strong>ข้อดี</strong>: ของฝากราคาถูก</li>
+
+<h3>Fashion</h3>
+<h4>Fast Fashion Brands</h4>
+<li><strong>GU</strong>: ราคาถูกกว่า UNIQLO</li>
+<li><strong>UNIQLO</strong>: คุณภาพดี, Heattech</li>
+<li><strong>H&M</strong>: แฟชั่นยุโรป</li>
+<li><strong>ZARA</strong>: แบรนด์สเปน</li>
+
+<h4>Department Stores</h4>
+<li><strong>Marui</strong>: GU, แบรนด์ญี่ปุ่น</li>
+<li><strong>Lumine</strong>: แฟशั่นคุณภาพดี</li>
+<li><strong>Takashimaya</strong>: หรูหรา</li>
+
+<p>## 💳 Tax-Free Shopping Guide</p>
+
+<h3>วิธีการขอ Tax-Free</h3>
+1. <strong>ซื้อเกิน <span data-jpy="5,000">¥5,000</span></strong> ต่อร้าน ต่อวัน
+2. <strong>แสดงพาสปอร์ต</strong> ตอนจ่ายเงิน
+3. <strong>กรอกแบบฟอร์ม</strong> Tax-Free
+4. <strong>เก็บใบเสร็จ</strong> สำหรับตรวจที่สนามบิน
+5. <strong>ห้ามแกะซีล</strong> ถุงสินค้า (บางประเภท)
+
+<h3>สินค้าที่ขอ Tax-Free ได้</h3>
+<li><strong>General Goods</strong>: เสื้อผ้า, กระเป๋า, รองเท้า, เครื่องประดับ</li>
+<li><strong>Consumables</strong>: อาหาร, ขนม, เครื่องสำอาง, ยา</li>
+<li><strong>Electronics</strong>: กล้อง, มือถือ, เกม</li>
+
+<h3>ข้อจำกัด</h3>
+<li><strong>อยู่ในญี่ปุ่นไม่เกิน 6 เดือน</strong></li>
+<li><strong>ออกจากญี่ปุ่นภายใน 30 วัน</strong></li>
+<li><strong>ใช้ประโยชน์ส่วนตัว</strong> (ไม่ขายต่อ)</li>
+
+<p>## 🎁 ของขวัญพิเศษสำหรับพอใจ</p>
+
+<h3>วันเกิด Special Items</h3>
+<h4>กล้องดิจิตอล (วันที่ 1)</h4>
+<li><strong>งบประมาณ</strong>: <span data-jpy="40,000">¥40,000</span> (<span data-jpy="45,000">¥45,000</span> เดิม)</li>
+<li><strong>รุ่นแนะนำ</strong>:</li>
+<li>Canon PowerShot SX740 HS (<span data-jpy="38,000">¥38,000</span>)</li>
+<li>Sony Cyber-shot DSC-WX500 (<span data-jpy="35,000">¥35,000</span>)</li>
+<li>Fujifilm FinePix XP140 (<span data-jpy="32,000">¥32,000</span>)</li>
+
+<h4>Anime Collection Set (วันที่ 2)</h4>
+<li><strong>Totoro Set</strong>: ตุ๊กตา + พวงกุญแจ + สมุด (<span data-jpy="5,000">¥5,000</span>)</li>
+<li><strong>Your Name Set</strong>: Figure + Soundtrack + โปสเตอร์ (<span data-jpy="8,000">¥8,000</span>)</li>
+
+<h4>Sanrio Paradise (วันที่ 5)</h4>
+<li><strong>Hello Kitty</strong>: กระเป๋าใหญ่ + ตุ๊กตา (<span data-jpy="6,000">¥6,000</span>)</li>
+<li><strong>My Melody</strong>: ชุดเครื่องเขียนครบเซ็ต (<span data-jpy="3,000">¥3,000</span>)</li>
+
+<h3>Memory Items (ความทรงจำ)</h3>
+<li><strong>Photo Album</strong>: สำหรับใส่รูปถ่าย (<span data-jpy="1,500">¥1,500</span>)</li>
+<li><strong>Travel Journal</strong>: สมุดบันทึกการเดินทาง (<span data-jpy="800">¥800</span>)</li>
+<li><strong>Postcards</strong>: โปสการ์ดจากทุกสถานที่ (<span data-jpy="100">¥100</span>/ใบ)</li>
+
+<p>## 🚫 สิ่งที่ไม่ควรซื้อ (เพื่อประหยัดงบ)</p>
+
+<h3>Overpriced Items</h3>
+<li><strong>ในสถานที่ท่องเที่ยว</strong>: แพงกว่าปกติ 2-3 เท่า</li>
+<li><strong>สนามบิน</strong> (ยกเว้น Duty Free): ราคาสูง</li>
+<li><strong>Tokyo Tower/Skytree Shop</strong>: ของที่ระลึกแพง</li>
+
+<h3>ของที่มีในไทยแล้ว</h3>
+<li><strong>เกม PlayStation/Nintendo</strong>: ราคาเท่ากัน</li>
+<li><strong>Apple Products</strong>: แพงกว่าไทย</li>
+<li><strong>แบรนด์นาฬิกา</strong>: Seiko, Citizen ราคาไม่ต่าง</li>
+
+<h3>Heavy Items (หนักเกินไป)</h3>
+<li><strong>หนังสือมังงะ</strong>: หนัก แนะนำซื้อ digital</li>
+<li><strong>เครื่องใช้ไฟฟ้าขนาดใหญ่</strong>: ปัญหาแรงดันไฟ</li>
+<li><strong>เซรามิค/แก้ว</strong>: เสี่ยงแตก</li>
+
+<p>## 📦 Tips การเดินทางกับของช้อปปิ้ง</p>
+
+<h3>การบรรจุกระเป๋า</h3>
+<li><strong>Hand Carry</strong>: ของแตกง่าย, มีค่า (กล้อง, figure)</li>
+<li><strong>Check-in</strong>: เสื้อผ้า, ขนม, ของใช้</li>
+<li><strong>แยกแพ็ค</strong>: ไม่ใส่ของหนักรวมกัน</li>
+
+<h3>การส่งของ</h3>
+<li><strong>Yamato Transport</strong>: ส่งกระเป๋าจากโรงแรม → สนามบิน</li>
+<li><strong>Japan Post</strong>: ส่งกลับไทยถ้าของเยอะเกิน</li>
+<li><strong>ค่าใช้จ่าย</strong>: <span data-jpy="2,000">¥2,000</span>-5,000 ตามน้ำหนัก</li>
+
+<h3>การแบ่งน้ำหนัก</h3>
+<li><strong>กระเป๋าถือ</strong>: 7 กก. (ต่อคน)</li>
+<li><strong>กระเป๋าใต้ท้อง</strong>: 20 กก. (ต่อคน)</li>
+<li><strong>เผื่อไว้</strong>: 2-3 กก. สำหรับของฝาก</li>
+
+<p>## 🛍️ Shopping Schedule Summary</p>
+
+<h3>Day-by-Day Shopping Plan</h3>
+<strong>วันที่ 1</strong>: กล้อง (<span data-jpy="40,000">¥40,000</span>) + เสื้อกันหนาว (<span data-jpy="2,000">¥2,000</span>)
+<strong>วันที่ 2</strong>: อนิเมะสินค้า Animate (<span data-jpy="12,000">¥12,000</span>)
+<strong>วันที่ 5</strong>: Sanrio (<span data-jpy="8,000">¥8,000</span>) + GU เสื้อผ้า (<span data-jpy="4,000">¥4,000</span>)
+<strong>วันที่ 8</strong>: ของฝาก Ameyoko (<span data-jpy="8,000">¥8,000</span>) + Duty Free (<span data-jpy="3,000">¥3,000</span>)
+
+<strong>Total Shopping Budget</strong>: <span data-jpy="77,000">¥77,000</span> (฿18,066)
+<strong>Savings from Original</strong>: ฿3,756
+
+<p>## 🎯 Final Checklist</p>
+
+<h3>ก่อนเดินทาง</h3>
+<li>[ ] ดาวน์โหลดแอป Google Translate (กล้องแปลภาษา)</li>
+<li>[ ] เตรียมรายชื่อสินค้าที่ต้องการ (ภาษาญี่ปุ่น)</li>
+<li>[ ] เช็คอัตราแลกเปลี่ยนล่าสุด</li>
+<li>[ ] ถือเงินสดเยนพอสำหรับร้านเล็ก</li>
+
+<h3>ขานกลับ</h3>
+<li>[ ] เช็คใบเสร็จ Tax-Free ทั้งหมด</li>
+<li>[ ] แยกของ Tax-Free (อย่าแกะซีล)</li>
+<li>[ ] ชั่งน้ำหนักกระเป๋า</li>
+<li>[ ] เตรียมเอกสารผ่านด่านศุลกากร</li>
+
+</ul>
+<strong>พร้อมสำหรับการช้อปปิ้งที่ยอดเยี่ยม! 🛍️✨</strong>
+        </section>
+            
+        <section id="timeline">
+            <h1>
+                <span class="th th-block">ไทม์ไลน์การเดินทาง</span>
+                <span class="en en-block">เที่ยวญี่ปุ่น Porjai 2026</span>
+                
+            </h1>
+            
+
+<h3>🗓️ <strong>6 มี.ค. 2026 (ศุกร์)</strong></h3>
+
+<h4>✈️ การบิน - ไปญี่ปุ่น</h4>
+<strong>06:15</strong> 🛫 <strong>SL 394</strong> | รหัสจองสายการบิน: <strong>MYOWFY</strong>
+<ul>
+<li><strong>Bangkok (DMK)</strong> → Don Mueang International Airport</li>
+<li><strong>Tokyo (NRT)</strong> → Narita International Airport  </li>
+<li><strong>เวลาบิน:</strong> 8 ชม. 5 น.</li>
+<li><strong>ถึง:</strong> 16:20 (เวลาญี่ปุ่น)</li>
+
+<h4>🏨 ที่พัก</h4>
+<strong>15:00</strong> 🏢 <strong>Shinagawa Tobu Hotel</strong> | หมายเลขจอง: <strong>1891056461</strong>
+<li><strong>เช็คอิน:</strong> 6 มี.ค. (15:00) → 7 มี.ค. (11:00)</li>
+<li><strong>ห้อง:</strong> โตเกียว | 2 ผู้ใหญ่</li>
+<li><strong>ระยะเวลา:</strong> 1 คืน</li>
+
+<p>---</p>
+
+<h3>🗓️ <strong>7 มี.ค. 2026 (เสาร์)</strong></h3>
+
+<h4>🏨 ที่พัก - เปลี่ยนโรงแรม</h4>
+<strong>11:00</strong> 🚶‍♂️ <strong>เช็คเอาท์</strong> • Shinagawa Tobu Hotel
+
+<strong>15:00</strong> 🏢 <strong>โตเกียว</strong> | หมายเลขจอง: <strong>ยังไม่ระบุ</strong>
+<li><strong>โรงแรม:</strong> ย่านอิเคะบุคุโระ  </li>
+<li><strong>ระยะเวลา:</strong> 7 มี.ค. - 8 มี.ค. • 2 ผู้ใหญ่</li>
+
+<p>---</p>
+
+<h3>🗓️ <strong>8 มี.ค. 2026 (อาทิตย์)</strong></h3>
+
+<h4>🏨 ที่พัก - ไปคาวากุจิโกะ</h4>
+<strong>15:00</strong> 🏔️ <strong>Kawaguchiko Country Cottage Ban</strong> | หมายเลขจอง: <strong>1902671581</strong>
+<li><strong>เช็คอิน:</strong> 8 มี.ค. (15:00) → 10 มี.ค. (10:00)</li>
+<li><strong>ที่ตั้ง:</strong> ฟูจิ คาวากุจิโกะ</li>
+<li><strong>ระยะเวลา:</strong> 2 คืน</li>
+
+<p>---</p>
+
+<h3>🗓️ <strong>10 มี.ค. 2026 (อังคาร)</strong></h3>
+
+<h4>🎯 ที่พัก</h4>
+<strong>เช็คเอาท์</strong> • Kawaguchiko Country Cottage Ban
+
+<h4>🏨 ที่พัก - กลับโตเกียว</h4>
+<strong>13:00</strong> 🏢 <strong>ฟูจิ คาวากุจิโกะ</strong> | หมายเลขจอง: <strong>1891021791</strong>
+<li><strong>โรงแรม:</strong> ย่านอุเอโนะ, โตเกียว</li>
+<li><strong>ระยะเวลา:</strong> 10 มี.ค. - 13 มี.ค. • 2 ผู้ใหญ่</li>
+
+<p>---</p>
+
+<h3>🗓️ <strong>13 มี.ค. 2026 (ศุกร์)</strong></h3>
+
+<h4>✈️ การบิน - กลับไทย</h4>
+<strong>21:15</strong> 🛫 <strong>XJ 607</strong> | รหัสจองสายการบิน: <strong>GY76YF</strong>
+<li><strong>Tokyo (NRT)</strong> → Narita International Airport</li>
+<li><strong>Bangkok (DMK)</strong> → Don Mueang International Airport</li>
+<li><strong>เวลาบิน:</strong> 7 ชม. 25 น.</li>
+<li><strong>ถึง:</strong> 14 มี.ค. 02:40 (เวลาไทย)</li>
+
+<h4>📋 หมายเหตุสำคัฏ</h4>
+⚠️ <strong>ท่านจะต้องเดินทางไปสนามบินล่วงหน้า 14 มี.ค.</strong>
+
+<p>---</p>
+
+## 📊 <strong>สรุปภาพรวม</strong>
+
+<h3>✈️ <strong>การบิน</strong></h3>
+<li><strong>ไป:</strong> SL 394 | 6 มี.ค. 06:15 - 16:20</li>
+<li><strong>กลับ:</strong> XJ 607 | 13 มี.ค. 21:15 - 14 มี.ค. 02:40</li>
+
+<h3>🏨 <strong>ที่พัก (7 คืน)</strong></h3>
+1. <strong>Shinagawa</strong> (1 คืน) - 6-7 มี.ค.
+2. <strong>Ikebukuro</strong> (1 คืน) - 7-8 มี.ค.
+3. <strong>Kawaguchiko</strong> (2 คืน) - 8-10 มี.ค. 🎂
+4. <strong>Ueno</strong> (3 คืน) - 10-13 มี.ค.
+
+<h3>🎉 <strong>วันสำคัญ</strong></h3>
+<li><strong>9 มี.ค.:</strong> วันเกิดพอใจ ที่คาวากุจิโกะ</li>
+<li><strong>รวม:</strong> 8 วัน 7 คืน</li>
+
+<h3>💡 <strong>การเตรียมตัว</strong></h3>
+<li>✅ ตั๋วเครื่องบินยืนยันแล้ว</li>
+<li>✅ ที่พักจองบางแห่งแล้ว  </li>
+<li>⚠️ ต้องยืนยันที่พักอุเอโนะเพิ่มเติม</li>
+<li>⚠️ ตรวจสอบรถรับส่งที่คาวากุจิโกะ</li></ul>
+
+        </section>
+            
+        <section id="tokyo-trip-update">
+            <h1>
+                <span class="th th-block">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+                <span class="en en-block">เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026</span>
+                
+            </h1>
+            <ul class="timeline">
+
+
+<p>## สารบัญ</p>
+- <a href="#ภาพรวมการเดินทางและกิจกรรม" target="_blank">ภาพรวมการเดินทางและกิจกรรม</a>
+- <a href="#สภาพอากาศย้อนหลังและคาดการณ์-514-มีนาคม" target="_blank">สภาพอากาศย้อนหลังและคาดการณ์</a>
+- <a href="#วันที่-1-6-มีนาคม-2569-ศุกร์---เดินทางถึงนาริตะ--ชินากาวะ" target="_blank">วันที่ 1: 6 มีนาคม (ศุกร์)</a>
+- <a href="#วันที่-2-7-มีนาคม-2569-เสาร์---อาซากุสะ-asakusa-ล่องเรือ--ช้อปอนิเมะ" target="_blank">วันที่ 2: 7 มีนาคม (เสาร์)</a>
+- <a href="#วันที่-3-8-มีนาคม-2569-อาทิตย์---คาวากุจิโกะ--เจดีย์แดง" target="_blank">วันที่ 3: 8 มีนาคม (อาทิตย์)</a>
+- <a href="#วันที่-4-9-มีนาคม-2569-จันทร์---วันเกิดพอใจที่คาวากุจิโกะ" target="_blank">วันที่ 4: 9 มีนาคม (จันทร์)</a>
+- <a href="#วันที่-5-10-มีนาคม-2569-อังคาร---กลับโตเกียว--ช้อปปิ้งอุเอโนะ" target="_blank">วันที่ 5: 10 มีนาคม (อังคาร)</a>
+- <a href="#วันที่-6-11-มีนาคม-2569-พุธ---สนุกกับหิมะที่-gala-yuzawa" target="_blank">วันที่ 6: 11 มีนาคม (พุธ)</a>
+- <a href="#วันที่-7-12-มีนาคม-2569-พฤหัสบดี---ตามรอยอนิเมะ--ชมวิวโตเกียว" target="_blank">วันที่ 7: 12 มีนาคม (พฤหัสบดี)</a>
+- <a href="#วันที่-8-13-มีนาคม-2569-ศุกร์---ช้อปปิ้ง--เดินทางกลับไทย" target="_blank">วันที่ 8: 13 มีนาคม (ศุกร์)</a>
+- <a href="#ประมาณการค่าใช้จ่ายและสถานะ" target="_blank">ประมาณการค่าใช้จ่ายและสถานะ</a>
+- <a href="#-ไทม์ไลน์การเข้าพักโรงแรมแต่ละคืน" target="_blank">ไทม์ไลน์การเข้าพักโรงแรมแต่ละคืน</a>
+
+<strong>📅 ศุกร์ 6 – ศุกร์ 13 มีนาคม 2026</strong>
+
+<p>✈️ ผู้เดินทาง: 🧍 Arilek (คุณพ่อ) 👧 Nuntnaphat (พอใจ)</p>
+<p>🗺️ เส้นทาง: Narita – Tokyo – Kawaguchiko – Gala Yuzawa – Tokyo</p>
+
+<p>## ภาพรวมการเดินทางและกิจกรรม</p>
+
+<h3>วันที่ 1: 6 มี.ค. (ศ) - นาริตะ & ชินากาวะ</h3>
+<p>เดินทางถึงนาริตะ, เดินทางเข้าชินากาวะ, เช็คอินโรงแรม, ซื้อของขวัญ/อาหารเย็น.</p>
+
+<h3>วันที่ 2: 7 มี.ค. (ส) - อาซากุสะ, สกายทรี & โอไดบะ</h3>
+<p>เที่ยววัดเซ็นโซจิ, ชมวิวโตเกียวสกายทรี, ล่องเรือ, ชมกันดั้มที่โอไดบะ.</p>
+
+<h3>วันที่ 3: 8 มี.ค. (อา) - คาวากุจิโกะ & เจดีย์แดง</h3>
+<p>เดินทางไปคาวากุจิโกะ, ชมเจดีย์แดงวิวฟูจิ, เช็คอิน, เดินเล่นริมทะเลสาบ, ขึ้นกระเช้า.</p>
+
+<h3>วันที่ 4: 9 มี.ค. (จ) - วันเกิดพอใจที่คาวากุจิโกะ</h3>
+<p>เที่ยวหมู่บ้านน้ำใส, ชมวิวฟูจิจากกระเช้า/สวนโออิชิ, แช่ออนเซ็น, ฉลองวันเกิด.</p>
+
+<h3>วันที่ 5: 10 มี.ค. (อ) - กลับโตเกียว & ช้อปปิ้งอุเอโนะ</h3>
+<p>เดินทางกลับโตเกียว, เช็คอินอุเอโนะ, ช้อปปิ้ง GU, Sanrio, Ameyoko, Bic Camera, Donki.</p>
+
+<h3>วันที่ 6: 11 มี.ค. (พ) - สนุกกับหิมะที่ Gala Yuzawa</h3>
+<p>นั่งชินคันเซ็นไป Gala Yuzawa, เล่นหิมะ, ขึ้นกระเช้าชมวิว, เดินทางกลับอุเอโนะ.</p>
+
+<h3>วันที่ 7: 12 มี.ค. (พฤ) - ตามรอยอนิเมะ & ชมวิวโตเกียว</h3>
+<p>ตามรอย "Your Name" ที่ศาลเจ้า Suga, ชม Ghibli Clock, ชมวิว Tokyo Tower และ Roppongi Hills.</p>
+
+<h3>วันที่ 8: 13 มี.ค. (ศ) - ช้อปปิ้ง & เดินทางกลับไทย</h3>
+<p>เดินเล่นสวนอุเอโนะ, ซื้อของฝาก Ameyoko, เดินทางไปสนามบินนาริตะ, กลับไทย.</p>
+
+<p>## สภาพอากาศย้อนหลังและคาดการณ์ (5–14 มีนาคม)</p>
+
+<h3>แนวโน้มภาพรวม</h3>
+<p>- โตเกียว: อากาศโดยรวมอบอุ่น มีแดดสลับเมฆ อุณหภูมิสูงสุด ~18°C</p>
+<p>- คาวากุจิโกะ: หนาวสลับหิมะบางช่วง อุณหภูมิ ~5–9°C</p>
+<p>- กาล่า ยูซาวะ: หิมะตกเกือบทุกวัน อากาศหนาวจัดต่ำกว่า 0°C</p>
+
+<h3>ปี 2025 คาดการณ์</h3>
+<p>| สถานที่     | 5 มีนา       | 6 มีนา       | 7 มีนา       | 8 มีนา       | 9 มีนา 🎂   | 10 มีนา      | 11 มีนา      | 12 มีนา      | 13 มีนา      | 14 มีนา      |</p>
+<p>|------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|</p>
+<p>| Tokyo      | ☀️ 15°C / 7°C | 🌤️ 14°C / 6°C | ☁️ 13°C / 6°C | ⛅ 14°C / 6°C | 🌧️ 13°C / 5°C | ☀️ 15°C / 7°C | 🌤️ 16°C / 8°C | ☁️ 17°C / 9°C | ☁️ 17°C / 9°C | ☀️ 18°C / 10°C |</p>
+<p>| Kawaguchiko | ❄️ 6°C / -2°C | ☀️ 9°C / 0°C  | ☁️ 7°C / -1°C | 🌨️ 6°C / -2°C | ☁️ 7°C / -1°C | ☀️ 10°C / 1°C | ❄️ 8°C / -1°C | 🌤️ 9°C / 0°C  | ☁️ 8°C / -1°C | ☁️ 7°C / -2°C |</p>
+<p>| GALA Yuzawa | ❄️ 1°C / -5°C | ☁️ 2°C / -4°C | 🌨️ 1°C / -6°C | ❄️ 1°C / -5°C | ☁️ 2°C / -3°C | ❄️ 3°C / -2°C | 🌨️ 3°C / -2°C | ❄️ 2°C / -3°C | ☁️ 2°C / -4°C | ❄️ 1°C / -5°C |</p>
+
+<h3>ปี 2024</h3>
+<p>| สถานที่     | 5 มีนา       | 6 มีนา       | 7 มีนา       | 8 มีนา       | 9 มีนา 🎂    | 10 มีนา      | 11 มีนา      | 12 มีนา      | 13 มีนา      | 14 มีนา      |</p>
+<p>|------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|</p>
+<p>| Tokyo      | 🌤️ 14°C / 6°C | ☀️ 15°C / 7°C | ☁️ 13°C / 6°C | 🌧️ 12°C / 5°C | ⛅ 14°C / 7°C | ☀️ 16°C / 8°C | ☁️ 17°C / 9°C | 🌤️ 17°C / 10°C | ☁️ 16°C / 9°C | ☁️ 15°C / 8°C |</p>
+<p>| Kawaguchiko | ❄️ 6°C / -3°C | ☀️ 8°C / -1°C | ☁️ 7°C / -2°C | 🌨️ 5°C / -3°C | ☁️ 6°C / -2°C | 🌤️ 8°C / 0°C | ❄️ 7°C / -1°C | ⛅ 9°C / 0°C | ☁️ 8°C / -1°C | ☁️ 7°C / -2°C |</p>
+<p>| GALA Yuzawa | 🌨️ 1°C / -6°C | ☁️ 2°C / -5°C | ❄️ 0°C / -6°C | ❄️ 1°C / -5°C | ☁️ 2°C / -4°C | 🌨️ 2°C / -5°C | ❄️ 3°C / -3°C | ❄️ 3°C / -2°C | ☁️ 2°C / -4°C | ☁️ 1°C / -5°C |</p>
+
+<h3>ปี 2023</h3>
+<p>| สถานที่     | 5 มีนา       | 6 มีนา       | 7 มีนา       | 8 มีนา       | 9 มีนา 🎂    | 10 มีนา      | 11 มีนา      | 12 มีนา      | 13 มีนา      | 14 มีนา      |</p>
+<p>|------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|</p>
+<p>| Tokyo      | ☁️ 13°C / 5°C | 🌧️ 11°C / 4°C | 🌤️ 12°C / 6°C | ☁️ 14°C / 7°C | 🌧️ 13°C / 6°C | ⛅ 15°C / 8°C | ☀️ 16°C / 7°C | 🌤️ 17°C / 9°C | ☁️ 16°C / 8°C | ☁️ 15°C / 7°C |</p>
+<p>| Kawaguchiko | ❄️ 7°C / -2°C | ☁️ 6°C / -3°C | 🌨️ 5°C / -4°C | ⛅ 6°C / -2°C | ❄️ 7°C / -1°C | 🌨️ 6°C / -3°C | ☁️ 7°C / -1°C | 🌨️ 8°C / -2°C | ☀️ 9°C / 0°C | ☁️ 8°C / -1°C |</p>
+<p>| GALA Yuzawa | ❄️ 2°C / -5°C | 🌨️ 1°C / -6°C | ❄️ 0°C / -7°C | ☁️ 1°C / -5°C | ❄️ 2°C / -4°C | ❄️ 2°C / -5°C | 🌨️ 3°C / -3°C | ☁️ 3°C / -2°C | ❄️ 2°C / -4°C | ❄️ 1°C / -5°C |</p>
+
+<p>## วันที่ 1: 6 มีนาคม 2569 (ศุกร์) - เดินทางถึงนาริตะ & ชินากาวะ</p>
+<li><strong>02:00</strong>: <span class="emoji">🚗 ออกเดินทางจากบ้านไปสนามบินดอนเมือง</span> - <strong>06:15</strong>: 🛫 เที่ยวบิน SL394 (Thai Lion Air) ไปนาริตะ</li>
+<li><strong>16:20</strong>: <span class="emoji">🛬 ถึงสนามบินนาริตะ (NRT)</span> - <strong>17:00-18:30</strong>: 🚄 เดินทางโดย Narita Express (N'EX) ไปยังสถานีชินากาวะ</li>
+<li><strong>รายละเอียดการเดินทาง (N'EX)</strong>: <span class="emoji"></span> - ซื้อตั๋ว Narita Express ได้ที่ JR East Travel Service Center (Terminal 1 หรือ Terminal 2-3) หลังผ่าน ตม.</li>
+<p>- ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="3070">¥3070</span>, เด็ก <span data-jpy="1530">¥1530</span> (โดยประมาณ)</p>
+<p>- เวลาเดินทาง: ประมาณ 70 นาที</p>
+<p>- ขึ้นรถไฟ: ตามป้าย "JR Line" ที่สถานี Narita Airport ลงไปชั้นใต้ดิน ขึ้นชานชาลา N'EX</p>
+<li><strong>18:30</strong>: <span class="emoji">🏨 เช็คอินโรงแรม Shinagawa Tobu Hotel</span> - <strong>ข้อมูลโรงแรม</strong>:</li>
+- ที่พัก: <a href="https://www.agoda.com/th-th/shinagawa-tobu-hotel/hotel/tokyo-jp.html?cid=1844104&ds=PoSIgwEvEDvM0BpG" target="_blank">Shinagawa Tobu Hotel</a>
+<li><strong>19:00</strong>: <span class="emoji">🍽️ กิจกรรมช่วงเย็น: ซื้อของขวัญ/อาหารเย็น</span> - <strong>แผนช่วงเย็น (Gotanda)</strong>:</li>
+- <strong>18:45 – 19:30:</strong> เดินทางไป Bic Camera Gotanda ซื้อกล้อง (ของขวัญวันเกิดพอใจ)
+- <strong>19:30 – 20:00:</strong> เข้าร้าน GU Gotanda (Marui ชั้น 3) ดู/ซื้อเสื้อกันหนาว
+- <strong>20:00 – 20:45:</strong> ทานมื้อเย็นแถว Gotanda (เช่น Saizeriya, MOS Burger)
+- <strong>~21:00:</strong> กลับที่พัก
+<li><strong>การเดินทาง Shinagawa ↔ Gotanda</strong>: <span class="emoji"></span> - รถไฟ JR Yamanote Line (สายสีเขียว) 1 สถานี</li>
+<p>- ค่าใช้จ่าย: <span data-jpy="140">¥140</span> ต่อคน/เที่ยว</p>
+<p>- ใช้ IC Card (Suica/Pasmo) หรือซื้อตั๋วเที่ยวเดียว</p>
+<li><strong>21:00</strong>: <span class="emoji">😴 กลับโรงแรมพักผ่อน</span> <h3>รายการเตรียมพร้อม</h3></li>
+<p>- หนังสือเดินทาง (Passport) และสำเนา</p>
+<p>- ตั๋วเครื่องบิน E-ticket / Boarding Pass</p>
+<p>- เอกสารยืนยันการจองโรงแรม</p>
+<p>- กระเป๋าเดินทาง (สัมภาระโหลด)</p>
+<p>- กระเป๋าถือขึ้นเครื่อง (Carry-on)</p>
+<p>- เงินเยน (แลกไปบางส่วน) และบัตรเครดิต</p>
+<p>- อุปกรณ์อิเล็กทรอนิกส์พร้อมที่ชาร์จ</p>
+<p>- ยาประจำตัวและยาสามัญ</p>
+<p>- เสื้อผ้าสำหรับอากาศเย็น</p>
+
+<h3>รายละเอียด: ซื้อกล้องของขวัญ</h3>
+- <strong>วัตถุประสงค์:</strong> ของขวัญวันเกิดล่วงหน้าให้พอใจ ใช้ถ่ายรูประหว่างทริป
+- <strong>งบประมาณ:</strong> ไม่เกิน 10,000 บาท (<span data-jpy="45000">¥45000</span>)
+- <strong>รุ่นกล้องที่แนะนำ:</strong>
+- <strong>Ricoh WG-80:</strong> กันน้ำ, กันกระแทก (<span data-jpy="35000">¥35000</span>–<span data-jpy="42000">¥42000</span>)
+- <strong>Canon PowerShot SX740 HS:</strong> ซูม 40x, 4K, Wi-Fi (<span data-jpy="40000">¥40000</span>–<span data-jpy="45000">¥45000</span>)
+- <strong>Sony Cyber-shot DSC-WX500:</strong> ซูม 30x, จอพับได้ (<span data-jpy="35000">¥35000</span>–<span data-jpy="40000">¥40000</span>)
+- <strong>Fujifilm FinePix XP140:</strong> กันน้ำลึก 25ม. (<span data-jpy="30000">¥30000</span>–<span data-jpy="38000">¥38000</span>)
+
+<strong>📍 สถานที่แนะนำ:</strong> Bic Camera Gotanda
+<p>- เวลาทำการ: 10:00 – 21:00</p>
+<p>- การเดินทางจากโรงแรม: เดิน 5 นาทีไป JR Shinagawa → JR Yamanote Line 1 สถานีไป Gotanda → ออก East Exit เดิน 1 นาที</p>
+
+<strong>🍴 ร้านอาหารใกล้เคียง:</strong>
+- <strong>Saizeriya:</strong> อิตาเลียนราคาประหยัด, เหมาะกับเด็ก
+- <strong>Yoshinoya:</strong> ข้าวหน้าเนื้อญี่ปุ่น
+- <strong>MOS Burger:</strong> เบอร์เกอร์ญี่ปุ่น
+
+<strong>เคล็ดลับ:</strong> ขอ Tax-Free ได้เมื่อซื้อเกิน <span data-jpy="5,000">¥5,000</span> (แสดงพาสปอร์ต)
+
+<p>## วันที่ 2: 7 มีนาคม 2569 (เสาร์) - อาซากุสะ (Asakusa), ล่องเรือ & ช้อปอนิเมะ</p>
+<li><strong>10:00</strong>: <span class="emoji">🚶‍♀️ เที่ยวอาซากุสะ (Asakusa) & วัดเซ็นโซจิ (Senso</span> -ji)</li>
+<li><strong>การเดินทางไปวัดเซ็นโซจิ</strong>: <span class="emoji"></span> - จากสถานีชินากาวะ (Shinagawa): JR Yamanote Line ไปอุเอโนะ (Ueno) (≈20 นาที) → Tokyo Metro Ginza Line ไปอาซากุสะ (Asakusa) (≈5 นาที)</li>
+<p>- ลงสถานี Asakusa (G19), ออก Exit 1, เดิน 5 นาที</p>
+<li><strong>11:30</strong>: <span class="emoji">🚢 ล่องเรือ Tokyo Cruise (Himiko/Emeraldas)</span> - <strong>รายละเอียดเรือ</strong>:</li>
+<p>- ขึ้นเรือจากท่าเรืออาซากุสะ (Asakusa Pier) ไปสวนริมทะเลโอไดบะ (Odaiba Seaside Park) (~50 นาที)</p>
+<p>- ค่าโดยสาร: ผู้ใหญ่ <span data-jpy="1720">¥1720</span>, เด็ก <span data-jpy="860">¥860</span></p>
+<li><strong>13:00</strong>: <span class="emoji">🚆 เดินทางจากโอไดบะ (Odaiba) ไปอากิฮาบาระ (Akihabara)</span> - <strong>เส้นทางแนะนำ</strong>:</li>
+<p>- ขึ้น Yurikamome Line จากไดบะ (Daiba) → ชิมบาชิ (Shimbashi)</p>
+<p>- เปลี่ยนเป็น JR Yamanote Line → ลงอากิฮาบาระ (Akihabara)</p>
+<p>- ใช้เวลารวม ~30 นาที | ค่าเดินทาง <span data-jpy="400">¥400</span></p>
+<li><strong>13:45</strong>: <span class="emoji">🛍️ เดินเล่น & ช้อปปิ้งที่ Animate Akihabara (อนิเมท อากิฮาบาระ)</span> - <strong>รายละเอียด Animate</strong>:</li>
+<p>- ร้านอนิเมะอันดับ 1 ของญี่ปุ่น มีของจาก Ghibli, Your Name ฯลฯ</p>
+<p>- ที่ตั้ง: เดิน 3 นาทีจาก JR Akihabara (ทางออก Electric Town)</p>
+<p>- เปิด 11:00–21:00</p>
+<li><strong>15:30</strong>: <span class="emoji">🎁 เลือกซื้อของฝาก/ของขวัญพอใจ เช่น Totoro (โทโทโร่), Ghibli (จิบลิ)</span> - <strong>16:30</strong>: 🗼 เดินทางไป Tokyo Skytree (โตเกียว สกายทรี)</li>
+<li><strong>การเดินทาง</strong>: <span class="emoji"></span> - จาก Akihabara: Metro Hibiya Line → เปลี่ยนเป็น Hanzomon Line → สถานี Oshiage (โอชิอาเกะ)</li>
+<p>- เวลาเดินทาง ≈30 นาที | ค่าใช้จ่าย <span data-jpy="370">¥370</span></p>
+<li><strong>17:30</strong>: <span class="emoji">🌆 ชมวิวพระอาทิตย์ตกจาก Tokyo Skytree (โตเกียว สกายทรี)</span> - <strong>19:00</strong>: 🏨 เข้าที่พัก Super Hotel JR Ikebukuro (ซูเปอร์โฮเทล เจอาร์ อิเคะบุคุโระ)</li>
+<li><strong>แนะนำที่พักย่าน Ikebukuro</strong>: <span class="emoji"></span> - <strong>Super Hotel JR Ikebukuro:</strong> ห้องพักมีห้องน้ำในตัว, รวมอาหารเช้า, ใกล้สถานี JR Ikebukuro (~5 นาที), ราคา ~<span data-jpy="10,000">¥10,000</span>/คืน</li>
+<p>- ทางเลือกสำรอง:</p>
+<p>- • Daiwa Roynet Hotel Ikebukuro (ไดวะ รอยเน็ต): โรงแรมใหม่ ใกล้สถานี, ห้องน้ำในตัว, ~<span data-jpy="11,000">¥11,000</span></p>
+<p>- • Hotel Wing International Ikebukuro (โฮเทล วิง อินเตอร์): ราคาย่อมเยา, ทำเลสะดวก, ~<span data-jpy="9,000">¥9,000</span></p>
+
+<h3>🧳 ฝากกระเป๋าที่โรงแรมใหม่ (Super Hotel JR Ikebukuro)</h3>
+<p>- ก่อนเริ่มเที่ยววันนี้ แนะนำเดินทางไป Super Hotel JR Ikebukuro และฝากกระเป๋าไว้ล่วงหน้า (เช็คอินได้หลัง 15:00)</p>
+<p>- จากสถานี Shinagawa → JR Yamanote Line → Ikebukuro (~30 นาที)</p>
+<p>- เดินจากสถานีไปโรงแรม ~5 นาที แล้วเดินทางไป Asakusa ต่อ</p>
+
+<p>## วันที่ 3: 8 มีนาคม 2569 (อาทิตย์) - คาวากุจิโกะ & เจดีย์แดง</p>
+<li><strong>07:00</strong>: <span class="emoji">🏨 เช็คเอาท์จาก Shinagawa Tobu Hotel</span> - <strong>08:00</strong>: 🚌 เดินทางไป Busta Shinjuku</li>
+<li><strong>การเดินทางไปชินจูกุ</strong>: <span class="emoji"></span> - เดิน 5 นาทีไปสถานี JR Shinagawa</li>
+<p>- ขึ้น JR Yamanote Line ไปสถานี Shinjuku (<span data-jpy="200">¥200</span> ต่อคน)</p>
+<p>- เดินไปอาคาร NEWoMan (ชั้น 4) → Busta Shinjuku</p>
+<li><strong>08:40</strong>: <span class="emoji">🚌 ขึ้นรถบัส Fujikyu/Keio จาก Busta Shinjuku ไปสถานี Kawaguchiko</span> - <strong>รายละเอียดรถบัสไปคาวากุจิโกะ</strong>:</li>
+<p>- ค่าใช้จ่าย: ผู้ใหญ่ <span data-jpy="2000">¥2000</span>, เด็ก <span data-jpy="1000">¥1000</span> ต่อเที่ยว (โดยประมาณ)</p>
+- แนะนำจองล่วงหน้า: <a href="https://japanbusonline.com/en" target="_blank">Japan Bus Online</a> หรือ <a href="https://highway-buses.jp/jpy/hwbtop/sp/" target="_blank">Highway Buses Japan</a>
+<p>- เวลาเดินทาง: ≈1 ชม. 50 นาที - 2 ชม.</p>
+<li><strong>10:30</strong>: <span class="emoji">🚶‍♀️ ถึงสถานี Kawaguchiko, ฝากกระเป๋า</span> - <strong>ล็อกเกอร์ฝากของ</strong>:</li>
+<p>- มีล็อกเกอร์หยอดเหรียญที่สถานี</p>
+<p>- ค่าบริการ: <span data-jpy="300">¥300</span>-<span data-jpy="700">¥700</span> ต่อวัน (ตามขนาด)</p>
+<li><strong>10:40</strong>: <span class="emoji"></span> 🚃</li>
+</ul>
+        </section>
+            
+        <section id="transportation_budget">
+            <h1>
+                <span class="th th-block">การเดินทางและงบประมาณ (อัพเดทล่าสุด)</span>
+                <span class="en en-block">การเดินทางและงบประมาณ (อัพเดทล่าสุด)</span>
+                
+            </h1>
+            
+
+<p>## สถานะงบประมาณล่าสุด (25 พฤษภาคม 2025)</p>
+💰 <strong>อัตราแลกเปลี่ยน</strong>: 100 เยน ≈ 23.46 บาท
+
+<h3>✅ รายการที่จ่ายแล้ว</h3>
+<p>| รายการ | รายละเอียด | จำนวน | สถานะ |</p>
+<p>|--------|-----------|--------|--------|</p>
+<p>| ✈️ ตั๋วเครื่องบิน | SL394 + XJ607 | ฿37,568 | ✅ จ่ายแล้ว |</p>
+<p>| 🏨 ที่พักรวม 7 คืน | ทุกโรงแรม | ฿38,732 | ✅ จ่ายแล้ว |</p>
+| <strong>รวมที่จ่ายแล้ว</strong> | | <strong>฿76,300</strong> | ✅ |
+
+<h3>❗ รายการที่ต้องจ่าย</h3>
+<p>| รายการ | รายละเอียด | เยน | บาท | ต้องซื้อเมื่อไหร่ |</p>
+<p>|--------|-----------|-----|-----|------------------|</p>
+<p>| 🚄 Tokyo Wide Pass | 2 ใบ (3 วัน) | <span data-jpy="20,360">¥20,360</span> | ฿4,776 | ที่สนามบิน Narita |</p>
+<p>| 🚇 Subway Day Pass | 2 คน 2 วัน | <span data-jpy="6,000">¥6,000</span> | ฿1,408 | สถานีรถไฟ Tokyo |</p>
+<p>| 🚌 รถบัส Kawaguchi | ไป-กลับ | <span data-jpy="6,000">¥6,000</span> | ฿1,407 | จองล่วงหน้า 1-2 เดือน |</p>
+<p>| 🚄 Keisei Skyliner | 2 คน | <span data-jpy="5,140">¥5,140</span> | ฿1,206 | วันสุดท้าย |</p>
+<p>| 📱 AIS Roaming | 7 วัน | - | ฿1,500 | เปิดก่อนเดินทาง |</p>
+| <strong>รวมที่ต้องซื้อ</strong> | | <strong><span data-jpy="37,500">¥37,500</span></strong> | <strong>฿9,297</strong> | |
+
+<h3>💸 ค่าใช้จ่ายระหว่างทริป</h3>
+<p>| รายการ | รายละเอียด | เยน | บาท |</p>
+<p>|--------|-----------|-----|-----|</p>
+<p>| 🎿 Gala Yuzawa | บัตรเข้า + เช่าอุปกรณ์ | <span data-jpy="15,700">¥15,700</span> | ฿3,683 |</p>
+<p>| 🎫 ค่าเข้าชมสถานที่ | Tokyo Tower, Sky Deck ฯลฯ | <span data-jpy="10,000">¥10,000</span> | ฿2,346 |</p>
+<p>| 🍜 อาหาร 8 วัน | 2 คน | <span data-jpy="60,000">¥60,000</span> | ฿14,076 |</p>
+<p>| 🛍️ ช้อปปิ้ง/ของฝาก | กล้อง, อนิเมะ, Sanrio | <span data-jpy="60,000">¥60,000</span> | ฿14,076 |</p>
+<p>| 🚆 รถไฟเพิ่มเติม | IC Card, รถไฟธรรมดา | <span data-jpy="8,000">¥8,000</span> | ฿1,877 |</p>
+| 🎂 <strong>วันเกิดพิเศษ</strong> | <strong>คาวากุจิโกะ (ปรับใหม่)</strong> | <strong><span data-jpy="17,450">¥17,450</span></strong> | <strong>฿4,093</strong> |
+| <strong>รวมค่าใช้จ่ายระหว่างทริป</strong> | | <strong><span data-jpy="171">¥171</span>,150</strong> | <strong>฿40,151</strong> |
+
+<p>## 📊 สรุปงบประมาณทั้งหมด</p>
+<p>| หมวด | จำนวน | สถานะ |</p>
+<p>|------|--------|--------|</p>
+<p>| จ่ายแล้ว | ฿76,300 | ✅ |</p>
+<p>| ต้องซื้อล่วงหน้า | ฿9,297 | ❗ |</p>
+<p>| ใช้ระหว่างทริป | ฿40,151 | 💰 |</p>
+| <strong>รวมทั้งหมด</strong> | <strong>฿125,748</strong> | |
+<p>| งบ Core ที่ตั้งไว้ | ฿100,000 | |</p>
+| <strong>เกินงบ Core</strong> | <strong>฿25,748</strong> <div class="table-container"><table><tr><th>⚠️</th></tr><tr><td><strong>+ งบ Buffer</strong></td></tr></table></div> <strong>฿30,000-50,000</strong> <div class="table-container"><table><tr><th>✅ อยู่ในกรอบ</th></tr><tr><td><strong>งบรวม Available</strong></td></tr></table></div> <strong>฿130,000-150,000</strong> | ✅ |
+
+<p>## 🔧 แนวทางปรับงบประมาณ</p>
+
+<h3>สาเหตุงบเพิ่มขึ้น</h3>
+1. <strong>AIS Roaming แทน WiFi</strong>: +฿1,125 (แต่สะดวกกว่า)
+2. <strong>รถบัส Kawaguchi</strong>: +฿469 (ถูกต้องเป็น 2 คน)
+3. <strong>วันเกิดพิเศษ</strong>: +฿1,746 (คุ้มค่าสำหรับความทรงจำ)
+
+<h3>งบประมาณปรับแล้ว อยู่ในกรอบ Buffer</h3>
+<strong>Core Budget</strong>: ฿100,000
+<strong>Buffer Budget</strong>: ฿30,000-50,000
+<strong>Total Available</strong>: ฿130,000-150,000
+<strong>ใช้จริง</strong>: ฿125,748 → <strong>เหลือ Buffer ฿4,252-24,252</strong> ✅
+
+<p>## 🚆 รายละเอียดการเดินทาง</p>
+
+<h3>เที่ยวบิน</h3>
+<ul>
+<li><strong>ไป</strong>: SL394 (06:15 DMK → 16:20 NRT) - ฿18,784/คน</li>
+<li><strong>กลับ</strong>: XJ607 (21:15 NRT → 02:40+1 DMK) - ฿18,784/คน</li>
+
+<h3>Tokyo Wide Pass (สำคัญ!)</h3>
+<li><strong>ราคา</strong>: <span data-jpy="10,180">¥10,180</span>/คน (3 วัน)</li>
+<li><strong>ครอบคลุม</strong>: </li>
+<li>JR East (รวม Yamanote Line)</li>
+<li>Narita Express</li>
+<li>Shinkansen ไป Gala Yuzawa</li>
+<li><strong>ซื้อที่</strong>: JR East Travel Service Center (Narita Airport)</li>
+<li><strong>ต้องใช้</strong>: Passport</li>
+
+<h3>รถบัส Kawaguchiko (ปรับราคา)</h3>
+<li><strong>เส้นทาง</strong>: Busta Shinjuku ↔ Kawaguchiko Station</li>
+<li><strong>ราคา</strong>: ผู้ใหญ่ <span data-jpy="2,000">¥2,000</span> | เด็ก <span data-jpy="1,000">¥1,000</span> ต่อเที่ยว = <span data-jpy="6,000">¥6,000</span> รวม (฿1,407)</li>
+<li><strong>เวลา</strong>: 1 ชม. 45 นาที - 2 ชม.</li>
+<li><strong>จองที่</strong>: <a href="https://japanbusonline.com/en" target="_blank">Japan Bus Online</a></li>
+
+<h3>Subway Day Pass</h3>
+<li><strong>Tokyo Metro 24h</strong>: <span data-jpy="1,500">¥1,500</span>/คน/วัน</li>
+<li><strong>ใช้สำหรับ</strong>: วันที่ 2 และ 7 (Asakusa, Shiodome, Roppongi)</li>
+
+<h3>Keisei Skyliner (วันสุดท้าย)</h3>
+<li><strong>เส้นทาง</strong>: Keisei Ueno → Narita Airport</li>
+<li><strong>ราคา</strong>: <span data-jpy="2,570">¥2,570</span>/คน</li>
+<li><strong>เวลา</strong>: 40-50 นาที</li>
+
+<p>## 📱 AIS Roaming แทน WiFi/SIM</p>
+<h3>ข้อดีของ AIS Roaming</h3>
+1. <strong>ไม่ต้องเปลี่ยน SIM</strong> - ใช้หมายเลขเดิม
+2. <strong>แชร์ฮอตสปอตได้</strong> - ใช้ร่วมกัน 2 คน
+3. <strong>บริการลูกค้า AIS</strong> - ช่วยได้ 24 ชม.
+4. <strong>สะดวกกว่า</strong> - ไม่ต้องรับ-คื่นอุปกรณ์
+
+<h3>ราคา AIS Roaming Japan</h3>
+<li><strong>7 วัน</strong>: ~฿1,200-1,800 (แทน WiFi <span data-jpy="1,600">¥1,600</span> = ฿375)</li>
+<li><strong>ผลต่างราคา</strong>: +฿825-1,425 (แต่สะดวกกว่าเป็นกอง)</li>
+
+<p>## 💡 Tips ประหยัดเงิน</p>
+
+<h3>การเดินทาง</h3>
+<li>ใช้ Tokyo Wide Pass ให้คุ้ม (ครอบคลุมส่วนใหญ่)</li>
+<li>เดินเท้าระยะใกล้แทนรถไฟ</li>
+<li>ใช้ IC Card (Suica/Pasmo) สะดวกกว่าซื้อตั๋วเที่ยวเดียว</li>
+
+<h3>อาหาร</h3>
+<li>Convenience Store (7-11, Lawson) อาหารถูกและอร่อย</li>
+<li>Family Restaurant (Gusto, Saizeriya) ราคาประหยัด</li>
+<li>เลี่ยงร้านในสถานที่ท่องเที่ยว (แพงกว่า 2-3 เท่า)</li>
+
+<h3>ช้อปปิ้ง</h3>
+<li>Tax-Free เมื่อซื้อเกิน <span data-jpy="5,000">¥5,000</span> (ประหยัด 10%)</li>
+<li>ช้อป Outlet (เช่น Gotemba Premium Outlets)</li>
+<li>เปรียบเทียบราคา Don Quijote vs ห้างสรรพสินค้า</li>
+
+<p>## 🚌 รายละเอียดรถบัสคาวากุจิโกะ</p>
+
+<h3>Mt. Fuji World Heritage Tour Pass</h3>
+<li><strong>ราคา</strong>: ผู้ใหญ่ <span data-jpy="2,000">¥2,000</span> | เด็ก <span data-jpy="1,000">¥1,000</span> = <span data-jpy="3,000">¥3,000</span> (฿704)</li>
+<li><strong>ระยะเวลา</strong>: 2 วัน</li>
+<li><strong>ครอบคลุม</strong>: Red Line, Green Line, Blue Line ทุกเส้นทาง</li>
+
+<h3>เวลาให้บริการรถบัส</h3>
+<h4>Red Line (Mt. Fuji Ropeway, Oishi Park, Fujiyama Onsen)</h4>
+<li><strong>เวลา</strong>: 09:00 - 17:30</li>
+<li><strong>ความถี่</strong>: ทุก 15 นาที</li>
+
+<h4>Green Line (Oshino Hakkai)</h4>
+<li><strong>เวลา</strong>: 09:00 - 17:00  </li>
+<li><strong>ความถี่</strong>: ทุก 30 นาที</li>
+
+<h3>คุ้มค่าไหม?</h3>
+<strong>ถ้าไม่ซื้อ Pass:</strong>
+<li>Kawaguchiko → Oshino Hakkai: <span data-jpy="560">¥560</span> x 2 = <span data-jpy="1,120">¥1,120</span></li>
+<li>→ Fujiyama Onsen: <span data-jpy="300">¥300</span> x 2 = <span data-jpy="600">¥600</span>  </li>
+<li>→ Mt. Fuji Ropeway: <span data-jpy="400">¥400</span> x 2 = <span data-jpy="800">¥800</span></li>
+<li>→ Oishi Park: <span data-jpy="300">¥300</span> x 2 = <span data-jpy="600">¥600</span></li>
+<li><strong>รวม</strong>: <span data-jpy="3,120">¥3,120</span> > Pass <span data-jpy="3,000">¥3,000</span> → <strong>ประหยัด <span data-jpy="120">¥120</span></strong> ✅</li>
+
+<p>## ⚠️ ข้อแนะนำสำคัญ</p>
+
+<h3>เงินสด</h3>
+<li>แลกเงินเยนในไทย ~<span data-jpy="50,000">¥50,000</span> (฿11,730)</li>
+<li>ATM 7-Eleven รองรับบัตรไทย (มีค่าธรรมเนียม)</li>
+<li>เก็บใบเสร็จ Tax-Free ไว้ (ตรวจที่สนามบิน)</li>
+
+<h3>บัตรเครดิต</h3>
+<li>แจ้งธนาคารก่อนเดินทาง</li>
+<li>เตรียมบัตรสำรอง 2-3 ใบ</li>
+<li>ร้านใหญ่รับบัตร, ร้านเล็กใช้เงินสด</li>
+
+<h3>Emergency Fund</h3>
+<li>เตรียมเงินสำรอง <span data-jpy="20,000">¥20,000</span> (฿4,692)</li>
+<li>เผื่อค่าใช้จ่ายไม่คาดคิด</li>
+<li>เผื่อเที่ยวบินล่าช้า/เปลี่ยนแปลง</li>
+
+<p>## 📊 สรุปการปรับปรุงสำคัญ</p>
+
+<h3>ที่เปลี่ยนไป</h3>
+1. <strong>AIS Roaming</strong> แทน WiFi/SIM (+฿1,125)
+2. <strong>รถบัส Kawaguchi</strong> ราคาถูกต้อง (+฿469)
+3. <strong>วันเกิดพิเศษ</strong> คาวากุจิโกะ (+฿1,746)
+4. <strong>Taxi ออนเซ็น</strong> เพิ่มความสะดวก (+฿422)
+
+<h3>ผลลัพธ์</h3>
+<li><strong>งบรวม</strong>: ฿125,748 (เดิม ฿113,913)</li>
+<li><strong>เพิ่มขึ้น</strong>: ฿11,835</li>
+<li><strong>สถานะ</strong>: ✅ <strong>อยู่ในกรอบ Buffer งบประมาณ</strong></li>
+<li><strong>เหลือ Buffer</strong>: ฿4,252-24,252 สำหรับสถานการณ์ไม่คาดคิด</li></ul>
+
+        </section>
+            
+        <section id="weather_info">
+            <h1>
+                <span class="th th-block">สภาพอากาศและการเตรียมตัว</span>
+                <span class="en en-block">สภาพอากาศและการเตรียมตัว</span>
+                
+            </h1>
+            
+
+<p>## แนวโน้มภาพรวม (5–14 มีนาคม)</p>
+<ul>
+<li><strong>โตเกียว</strong>: อากาศโดยรวมอบอุ่น มีแดดสลับเมฆ อุณหภูมิสูงสุด ~18°C</li>
+<li><strong>คาวากุจิโกะ</strong>: หนาวสลับหิมะบางช่วง อุณหภูมิ ~5–9°C  </li>
+<li><strong>กาล่า ยูซาวะ</strong>: หิมะตกเกือบทุกวัน อากาศหนาวจัดต่ำกว่า 0°C</li>
+
+<p>## ประมาณการอุณหภูมิ (2025 คาดการณ์)</p>
+
+<p>| วันที่ | Tokyo | Kawaguchiko | GALA Yuzawa |</p>
+<p>|--------|-------|-------------|-------------|</p>
+<p>| 6 มี.ค. | 🌤️ 14°C / 6°C | ☀️ 9°C / 0°C | ☁️ 2°C / -4°C |</p>
+<p>| 7 มี.ค. | ☁️ 13°C / 6°C | ☁️ 7°C / -1°C | 🌨️ 1°C / -6°C |</p>
+<p>| 8 มี.ค. | ⛅ 14°C / 6°C | 🌨️ 6°C / -2°C | ❄️ 1°C / -5°C |</p>
+<p>| 9 มี.ค. 🎂 | 🌧️ 13°C / 5°C | ☁️ 7°C / -1°C | ☁️ 2°C / -3°C |</p>
+<p>| 10 มี.ค. | ☀️ 15°C / 7°C | ☀️ 10°C / 1°C | ❄️ 3°C / -2°C |</p>
+<p>| 11 มี.ค. | 🌤️ 16°C / 8°C | ❄️ 8°C / -1°C | 🌨️ 3°C / -2°C |</p>
+<p>| 12 มี.ค. | ☁️ 17°C / 9°C | 🌤️ 9°C / 0°C | ❄️ 2°C / -3°C |</p>
+<p>| 13 มี.ค. | ☁️ 17°C / 9°C | ☁️ 8°C / -1°C | ☁️ 2°C / -4°C |</p>
+
+<p>## เสื้อผ้าที่ควรเตรียม</p>
+<h3>สำหรับโตเกียว</h3>
+<li>เสื้อกันหนาวบาง, แจ็คเก็ต</li>
+<li>เสื้อแขนยาว, กางเกงขายาว</li>
+<li>รองเท้าเดินสบาย</li>
+
+<h3>สำหรับคาวากุจิโกะ  </h3>
+<li>เสื้อกันหนาวหนา, ผ้าพันคอ</li>
+<li>ถุงมือ, หมวกกันหนาว</li>
+<li>รองเท้าบูทหรือรองเท้ากันน้ำ</li>
+
+<h3>สำหรับ Gala Yuzawa</h3>
+<li>ชุดกันหิมะ (เช่าที่นั่นได้)</li>
+<li>ถุงมือกันน้ำ, แว่นกันแดด</li>
+<li>ครีมกันแดด (สำหรับหิมะ)</li>
+
+<p>## อุปกรณ์เพิ่มเติม</p>
+<li>ร่ม (กันฝนกันหิมะ)</li>
+<li>Hot pack (ถุงทำความร้อน)</li>
+<li>ครีมบำรุงผิว (อากาศแห้ง)</li>
+<li>ยาสามัญ (แก้หวัด, ปวดศีรษะ)</li></ul>
+
+        </section>
+            
+    </div>
+
+    <a class="back-to-top" href="#toc">
+        <span class="th">🔙 กลับไปหน้าหลัก</span>
+        <span class="en">🔙 Back to Top</span>
+    </a>
+
+    <script>
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- Collapsible Sections ---
+            document.querySelectorAll(".info-toggle, .note-toggle").forEach(button => {
+                const detail = button.nextElementSibling;
+                if (detail && (detail.classList.contains('info-detail') || detail.classList.contains('note-detail'))) {
+                    button.classList.add("collapsed");
+                    detail.classList.add("collapsed");
+
+                    button.addEventListener("click", (e) => {
+                        if (e.target.tagName === 'A') return;
+                        button.classList.toggle("collapsed");
+                        detail.classList.toggle("collapsed");
+                    });
+
+                    button.setAttribute('role', 'button');
+                    button.setAttribute('tabindex', '0');
+                    button.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            button.click();
+                        }
+                    });
+                }
+            });
+
+            // --- Language Switching ---
+            const langButtons = document.querySelectorAll('.language-switcher button');
+            const body = document.body;
+            let currentLang = localStorage.getItem('tripLanguage') || 'th';
+
+            function setLanguage(lang) {
+                if (lang !== 'th' && lang !== 'en') lang = 'th';
+                localStorage.setItem('tripLanguage', lang);
+                currentLang = lang;
+                body.className = `lang-${lang}`;
+
+                langButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+
+                const titleTh = "เที่ยวญี่ปุ่น Porjai: Birthday Trip 2026";
+                const titleEn = "Porjai's Japan Trip: Birthday Adventure 2026";
+                document.title = lang === 'th' ? titleTh : titleEn;
+            }
+
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    setLanguage(button.dataset.lang);
+                });
+            });
+
+            setLanguage(currentLang);
+
+            // --- Currency Conversion (JPY to THB) ---
+            const jpyToThbRate = 0.2346;
+
+            const convertCurrency = () => {
+                document.querySelectorAll('[data-jpy]').forEach(el => {
+                    const jpyString = el.dataset.jpy.replace(/,/g, '');
+                    const jpy = parseFloat(jpyString);
+                    if (!isNaN(jpy)) {
+                        const thb = (jpy * jpyToThbRate).toFixed(0);
+                        const jpyFormatted = `¥${jpy.toLocaleString('en-US')}`;
+                        const thbFormatted = `฿${parseInt(thb).toLocaleString('en-US')}`;
+
+                        let thbSpan = el.querySelector('.thb-amount');
+                        if (!thbSpan) {
+                            if (el.tagName === 'TD' || el.tagName === 'STRONG') {
+                                el.innerHTML = `${thbFormatted}`;
+                            } else {
+                                el.innerHTML = `${jpyFormatted} <span class="thb-amount">(${thbFormatted})</span>`;
+                            }
+                        } else {
+                            el.innerHTML = `${jpyFormatted} <span class="thb-amount">(${thbFormatted})</span>`;
+                        }
+                    }
+                });
+            };
+
+            convertCurrency();
+
+            // --- Back to Top Button Visibility ---
+            const backToTopBtn = document.querySelector('.back-to-top');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+            }
+        });
+        
+    </script>
+</body>
+</html>

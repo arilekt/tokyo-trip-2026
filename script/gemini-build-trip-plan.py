@@ -9,7 +9,7 @@ from datetime import datetime
 SCRIPT_DIR = Path(__file__).parent
 CONTENT_DIR = SCRIPT_DIR.parent / "content"
 BUILD_DIR = SCRIPT_DIR.parent / "build"
-TEMPLATE_FILE = SCRIPT_DIR / "assets/gemini-template-skeleton.html"
+TEMPLATE_FILE = SCRIPT_DIR / "template-skeleton.html"
 
 # Ensure build directory exists
 BUILD_DIR.mkdir(parents=True, exist_ok=True)
@@ -47,14 +47,13 @@ class MultiLangRenderer(mistune.HTMLRenderer):
     def heading(self, text, level):
         # Headings are handled by the main script for multi-language, so this might be redundant
         # if the script removes markdown heading before parsing body.
-        # But if not, ensure it doesn't break multi-lang spans.
-        if '<span class="th"' in text or '<span class="en"' in text or '<span class="jp"' in text:
-            return f'<h{level}>{text}</h{level}>\n'
+        # But if not, ensure it's not breaking multi-lang spans.
+        # mistune's default heading renderer might add <p> tags, which we need to clean.
+        # This will be handled by the main script's H1 injection and post-processing.
         return super().heading(text, level)
 
+
 # Custom Markdown parser that ensures 'parse' method always returns a string
-
-
 class RobustMarkdownParser(mistune.Markdown):
     def parse(self, text):
         # Call the original parse method
@@ -75,8 +74,10 @@ def process_custom_boxes(text_content):
     """Identifies and processes custom info/note box markdown into HTML div structures."""
     box_pattern = re.compile(
         r'(?:^|\n)(?P<type>info|note)-box\s*\n'
+        # Title: either ```title``` or single line
         r'(?:```(?P<title_triple_backtick>[^`]+)```|(?P<title_single_line>[^\n]+))\n'
-        r'(?P<content>.+?)'
+        r'(?P<content>.+?)'                # Content of the box
+        # Lookahead for next box or end of string
         r'(?=\n(?:info|note)-box|\n---|\n\n|\Z)',
         re.DOTALL | re.MULTILINE
     )
@@ -87,8 +88,9 @@ def process_custom_boxes(text_content):
             'title_triple_backtick') else match.group('title_single_line')
         content_md = match.group('content').strip()
 
-        title_soup = BeautifulSoup(
-            markdown_parser.inline(title_md.strip()), 'html.parser')
+        # Process title for multi-language spans
+        title_html_fragment = markdown_parser.inline(title_md.strip())
+        title_soup = BeautifulSoup(title_html_fragment, 'html.parser')
         th_title = title_soup.find('span', class_='th')
         en_title = title_soup.find('span', class_='en')
         jp_title = title_soup.find('span', class_='jp')
@@ -106,61 +108,51 @@ def process_custom_boxes(text_content):
             </div>
         '''
 
+        # Process box content (which may contain nested markdown/lists)
         box_content_html = markdown_parser.parse(content_md)
-        # box_content_html should be string due to RobustMarkdownParser
-
-        box_content_html = re.sub(
-            r'^<p>(.*)</p>$', r'\1', box_content_html, flags=re.DOTALL)
-
-        return f'''
-<div class="{box_type}-box">
-    {toggle_html}
-    <div class="{box_type}-detail">
-        {box_content_html}
-    </div>
-</div>
-'''
-
-    return box_pattern.sub(replace_box_markup, text_content)
-
-
-def process_timeline_markup(text_content):
-    """Converts timeline markdown into HTML <ul><li> structure."""
-    timeline_item_pattern = re.compile(
-        r'^- \*\*(?P<time>[^*]+?)\*\*:\s*(?P<emoji><span class="emoji">[^<]+?</span>)?\s*(?P<content>.+?)'
-        r'(?=\n^- \*\*|\n\n|\Z)',
-        re.MULTILINE | re.DOTALL
-    )
-
-    timeline_html_items = []
-
-    matches = list(timeline_item_pattern.finditer(text_content))
-
-    if not matches:
-        return text_content  # No timeline found, return original content
-
-    for match in matches:
-        time_part = match.group('time').strip()
-        emoji_part = match.group('emoji') if match.group('emoji') else ''
-        content_md = match.group('content').strip()
-
-        inner_processed_content_html = markdown_parser.parse(
-            process_custom_boxes(content_md))
-
-        # inner_processed_content_html should be string due to RobustMarkdownParser
-
         # Remove outer <p> tags if mistune adds them unnecessarily
-        processed_content_html = re.sub(
-            r'^<p>(.*)</p>$', r'\1', inner_processed_content_html, flags=re.DOTALL)
-
+        box_content_html = re.sub(r'^<p>(.*)</p><span class="math-inline">', r'\\1', box\_content\_html, flags\=re\.DOTALL\)
+return f'''
+<div class\="\{box\_type\}\-box"\>
+\{toggle\_html\}
+<div class\="\{box\_type\}\-detail"\>
+\{box\_content\_html\}
+</div\>
+</div\>
+'''
+return box\_pattern\.sub\(replace\_box\_markup, text\_content\)
+def process\_timeline\_markup\(text\_content\)\:
+"""Converts timeline markdown into HTML <ul\><li\> structure, handling nested custom boxes\."""
+\# This regex needs to capture the entire timeline block to be processed as one
+\# and split its items\. It also needs to correctly stop at a blank line or new section\.
+\# Pattern to capture each timeline item\.
+timeline\_item\_pattern \= re\.compile\(
+r'^\- \\\*\\\*\(?P<time\>\[^\*\]\+?\)\\\*\\\*\:\\s\*\(?P<emoji\><span class\="emoji"\>\[^<\]\+?</span\>\)?\\s\*\(?P<content\>\.\+?\)'
+r'\(?\=\\n^\- \\\*\\\*\|\\n\\n\(?\!\[ \\t\]\*\[\-\*\+\\d\]\)\|\\Z\)', \# Lookahead for next item, or two newlines NOT followed by list/heading
+re\.MULTILINE \| re\.DOTALL
+\)
+timeline\_html\_items \= \[\]
+matches \= list\(timeline\_item\_pattern\.finditer\(text\_content\)\)
+if not matches\:
+return text\_content \# No timeline found, return original content
+for match in matches\:
+time\_part \= match\.group\('time'\)\.strip\(\)
+emoji\_part \= match\.group\('emoji'\) if match\.group\('emoji'\) else ''
+content\_md \= match\.group\('content'\)\.strip\(\)
+\# Process content\_md\: it might contain nested markdown, including custom boxes\.
+\# Pass content\_md to process\_custom\_boxes, then parse with markdown\_parser\.
+\# RobustMarkdownParser handles string output from markdown\_parser\.parse
+processed\_content\_html \= markdown\_parser\.parse\(process\_custom\_boxes\(content\_md\)\)
+\# Remove outer <p\> tags if mistune adds them unnecessarily around block elements
+processed\_content\_html \= re\.sub\(r'^<p\>\(\.\*\)</p\></span>', r'\1', processed_content_html, flags=re.DOTALL)
+        
         timeline_html_items.append(f'''
         <li>
             <strong>{time_part}</strong>: {emoji_part} {processed_content_html}
         </li>
         ''')
-
+    
     return '<ul class="timeline">\n' + "".join(timeline_html_items) + '</ul>\n'
-
 
 def markdown_to_html_with_structure(markdown_text_input):
     """
@@ -170,34 +162,30 @@ def markdown_to_html_with_structure(markdown_text_input):
     html_content = ""
     try:
         if re.search(r'^- \*\*[^*]+\*\*:', markdown_text_input, re.MULTILINE):
+            # If the section starts with a timeline pattern, process as timeline
             html_content = process_timeline_markup(markdown_text_input)
         else:
-            html_content = markdown_parser.parse(
-                process_custom_boxes(markdown_text_input))
+            # Otherwise, process general markdown with custom boxes
+            html_content = markdown_parser.parse(process_custom_boxes(markdown_text_input))
 
         # This html_content should now always be a string due to RobustMarkdownParser
-        # But as a final defensive step, in case of unexpected types from mistune or its renderer:
-        if not isinstance(html_content, str):
-            print(
-                f"CRITICAL ERROR: html_content entering BeautifulSoup is not a string ({type(html_content)}). Forcing conversion.")
-            html_content = str(html_content)
-
+        # and explicit handling. BeautifulSoup should receive a valid string.
+        # No explicit str() conversion here as RobustMarkdownParser should handle it.
+        # Remove the deprecation warning for re.sub (count=1 is keyword argument)
+        
         soup = BeautifulSoup(html_content, 'html.parser')
 
-    except TypeError as e:
-        print(
-            f"MAJOR ERROR: BeautifulSoup failed to parse HTML content for a section due to TypeError: {e}")
+    except Exception as e: # Catch a broader exception for debugging, will refine later
+        print(f"MAJOR ERROR: BeautifulSoup or Markdown parsing failed for a section. Error: {e}")
         print(f"The problematic content type was: {type(html_content)}")
-        print(
-            f"Problematic markdown_text_input (first 200 chars): {markdown_text_input[:200]}...")
+        print(f"Problematic markdown_text_input (first 500 chars): {markdown_text_input[:500]}...")
         # Provide a fallback HTML content for this section to prevent total crash
-        soup = BeautifulSoup(f'<div class="error-section note-box"><p class="th">⚠️ ไม่สามารถประมวลผลส่วนนี้ได้ โปรดตรวจสอบ Markdown (TypeError).</p><p class="en">⚠️ Could not process this section. Please check Markdown (TypeError).</p></div>', 'html.parser')
+        soup = BeautifulSoup(f'<div class="error-section note-box"><p class="th">⚠️ ไม่สามารถประมวลผลส่วนนี้ได้ โปรดตรวจสอบ Markdown (มีข้อผิดพลาดร้ายแรง).</p><p class="en">⚠️ Could not process this section. Please check Markdown (critical error).</p></div>', 'html.parser')
 
     for table in soup.find_all('table'):
-        table_container = soup.new_tag(
-            'div', attrs={'class': 'table-container'})
+        table_container = soup.new_tag('div', attrs={'class': 'table-container'})
         table.wrap(table_container)
-
+        
         for row in table.find_all('tr'):
             cells = row.find_all(['td', 'th'])
             if cells and len(cells) > 0:
@@ -216,8 +204,8 @@ def create_day_overview_cards(markdown_contents_map):
     Expects markdown_contents_map to be a dictionary: {id: content}
     """
     html = '<div class="day-overviews">\n'
-
-    day_ids = sorted([id for id in markdown_contents_map if id.startswith('day')],
+    
+    day_ids = sorted([id for id in markdown_contents_map if id.startswith('day')], 
                      key=lambda x: int(re.search(r'\d+', x).group()))
 
     for section_id in day_ids:
@@ -225,17 +213,15 @@ def create_day_overview_cards(markdown_contents_map):
 
         title_line_match = re.search(r'##\s+([^\n]+)', markdown_text)
         if not title_line_match:
-            print(
-                f"Warning: No main title found for {section_id} to create overview card.")
+            print(f"Warning: No main title found for {section_id} to create overview card.")
             continue
-
+        
         title_full = title_line_match.group(1).strip()
 
         thai_title_str = ""
         english_title_str = ""
-
-        complex_title_match = re.match(
-            r'(วันที่\s+\d+:\s*[^-\n]+)\s*-\s*(.+)', title_full)
+        
+        complex_title_match = re.match(r'(วันที่\s+\d+:\s*[^-\n]+)\s*-\s*(.+)', title_full)
         if complex_title_match:
             thai_title_str = complex_title_match.group(1).strip()
             english_title_str = complex_title_match.group(2).strip()
@@ -243,20 +229,22 @@ def create_day_overview_cards(markdown_contents_map):
             thai_title_str = title_full
             english_title_str = title_full
 
+
         description_th = ""
         description_en = ""
-
+        
         temp_md_for_desc = ""
         for line in markdown_text.splitlines():
             stripped_line = line.strip()
+            # Exclude headings, list items, tables, quotes, and empty lines for description
             if stripped_line and not stripped_line.startswith(('#', '-', '*', '|', '>')) and not re.match(r'^\d+\.', stripped_line):
                 temp_md_for_desc = stripped_line
                 break
-
+        
         if temp_md_for_desc:
             processed_desc_html = markdown_parser.inline(temp_md_for_desc)
             desc_soup = BeautifulSoup(processed_desc_html, 'html.parser')
-
+            
             th_span = desc_soup.find('span', class_='th')
             en_span = desc_soup.find('span', class_='en')
 
@@ -269,6 +257,7 @@ def create_day_overview_cards(markdown_contents_map):
                 description_en = en_span.decode_contents().strip()
             else:
                 description_en = description_th
+        
 
         birthday_badge_html = ""
         if section_id == "day4":
@@ -286,10 +275,10 @@ def create_day_overview_cards(markdown_contents_map):
             </p>
         </div>
         '''
-
+    
     if "budget" in markdown_contents_map:
         budget_md_content = markdown_contents_map["budget"]
-
+        
         budget_desc_th = "ข้อมูลการจอง และประมาณการค่าใช้จ่าย."
         budget_desc_en = "Booking information and estimated expenses."
 
@@ -302,7 +291,7 @@ def create_day_overview_cards(markdown_contents_map):
 
                 th_span = line_soup.find('span', class_='th')
                 en_span = line_soup.find('span', class_='en')
-
+                
                 if th_span:
                     budget_desc_th = th_span.decode_contents().strip()
                 else:
@@ -311,7 +300,7 @@ def create_day_overview_cards(markdown_contents_map):
                 if en_span:
                     budget_desc_en = en_span.decode_contents().strip()
                 else:
-                    budget_desc_en = budget_desc_th
+                    budget_desc_en = budget_desc_th 
                 break
 
         html += f'''
@@ -326,11 +315,10 @@ def create_day_overview_cards(markdown_contents_map):
             </p>
         </div>
         '''
-
+    
     html += '</div> \n'
-
+    
     return html
-
 
 def generate_accommodation_overview(markdown_contents_map):
     """
@@ -348,24 +336,18 @@ def generate_accommodation_overview(markdown_contents_map):
     # --- Flight Information (Top Card) ---
     flight_info_html = '<div class="agoda-card agoda-flight-card">\n'
     flight_info_html += '<div class="agoda-card-header"><span class="emoji">✈️</span> <span class="th">เที่ยวบิน</span><span class="en">Flights</span></div>\n'
-
+    
     flight_to_match = re.search(r'ไป:\s*(SL\d+\s+\(.+?\))', main_info_md)
     flight_return_match = re.search(r'กลับ:\s*(XJ\d+\s+\(.+?\))', main_info_md)
+    
+    flight_to_text = flight_to_match.group(1).strip() if flight_to_match else "ไม่พบข้อมูลเที่ยวบินไป"
+    flight_return_text = flight_return_match.group(1).strip() if flight_return_match else "ไม่พบข้อมูลเที่ยวบินกลับ"
 
-    flight_to_text = flight_to_match.group(1).strip(
-    ) if flight_to_match else "ไม่พบข้อมูลเที่ยวบินไป"
-    flight_return_text = flight_return_match.group(1).strip(
-    ) if flight_return_match else "ไม่พบข้อมูลเที่ยวบินกลับ"
+    flight_to_timeline_match = re.search(r'SL\s*394\s*\| รหัสจองสายการบิน:\s*([^\n]+)', timeline_md)
+    flight_return_timeline_match = re.search(r'XJ\s*607\s*\| รหัสจองสายการบิน:\s*([^\n]+)', timeline_md)
 
-    flight_to_timeline_match = re.search(
-        r'SL\s*394\s*\| รหัสจองสายการบิน:\s*([^\n]+)', timeline_md)
-    flight_return_timeline_match = re.search(
-        r'XJ\s*607\s*\| รหัสจองสายการบิน:\s*([^\n]+)', timeline_md)
-
-    flight_to_booking_id = flight_to_timeline_match.group(
-        1).strip() if flight_to_timeline_match else "N/A"
-    flight_return_booking_id = flight_return_timeline_match.group(
-        1).strip() if flight_return_timeline_match else "N/A"
+    flight_to_booking_id = flight_to_timeline_match.group(1).strip() if flight_to_timeline_match else "N/A"
+    flight_return_booking_id = flight_return_timeline_match.group(1).strip() if flight_return_timeline_match else "N/A"
 
     flight_info_html += f'''
     <div class="agoda-card-body">
@@ -386,8 +368,7 @@ def generate_accommodation_overview(markdown_contents_map):
     hotels = []
     if hotel_data_rows:
         for i, row in enumerate(hotel_data_rows):
-            if i < 2:
-                continue
+            if i < 2: continue
             cells = [c.strip() for c in row.split('|')]
             if len(cells) >= 8:
                 hotels.append({
@@ -409,27 +390,26 @@ def generate_accommodation_overview(markdown_contents_map):
         hotel_card_html += f'<p><span class="th"><b>จำนวนคืน:</b> {hotel["nights"]}</span><span class="en"><b>Nights:</b> {hotel["nights"]}</span></p>\n'
         hotel_card_html += f'<p><span class="th"><b>ราคา:</b> {hotel["price"]}</span><span class="en"><b>Price:</b> {hotel["price"]}</span></p>\n'
         hotel_card_html += f'<p><span class="th"><b>หมายเลขจอง:</b> {hotel["booking_id"]}</span><span class="en"><b>Booking ID:</b> {hotel["booking_id"]}</span></p>\n'
-
+        
         status_map = {
             "✅": {"th": "✅ จ่ายแล้ว", "en": "✅ Paid", "class": "status-complete"},
-            "-": {"th": "✅ จ่ายแล้ว", "en": "✅ Paid", "class": "status-complete"},
+            "-": {"th": "✅ จ่ายแล้ว", "en": "✅ Paid", "class": "status-complete"}, 
             "❗": {"th": "❗ ต้องซื้อ", "en": "❗ Must Buy", "class": "status-urgent"},
             "⏳": {"th": "⏳ วางแผน", "en": "⏳ Planning", "class": "status-planning"},
             "🪪": {"th": "🪪 ประมาณ", "en": "🪪 Estimate", "class": "status-planning"},
             "✅ จ่ายแล้ว": {"th": "✅ จ่ายแล้ว", "en": "✅ Paid", "class": "status-complete"},
         }
-
+        
         current_status_cell = hotel["status"]
-
+        
         detected_emoji_match = re.match(r'.*(✅|❗|⏳|🪪)', current_status_cell)
-        detected_emoji = detected_emoji_match.group(
-            1) if detected_emoji_match else "-"
-
+        detected_emoji = detected_emoji_match.group(1) if detected_emoji_match else "-"
+        
         status_entry = status_map.get(detected_emoji, status_map["⏳"])
-
+        
         status_text_th = current_status_cell.strip()
         status_text_en = status_entry["en"]
-
+        
         if "✅" in status_text_th and "จองแล้ว" not in status_text_th:
             status_text_th = "✅ จองแล้ว"
             status_text_en = "✅ Booked"
@@ -439,19 +419,20 @@ def generate_accommodation_overview(markdown_contents_map):
             status_text_en = "✅ Paid"
             status_entry["class"] = "status-complete"
         elif "✅" in status_text_th and "จ่ายแล้ว" not in status_text_th:
-            status_text_th = "✅ จ่ายแล้ว"
-            status_text_en = "✅ Paid"
-            status_entry["class"] = "status-complete"
+             status_text_th = "✅ จ่ายแล้ว"
+             status_text_en = "✅ Paid"
+             status_entry["class"] = "status-complete"
+
 
         hotel_card_html += f'<div class="agoda-status-bar {status_entry["class"]}">\n'
         hotel_card_html += f'<span class="th">{status_text_th}</span><span class="en">{status_text_en}</span>\n'
         hotel_card_html += '</div>\n'
-
+        
         hotel_card_html += '</div>\n'
         hotel_card_html += '</div>\n'
         overview_html += hotel_card_html
 
-    overview_html += '</div>\n'  # End agoda-style-container
+    overview_html += '</div>\n' # End agoda-style-container
     overview_html += '</section>\n'
 
     return overview_html
@@ -598,7 +579,7 @@ def build_full_html_plan():
     # 2. Read content from all markdown files
     markdown_contents = {}
     for md_file_path in CONTENT_DIR.glob('*.md'):
-        section_id = md_file_path.stem.replace('_', '-')
+        section_id = md_file_path.stem.replace('_', '-') 
         markdown_contents[section_id] = read_file(md_file_path)
 
     # Process each section and inject into the template
@@ -607,54 +588,42 @@ def build_full_html_plan():
 
         if section_id == "overview":
             # Generate day overview cards and inject
-            overview_content_html = create_day_overview_cards(
-                markdown_contents)
-
+            overview_content_html = create_day_overview_cards(markdown_contents)
+            
             # Find the specific div where cards should be injected
             target_div = div_tag.find('div', class_='day-overviews')
             if target_div:
-                target_div.clear()  # Clear any placeholder content
-                target_div.append(BeautifulSoup(
-                    overview_content_html, 'html.parser'))
-
+                target_div.clear() # Clear any placeholder content
+                target_div.append(BeautifulSoup(overview_content_html, 'html.parser'))
+            
             # Update the main intro paragraph under header
             if "main_info" in markdown_contents:
                 main_info_md = markdown_contents["main_info"]
                 travelers_line_match = re.search(r'✈️(.+)', main_info_md)
                 route_line_match = re.search(r'🗺️(.+)', main_info_md)
-
+                
                 travelers_th = "ไม่พบข้อมูลผู้เดินทาง"
                 travelers_en = "Travelers info not found"
                 route_th = "ไม่พบข้อมูลเส้นทาง"
                 route_en = "Route info not found"
 
                 if travelers_line_match:
-                    temp_soup_travelers = BeautifulSoup(
-                        travelers_line_match.group(1).strip(), 'html.parser')
+                    temp_soup_travelers = BeautifulSoup(travelers_line_match.group(1).strip(), 'html.parser')
                     th_span = temp_soup_travelers.find('span', class_='th')
                     en_span = temp_soup_travelers.find('span', class_='en')
-                    if th_span:
-                        travelers_th = th_span.decode_contents().strip()
-                    else:
-                        travelers_th = temp_soup_travelers.get_text(strip=True)
-                    if en_span:
-                        travelers_en = en_span.decode_contents().strip()
-                    else:
-                        travelers_en = travelers_th
+                    if th_span: travelers_th = th_span.decode_contents().strip()
+                    else: travelers_th = temp_soup_travelers.get_text(strip=True)
+                    if en_span: travelers_en = en_span.decode_contents().strip()
+                    else: travelers_en = travelers_th
 
                 if route_line_match:
-                    temp_soup_route = BeautifulSoup(
-                        route_line_match.group(1).strip(), 'html.parser')
+                    temp_soup_route = BeautifulSoup(route_line_match.group(1).strip(), 'html.parser')
                     th_span = temp_soup_route.find('span', class_='th')
                     en_span = temp_soup_route.find('span', class_='en')
-                    if th_span:
-                        route_th = th_span.decode_contents().strip()
-                    else:
-                        route_th = temp_soup_route.get_text(strip=True)
-                    if en_span:
-                        route_en = en_span.decode_contents().strip()
-                    else:
-                        route_en = route_th
+                    if th_span: route_th = th_span.decode_contents().strip()
+                    else: route_th = temp_soup_route.get_text(strip=True)
+                    if en_span: route_en = en_span.decode_contents().strip()
+                    else: route_en = route_th
 
                 intro_p_html = f'''
                 <p>
@@ -662,40 +631,35 @@ def build_full_html_plan():
                     <span class="th">🗺️ เส้นทาง: {route_th}</span><span class="en">🗺️ Itinerary: {route_en}</span>
                 </p>
                 '''
-                target_p = template_soup.find(
-                    'div', class_='container').find('p')
+                target_p = template_soup.find('div', class_='container').find('p')
                 if target_p:
-                    target_p.replace_with(BeautifulSoup(
-                        intro_p_html, 'html.parser'))
+                    target_p.replace_with(BeautifulSoup(intro_p_html, 'html.parser'))
 
         elif section_id == "accommodation_overview_agoda":
             # Generate Agoda-style accommodation overview and inject
-            accommodation_overview_html = generate_accommodation_overview(
-                markdown_contents)
+            accommodation_overview_html = generate_accommodation_overview(markdown_contents)
             div_tag.clear()
-            div_tag.append(BeautifulSoup(
-                accommodation_overview_html, 'html.parser'))
+            div_tag.append(BeautifulSoup(accommodation_overview_html, 'html.parser'))
 
-        elif section_id in markdown_contents:  # For all other content markdown files
+        elif section_id in markdown_contents: # For all other content markdown files
             markdown_text = markdown_contents[section_id]
 
             # Find the main section title from Markdown to build the H1 tag
-            section_title_match = re.match(r'#+\s+([^\n]+)', markdown_text)
+            section_title_match = re.search(r'#+\s+([^\n]+)', markdown_text)
             title_html_tag = ""
             if section_title_match:
                 full_title_line = section_title_match.group(1).strip()
-
+                
                 thai_title_str = ""
                 english_title_str = ""
 
-                title_split_match = re.match(
-                    r'(.+?)\s+-\s*(.+)', full_title_line)
+                title_split_match = re.match(r'(.+?)\s+-\s*(.+)', full_title_line)
                 if title_split_match:
                     thai_title_str = title_split_match.group(1).strip()
                     english_title_str = title_split_match.group(2).strip()
                 else:
                     thai_title_str = full_title_line
-                    english_title_str = full_title_line
+                    english_title_str = full_title_line 
 
                 birthday_badge = ""
                 if section_id == "day4":
@@ -708,18 +672,16 @@ def build_full_html_plan():
                         {birthday_badge}
                     </h1>
                 '''
+            
+            body_markdown = re.sub(r'#+\s*([^\n]+)\n?', '', markdown_text, count=1).strip() # Use count=1
 
-            body_markdown = re.sub(
-                r'#+\s*([^\n]+)\n?', '', markdown_text, 1).strip()
-
-            processed_body_html = markdown_to_html_with_structure(
-                body_markdown)
-
+            processed_body_html = markdown_to_html_with_structure(body_markdown)
+            
             div_tag.clear()
             if title_html_tag:
                 div_tag.append(BeautifulSoup(title_html_tag, 'html.parser'))
             div_tag.append(BeautifulSoup(processed_body_html, 'html.parser'))
-
+        
     # Update the main header H1 and H2 based on 'tokyo-trip-update.md'
     if "tokyo-trip-update" in markdown_contents:
         header_md = markdown_contents["tokyo-trip-update"]
@@ -740,10 +702,10 @@ def build_full_html_plan():
                 h2_main.find('span', class_='th').string = f"📅 {main_date}"
                 # English date is already correct in template
 
+
     # Generate output filename with current date
     today_date_str = datetime.now().strftime("%Y%m%d")
-    output_filename = BUILD_DIR / \
-        f"Tokyo-Trip-March-2026-Gemini-{today_date_str}.html"
+    output_filename = BUILD_DIR / f"Tokyo-Trip-March-2026-update-{today_date_str}.html"
 
     # Write the final beautiful HTML to file
     with open(output_filename, 'w', encoding='utf-8') as f_out:
