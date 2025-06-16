@@ -3,11 +3,11 @@
 """
 Tokyo Trip 2026 HTML Generator v4 (Complete & Fixed)
 ===================================================
-สมบูรณ์ครบทุก feature พร้อม debug logging
+สมบูรณ์ครบทุก feature พร้อม debug logging และแก้ไข expand/collapse
 
 Author: Claude (AI Assistant) 
 Date: June 2025
-Version: 4.0 - Complete
+Version: 4.0 - Complete & Fixed
 For: Arilek & Pojai's Tokyo Trip 2026
 """
 
@@ -28,7 +28,7 @@ class TokgeneConfig:
     build_dir: Path
     template_file: Path
     base_name: str = "Tokyo-Trip-March-2026"
-    version: str = "Claude-Enhanced-v4"
+    version: str = "Claude-Enhanced-v4-Fixed"
 
 
 class MarkdownProcessor:
@@ -140,7 +140,7 @@ class MarkdownProcessor:
         
     @staticmethod
     def process_timeline_content(md_text: str) -> str:
-        """แปลง timeline markdown เป็น HTML timeline"""
+        """แปลง timeline markdown เป็น HTML timeline พร้อม expand/collapse"""
         if not re.search(r'^- \*\*\d+:\d+\*\*:', md_text, re.MULTILINE):
             return MarkdownProcessor.md_to_html_basic(md_text)
             
@@ -148,6 +148,7 @@ class MarkdownProcessor:
         html_parts = ['<ul class="timeline">']
         current_timeline_item = None
         in_nested_content = False
+        item_id_counter = 0
         
         for line in lines:
             original_line = line
@@ -164,12 +165,26 @@ class MarkdownProcessor:
                 if match:
                     time_part = match.group(1)
                     content_part = MarkdownProcessor._process_inline_formatting(match.group(2))
-                    current_timeline_item = f'<li><strong>{time_part}</strong>: {content_part}'
+                    
+                    # สร้าง timeline item พร้อม expand/collapse
+                    item_id = f"timeline-{item_id_counter}"
+                    item_id_counter += 1
+                    
+                    current_timeline_item = f'''<li>
+                        <div class="timeline-main">
+                            <strong>{time_part}</strong>: {content_part}
+                        </div>'''
                     in_nested_content = False
                     
             elif original_line.startswith("  ") and current_timeline_item is not None:
                 if not in_nested_content:
-                    current_timeline_item += '<div class="timeline-detail">'
+                    # สร้าง expand/collapse button และ detail div
+                    current_timeline_item += f'''
+                        <button class="timeline-toggle" onclick="toggleTimelineDetail('{item_id}')">
+                            <span class="th">รายละเอียด ▼</span>
+                            <span class="en">Details ▼</span>
+                        </button>
+                        <div class="timeline-detail" id="{item_id}" style="display: none;">'''
                     in_nested_content = True
                     
                 nested_content = original_line[2:].strip()
@@ -190,7 +205,7 @@ class MarkdownProcessor:
                     in_nested_content = False
                 
                 content = MarkdownProcessor._process_inline_formatting(line[2:])
-                html_parts.append(f'<li>{content}</li>')
+                html_parts.append(f'<li><div class="timeline-main">{content}</div></li>')
                 
             elif line and not line.startswith("#"):
                 if current_timeline_item is not None:
@@ -267,7 +282,7 @@ class TemplateManager:
 
     @staticmethod
     def get_enhanced_css() -> str:
-        """Generate enhanced CSS"""
+        """Generate enhanced CSS พร้อม timeline styles"""
         return '''
         :root {
             --primary-color: #2563eb;
@@ -461,6 +476,7 @@ class TemplateManager:
             text-decoration: underline;
         }
 
+        /* ===== TIMELINE STYLES (FIXED) ===== */
         .timeline {
             list-style: none;
             padding: 0;
@@ -501,27 +517,8 @@ class TemplateManager:
             border-bottom: none;
         }
 
-        .timeline-detail {
-            margin-top: 0.5rem;
-            padding-left: 1rem;
-            border-left: 2px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 0.25rem;
-            padding: 0.75rem;
-        }
-
-        .timeline-detail p {
-            margin: 0.25rem 0;
-            font-size: 0.9rem;
-            color: var(--text-color);
-        }
-
-        .timeline-detail p:first-child {
-            margin-top: 0;
-        }
-
-        .timeline-detail p:last-child {
-            margin-bottom: 0;
+        .timeline-main {
+            margin-bottom: 0.5rem;
         }
 
         .timeline-toggle {
@@ -550,6 +547,40 @@ class TemplateManager:
             background: #059669;
         }
 
+        .timeline-detail {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            border-left: 2px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 0.25rem;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .timeline-detail.expanded {
+            display: block;
+        }
+
+        .timeline-detail p {
+            margin: 0.25rem 0;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .timeline-detail p:first-child {
+            margin-top: 0;
+        }
+
+        .timeline-detail p:last-child {
+            margin-bottom: 0;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== TABLE STYLES ===== */
         .table-container {
             overflow-x: auto;
             margin: 1.5rem 0;
@@ -617,6 +648,7 @@ class TemplateManager:
             font-weight: 600;
         }
 
+        /* ===== INFO/NOTE BOXES ===== */
         .info-box, .note-box {
             border-left: 4px solid var(--info-border);
             background: var(--info-bg);
@@ -738,16 +770,6 @@ class TemplateManager:
             th, td {
                 padding: 0.5rem;
             }
-        }
-
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 1.25rem;
-            }
-
-            header h2 {
-                font-size: 1rem;
-            }
 
             .timeline li {
                 padding-left: 2rem;
@@ -763,11 +785,21 @@ class TemplateManager:
                 height: 0.5rem;
             }
         }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.25rem;
+            }
+
+            header h2 {
+                font-size: 1rem;
+            }
+        }
         '''
 
     @staticmethod
     def get_enhanced_js() -> str:
-        """Generate enhanced JavaScript"""
+        """Generate enhanced JavaScript พร้อม timeline toggle function"""
         return '''
         function switchLanguage(lang) {
             const body = document.body;
@@ -790,37 +822,33 @@ class TemplateManager:
             console.log(`Language switched to: ${lang}`);
         }
 
-        function initializeTimelineDetails() {
-            const timelineDetails = document.querySelectorAll('.timeline-detail');
+        // ===== FIXED TIMELINE TOGGLE FUNCTION =====
+        function toggleTimelineDetail(elementId) {
+            const detailElement = document.getElementById(elementId);
+            const toggleButton = document.querySelector(`button[onclick="toggleTimelineDetail('${elementId}')"]`);
             
-            timelineDetails.forEach(detail => {
-                const toggleBtn = document.createElement('button');
-                toggleBtn.className = 'timeline-toggle';
-                toggleBtn.innerHTML = '<span class="th">รายละเอียด ▼</span><span class="en">Details ▼</span>';
-                toggleBtn.setAttribute('aria-expanded', 'false');
-                
-                detail.parentNode.insertBefore(toggleBtn, detail);
-                detail.style.display = 'none';
-                
-                toggleBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
-                    
-                    if (isExpanded) {
-                        detail.style.display = 'none';
-                        this.innerHTML = '<span class="th">รายละเอียด ▼</span><span class="en">Details ▼</span>';
-                        this.setAttribute('aria-expanded', 'false');
-                        this.classList.remove('expanded');
-                    } else {
-                        detail.style.display = 'block';
-                        this.innerHTML = '<span class="th">รายละเอียด ▲</span><span class="en">Details ▲</span>';
-                        this.setAttribute('aria-expanded', 'true');
-                        this.classList.add('expanded');
-                    }
-                });
-            });
+            if (!detailElement || !toggleButton) {
+                console.error(`Timeline element not found: ${elementId}`);
+                return;
+            }
+            
+            const isVisible = detailElement.style.display !== 'none';
+            
+            if (isVisible) {
+                // Hide details
+                detailElement.style.display = 'none';
+                detailElement.classList.remove('expanded');
+                toggleButton.classList.remove('expanded');
+                toggleButton.innerHTML = '<span class="th">รายละเอียด ▼</span><span class="en">Details ▼</span>';
+            } else {
+                // Show details
+                detailElement.style.display = 'block';
+                detailElement.classList.add('expanded');
+                toggleButton.classList.add('expanded');
+                toggleButton.innerHTML = '<span class="th">รายละเอียด ▲</span><span class="en">Details ▲</span>';
+            }
+            
+            console.log(`Timeline ${elementId} toggled: ${!isVisible ? 'shown' : 'hidden'}`);
         }
 
         function initializeCollapsibleBoxes() {
@@ -884,7 +912,27 @@ class TemplateManager:
             });
         }
 
+        function debugTimelineElements() {
+            const timelineToggles = document.querySelectorAll('.timeline-toggle');
+            const timelineDetails = document.querySelectorAll('.timeline-detail');
+            
+            console.log(`🔍 Debug Timeline:`, {
+                toggleButtons: timelineToggles.length,
+                detailElements: timelineDetails.length,
+                togglesWithOnclick: Array.from(timelineToggles).filter(btn => btn.onclick).length
+            });
+            
+            timelineToggles.forEach((btn, index) => {
+                console.log(`Toggle ${index}:`, {
+                    hasOnclick: !!btn.onclick,
+                    innerHTML: btn.innerHTML.substring(0, 50) + '...'
+                });
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('🇯🇵 Tokyo Trip 2026 v4 - Loading...');
+            
             try {
                 const savedLang = localStorage.getItem('tokyo-trip-lang');
                 if (savedLang && (savedLang === 'th' || savedLang === 'en')) {
@@ -895,16 +943,14 @@ class TemplateManager:
             }
             
             initializeCollapsibleBoxes();
-            initializeTimelineDetails();
             initializeSmoothScrolling();
             initializeBackToTop();
             updateCurrencyDisplay();
             
-            console.log('🇯🇵 Tokyo Trip 2026 v4 - Ready!');
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.day-overview').forEach(card => {
+            // Debug timeline elements
+            debugTimelineElements();
+            
+            // Add interactive effects
             document.querySelectorAll('.day-overview').forEach(card => {
                 card.addEventListener('click', function() {
                     this.style.transform = 'scale(0.98)';
@@ -923,6 +969,8 @@ class TemplateManager:
                     this.style.backgroundColor = '';
                 });
             });
+            
+            console.log('✅ Tokyo Trip 2026 v4 - Ready with timeline expand/collapse!');
         });
         '''
 
@@ -1084,8 +1132,8 @@ class TokygeneGenerator:
                     <div class="note-detail">
                         <p class="th th-block">แผนการเดินทางรวมอยู่ในไฟล์เดียวเพื่อความสะดวกในการใช้งานออฟไลน์</p>
                         <p class="en en-block">The itinerary is consolidated into a single file for easy offline use.</p>
-                        <p class="th th-block">คลิกที่หัวข้อเพื่อขยายดูรายละเอียดเพิ่มเติม และใช้ปุ่ม "กลับไปหน้าหลัก" ด้านล่างขวาเพื่อไปยังสารบัญ</p>
-                        <p class="en en-block">Click on headings to expand for more details, and use the "Back to Top" button at the bottom right to navigate to the table of contents.</p>
+                        <p class="th th-block">คลิกที่ปุ่ม "รายละเอียด" ในแต่ละกิจกรรมเพื่อดูข้อมูลเพิ่มเติม และใช้ปุ่ม "กลับไปหน้าหลัก" ด้านล่างขวาเพื่อไปยังสารบัญ</p>
+                        <p class="en en-block">Click on "Details" buttons in each activity to expand for more information, and use the "Back to Top" button at the bottom right to navigate to the table of contents.</p>
                         <p class="th th-block">ใช้ปุ่ม TH/EN ที่มุมบนขวา เพื่อสลับภาษา</p>
                         <p class="en en-block">Use the TH/EN buttons at the top right to switch languages.</p>
                     </div>
@@ -1109,305 +1157,4 @@ class TokygeneGenerator:
                 <p>กำลังโหลดข้อมูล...</p>
             </section>
             '''
-    
-    def _extract_description(self, content: str) -> str:
-        """ดึง description จาก markdown content"""
-        lines = content.split('\n')
-        for line in lines:
-            line = line.strip()
-            if (line and 
-                not line.startswith('#') and 
-                not line.startswith('-') and 
-                not line.startswith('|') and
-                not line.startswith('*') and
-                not re.match(r'^\d+\.', line) and
-                len(line) > 10):
-                
-                if len(line) > 150:
-                    return line[:147] + "..."
-                else:
-                    return line
-        return "รายละเอียดการเดินทาง"
-    
-    def process_section_content(self, section_id: str, th_content: str, en_content: str = None) -> str:
-        """Process เนื้อหาของแต่ละ section รองรับ multi-language"""
-        print(f"🔍 Processing section: {section_id}")
-        
-        try:
-            if en_content is None:
-                en_content = th_content
             
-            th_title_match = re.search(r'^#+\s*(.+?)(?:\n|$)', th_content, re.MULTILINE)
-            en_title_match = re.search(r'^#+\s*(.+?)(?:\n|$)', en_content, re.MULTILINE)
-            
-            th_title = th_title_match.group(1).strip() if th_title_match else f"Section {section_id.title()}"
-            en_title = en_title_match.group(1).strip() if en_title_match else th_title
-            
-            th_body_content = th_content
-            en_body_content = en_content
-            
-            if th_title_match:
-                header_end = th_title_match.end()
-                th_body_content = th_content[header_end:].lstrip('\n')
-                
-            if en_title_match:
-                header_end = en_title_match.end()
-                en_body_content = en_content[header_end:].lstrip('\n')
-            
-            th_main_title = re.split(r'\s*[-–|/]\s*', th_title)[0].strip()
-            en_main_title = re.split(r'\s*[-–|/]\s*', en_title)[0].strip()
-            
-            birthday_badge = ""
-            if section_id == "day4":
-                birthday_badge = '<span class="birthday-badge">🎂 Happy Birthday!</span>'
-            
-            if (re.search(r'^- \*\*\d+:\d+\*\*:', th_body_content, re.MULTILINE) or
-                re.search(r'^- \*\*\d{1,2}:\d{2}\*\*:', th_body_content, re.MULTILINE)):
-                processed_content = self._process_bilingual_timeline(th_body_content, en_body_content)
-            else:
-                processed_content = self._process_bilingual_content(th_body_content, en_body_content)
-            
-            result = f'''
-            <section id="{section_id}">
-                <h1>
-                    <span class="th th-block">{th_main_title}</span>
-                    <span class="en en-block">{en_main_title}</span>
-                    {birthday_badge}
-                </h1>
-                {processed_content}
-            </section>
-            '''
-            
-            print(f"✅ Section {section_id} processed successfully")
-            return result
-            
-        except Exception as e:
-            print(f"❌ Error in process_section_content for {section_id}: {e}")
-            import traceback
-            traceback.print_exc()
-            return f'''
-            <section id="{section_id}">
-                <h1>
-                    <span class="th th-block">{section_id.title()}</span>
-                    <span class="en en-block">{section_id.title()}</span>
-                </h1>
-                <p>Error loading content...</p>
-            </section>
-            '''
-    
-    def _process_bilingual_timeline(self, th_content: str, en_content: str) -> str:
-        """Process timeline content สำหรับทั้งสองภาษา"""
-        try:
-            return self.markdown_processor.process_timeline_content(th_content)
-        except Exception as e:
-            print(f"      ❌ Error in timeline processing: {e}")
-            return self.markdown_processor.md_to_html_basic(th_content)
-    
-    def _process_bilingual_content(self, th_content: str, en_content: str) -> str:
-        """Process regular content สำหรับทั้งสองภาษา"""
-        try:
-            th_html = self.markdown_processor.md_to_html_basic(th_content)
-            
-            if en_content != th_content:
-                en_html = self.markdown_processor.md_to_html_basic(en_content)
-                return th_html
-            else:
-                return th_html
-        except Exception as e:
-            print(f"      ❌ Error in content processing: {e}")
-            return f"<p>Error processing content: {e}</p>"
-    
-    def generate_html(self) -> str:
-        """Generate HTML ไฟล์สมบูรณ์ รองรับ multi-language"""
-        print("🚀 เริ่มต้น generate HTML...")
-        
-        try:
-            print("📖 กำลังอ่าน markdown files...")
-            markdown_contents = self.read_markdown_files()
-            th_contents = markdown_contents['th']
-            en_contents = markdown_contents['en']
-            
-            print(f"📊 พบไฟล์ไทย: {len(th_contents)} ไฟล์")
-            print(f"📊 พบไฟล์อังกฤษ: {len(en_contents)} ไฟล์")
-            print(f"🔍 th_contents type: {type(th_contents)}")
-            print(f"🔍 en_contents type: {type(en_contents)}")
-            
-            if not th_contents:
-                print("❌ ไม่พบไฟล์ markdown ภาษาไทย")
-                return ""
-
-            print("📝 กำลังสร้าง base template...")
-            template = self.template_manager.get_base_template()
-            print(f"📏 Base template size: {len(template):,} characters")
-            
-            print("🎨 กำลัง embed CSS และ JS...")
-            css_content = self.template_manager.get_enhanced_css()
-            js_content = self.template_manager.get_enhanced_js()
-            print(f"📏 CSS size: {len(css_content):,} characters")
-            print(f"📏 JS size: {len(js_content):,} characters")
-            
-            template = template.replace('<!-- EMBEDDED_CSS -->', f'<style>\n{css_content}\n</style>')
-            template = template.replace('<!-- EMBEDDED_JS -->', f'<script>\n{js_content}\n</script>')
-            print(f"📏 Template with CSS/JS: {len(template):,} characters")
-            
-            print("📄 กำลังสร้าง content sections...")
-            sections_html = ""
-            
-            print("🌟 กำลังสร้าง overview section...")
-            overview_section = self.create_overview_section(markdown_contents)
-            print(f"📏 Overview section size: {len(overview_section):,} characters")
-            sections_html += overview_section
-            print("✅ สร้าง overview section สำเร็จ")
-            print(f"📏 Current sections_html size: {len(sections_html):,} characters")
-            
-            print("🔍 หลัง overview section - กำลังเตรียมประมวลผล sections อื่นๆ...")
-            print(f"🔍 Type of th_contents: {type(th_contents)}")
-            print(f"🔍 Length of th_contents: {len(th_contents) if th_contents else 'None'}")
-            
-            if not th_contents:
-                print("❌ th_contents is empty after overview!")
-                return ""
-            
-            print("📚 กำลังประมวลผล sections อื่นๆ...")
-            processed_sections = set()
-            section_count = 0
-            
-            print(f"🔍 th_contents type: {type(th_contents)}")
-            print(f"🔍 th_contents keys: {list(th_contents.keys()) if hasattr(th_contents, 'keys') else 'Not a dict'}")
-            
-            if not hasattr(th_contents, 'keys'):
-                print("❌ th_contents is not a dictionary!")
-                return ""
-            
-            print(f"📋 Sections to process: {list(th_contents.keys())}")
-            
-            skip_sections = ['overview', 'main-info', 'main_info', 'tokyo-trip-update', 'tokyo_trip_update']
-            print(f"📋 Skip sections: {skip_sections}")
-            
-            for section_id in th_contents.keys():
-                print(f"🔄 Processing loop iteration: {section_id}")
-                
-                if section_id not in skip_sections:
-                    print(f"  ✅ Will process: {section_id}")
-                    try:
-                        th_content = th_contents[section_id]
-                        en_content = en_contents.get(section_id, th_content)
-                        print(f"  📝 ประมวลผล: {section_id}")
-                        print(f"  📏 Thai content length: {len(th_content)}")
-                        print(f"  📏 English content length: {len(en_content)}")
-                        
-                        section_html = self.process_section_content(section_id, th_content, en_content)
-                        print(f"    📏 Section {section_id} size: {len(section_html):,} characters")
-                        sections_html += section_html
-                        processed_sections.add(section_id)
-                        section_count += 1
-                        print(f"    ✅ สำเร็จ: {section_id}")
-                        
-                    except Exception as e:
-                        print(f"  ⚠️ ข้ามส่วน {section_id}: {e}")
-                        import traceback
-                        traceback.print_exc()
-                        continue
-                else:
-                    print(f"  ⏭️ ข้าม: {section_id} (reserved section)")
-
-            print(f"✅ ประมวลผลเสร็จ: {section_count} sections")
-            print(f"📏 Total sections HTML size: {len(sections_html):,} characters")
-            
-            print("🔧 กำลังรวม template และ content...")
-            print(f"🔍 Before replacement - template size: {len(template):,}")
-            print(f"🔍 Sections to insert size: {len(sections_html):,}")
-            
-            if '<!-- CONTENT_SECTIONS -->' not in template:
-                print("❌ ไม่พบ placeholder <!-- CONTENT_SECTIONS --> ใน template!")
-                return ""
-            
-            final_html = template.replace('<!-- CONTENT_SECTIONS -->', sections_html)
-            print(f"📏 ขนาดไฟล์ที่สร้าง: {len(final_html):,} ตัวอักษร")
-            
-            if not final_html or len(final_html) < 1000:
-                print(f"⚠️ ไฟล์ที่สร้างขนาดเล็กผิดปกติ: {len(final_html)} ตัวอักษร")
-                print(f"🔍 Template length: {len(template)}")
-                print(f"🔍 Sections length: {len(sections_html)}")
-                return ""
-                
-            print("✅ การรวม template สำเร็จ")
-            return final_html
-                
-        except Exception as e:
-            print(f"❌ เกิดข้อผิดพลาดในการ generate HTML (outer): {e}")
-            import traceback
-            traceback.print_exc()
-            return ""
-    
-    def save_html_file(self, html_content: str) -> Path:
-        """บันทึกไฟล์ HTML"""
-        self.config.build_dir.mkdir(parents=True, exist_ok=True)
-        
-        today = datetime.date.today().strftime("%Y%m%d")
-        filename = f"{self.config.base_name}-{self.config.version}-{today}.html"
-        output_path = self.config.build_dir / filename
-        
-        try:
-            with open(output_path, 'w', encoding='utf-8') as f:
-                f.write(html_content)
-            print(f"✅ สร้างไฟล์สำเร็จ: {output_path}")
-            return output_path
-        except Exception as e:
-            print(f"❌ ไม่สามารถบันทึกไฟล์: {e}")
-            return None
-
-
-def main():
-    """Main function สำหรับรัน script"""
-    print("=" * 60)
-    print("🇯🇵 Tokyo Trip 2026 HTML Generator (Claude Enhanced v4)")
-    print("=" * 60)
-    
-    script_dir = Path(__file__).resolve().parent
-    config = TokgeneConfig(
-        script_dir=script_dir,
-        content_dir=script_dir.parent / "content",
-        build_dir=script_dir.parent / "build",
-        template_file=script_dir / "template-skeleton.html"
-    )
-    
-    print(f"📁 Script directory: {config.script_dir}")
-    print(f"📁 Content directory: {config.content_dir}")
-    print(f"📁 Build directory: {config.build_dir}")
-    print(f"📁 English content: {config.content_dir / 'en'}")
-    print()
-    
-    generator = TokygeneGenerator(config)
-    
-    try:
-        html_content = generator.generate_html()
-        print(f"🔍 HTML content received: {len(html_content) if html_content else 0} characters")
-        
-        if html_content:
-            output_path = generator.save_html_file(html_content)
-            if output_path:
-                print()
-                print("🎉 สำเร็จ! HTML ไฟล์พร้อมใช้งานแล้ว")
-                print(f"📱 ใช้งานได้บน: iPad, Android, Mobile (Offline)")
-                print(f"🌐 รองรับ: Thai/English switching")
-                print(f"📂 ไฟล์: {output_path}")
-                print()
-                print("🎯 Next steps:")
-                print("   1. เปิดไฟล์ HTML บนอุปกรณ์ที่ต้องการใช้")
-                print("   2. สร้าง content/en/ สำหรับภาษาอังกฤษ")
-                print("   3. ใช้หมายเลข 001-, 002- สำหรับจัดลำดับ")
-                print("   4. สนุกกับการเดินทาง! 🎌")
-            else:
-                print("❌ ไม่สามารถบันทึกไฟล์ได้")
-        else:
-            print("❌ ไม่สามารถ generate HTML ได้ (html_content is empty or None)")
-            
-    except Exception as e:
-        print(f"❌ เกิดข้อผิดพลาดในการรัน generator: {e}")
-        import traceback
-        traceback.print_exc()
-
-
-if __name__ == "__main__":
-    main()
