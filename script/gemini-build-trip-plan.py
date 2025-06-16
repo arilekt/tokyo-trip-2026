@@ -4,6 +4,7 @@ from pathlib import Path
 import mistune
 from bs4 import BeautifulSoup
 from datetime import datetime
+import html # For escaping/unescaping HTML entities
 
 # Define paths relative to the script's location
 SCRIPT_DIR = Path(__file__).parent
@@ -50,45 +51,92 @@ class MultiLangRenderer(mistune.HTMLRenderer):
 
 # Custom Markdown parser that ensures 'parse' method always returns a string
 class RobustMarkdownParser(mistune.Markdown):
-    def parse(self, text):
-        # Call the original parse method
-        result = super().parse(text)
-        # Ensure the result is a string, as mistune can sometimes return other types (e.g., tuple in Python 3.13)
-        if not isinstance(result, str):
-            print(f"DEBUG: RobustMarkdownParser detected non-string output from super().parse: {type(result)}. Converting to string.")
-            return str(result)
-        return result
+    def __call__(self, text): # Override __call__ for robustness
+        # Get HTML from the parent's __call__ method.
+        # This will use the renderer (MultiLangRenderer) attached during initialization.
+        # The TypeError indicates that the __call__ method for the mistune version
+        # being used expects 2 positional arguments (self, text) but received 3 (self, text, state).
+        # This typically happens with mistune v2.x or older.
+        # For mistune v3.x, __call__(self, s, state=None) is the signature.
+        # We adjust the call to pass only 'text'.
+        html_output = super().__call__(text)
+
+        # Ensure the result is a string.
+        # Mistune's __call__ might return a tuple (html_string, state_object) in some cases
+        # (e.g., observed or anticipated in Python 3.13, as per original comment in user's code).
+        if isinstance(html_output, tuple):
+            # If it's a tuple, assume the first element is the HTML string.
+            if html_output and isinstance(html_output[0], str):
+                # print(f"DEBUG: RobustMarkdownParser.__call__ (from super()) detected tuple. Using first element. Type: {type(html_output)}")
+                return html_output[0]
+            else:
+                # This case means the tuple structure is not (str, ...), which is unexpected.
+                # print(f"DEBUG: RobustMarkdownParser.__call__ (from super()) detected tuple with unexpected structure: {html_output}. Converting to string (fallback).")
+                return str(html_output) # Fallback, likely to still show the bug if tuple is the issue.
+        elif not isinstance(html_output, str):
+            # If it's not a string and not the expected tuple, it's an unknown type.
+            # print(f"DEBUG: RobustMarkdownParser.__call__ (from super()) detected non-string/non-tuple output: {type(html_output)}. Converting to string (fallback).")
+            return str(html_output) # Fallback
+        
+        return html_output
 
 # Initialize mistune with the custom renderer globally
 markdown_parser = RobustMarkdownParser(renderer=MultiLangRenderer())
 
-def process_custom_boxes(text_content):
-    """Identifies and processes custom info/note box markdown into HTML div structures."""
-    # Corrected regex for general box pattern and proper f-string syntax in return.
+# Placeholder for custom box data
+TEMP_BOX_PLACEHOLDER_TAG = "div"
+TEMP_BOX_CLASS = "custom-box-placeholder"
+
+def convert_custom_boxes_to_placeholders(md_text):
+    """
+    Converts custom box markdown (info-box, note-box) into temporary HTML placeholders.
+    The content inside these placeholders remains as Markdown.
+    """
     box_pattern = re.compile(
         r'(?:^|\n)(?P<type>info|note)-box\s*\n' 
         r'(?:```(?P<title_triple_backtick>[^`]+)```|(?P<title_single_line>[^\n]+))\n' # Title: either ```title``` or single line
-        r'(?P<content>.+?)'                # Content of the box
+        r'(?P<content_md>.+?)'                # Content of the box as Markdown
         r'(?=\n(?:info|note)-box|\n---|\n\n|\Z)', # Lookahead for next box or end of string
         re.DOTALL | re.MULTILINE
     )
 
-    def replace_box_markup(match):
+    def replace_with_placeholder(match):
         box_type = match.group('type')
-        title_md = match.group('title_triple_backtick') if match.group('title_triple_backtick') else match.group('title_single_line')
-        content_md = match.group('content').strip()
+        title_md_raw = match.group('title_triple_backtick') if match.group('title_triple_backtick') else match.group('title_single_line')
+        content_md_raw = match.group('content_md').strip()
+        
+        # Escape HTML special characters in title_md_raw before putting it in an attribute
+        escaped_title_md_raw = html.escape(title_md_raw.strip())
 
-        # Process title for multi-language spans
-        title_html_fragment = markdown_parser.inline(title_md.strip())
-        title_soup = BeautifulSoup(title_html_fragment, 'html.parser')
-        th_title = title_soup.find('span', class_='th')
-        en_title = title_soup.find('span', class_='en')
-        jp_title = title_soup.find('span', class_='jp')
+        return (
+            f'\n<{TEMP_BOX_PLACEHOLDER_TAG} class="{TEMP_BOX_CLASS}" data-box-type="{box_type}" data-title-md="{escaped_title_md_raw}">\n'
+            f'{content_md_raw}\n' # Content remains as Markdown
+            f'</{TEMP_BOX_PLACEHOLDER_TAG}>\n'
+        )
 
-        th_title_text = th_title.decode_contents().strip() if th_title else title_soup.get_text(strip=True)
-        en_title_text = en_title.decode_contents().strip() if en_title else th_title_text
-        jp_title_text = jp_title.decode_contents().strip() if jp_title else th_title_text
+    return box_pattern.sub(replace_with_placeholder, md_text)
 
+def finalize_custom_boxes_from_placeholders(soup, markdown_parser_instance):
+    """
+    Finds temporary box placeholders in the BeautifulSoup object,
+    parses their titles, and replaces them with the final HTML box structure.
+    The content of the box is already HTML at this stage (parsed by mistune).
+    """
+    for placeholder in soup.find_all(TEMP_BOX_PLACEHOLDER_TAG, class_=TEMP_BOX_CLASS):
+        box_type = placeholder.get('data-box-type', 'info')
+        title_md_raw = html.unescape(placeholder.get('data-title-md', '')) # Unescape title MD
+        
+        # Content inside placeholder is already HTML (parsed by mistune from original MD content)
+        box_content_html = placeholder.decode_contents().strip()
+
+        # Parse the title markdown (which might contain lang spans) to an HTML fragment
+        title_html_fragment = markdown_parser_instance.inline(title_md_raw)
+        title_soup_frag = BeautifulSoup(title_html_fragment, 'html.parser')
+        
+        th_title_text = title_soup_frag.find('span', class_='th').decode_contents().strip() if title_soup_frag.find('span', class_='th') else title_soup_frag.get_text(strip=True)
+        en_title_text = title_soup_frag.find('span', class_='en').decode_contents().strip() if title_soup_frag.find('span', class_='en') else th_title_text
+        jp_title_text = title_soup_frag.find('span', class_='jp').decode_contents().strip() if title_soup_frag.find('span', class_='jp') else th_title_text
+        
         toggle_html = f'''
             <div class="{box_type}-toggle">
                 <span class="th">{th_title_text}</span>
@@ -97,84 +145,77 @@ def process_custom_boxes(text_content):
             </div>
         '''
         
-        # Process box content (which may contain nested markdown/lists)
-        box_content_html = markdown_parser.parse(content_md)
-        # Remove outer <p> tags if mistune adds them unnecessarily
-        # Removed `span class="math-inline"` from regex pattern and fixed f-string syntax
-        box_content_html = re.sub(r'^<p>(.*)</p>$', r'\1', box_content_html, flags=re.DOTALL) 
+        final_box_html_str = f'''
+            <div class="{box_type}-box">
+                {toggle_html}
+                <div class="{box_type}-detail">
+                    {box_content_html}
+                </div>
+            </div>
+        '''
+        final_box_soup = BeautifulSoup(final_box_html_str, 'html.parser')
+        placeholder.replace_with(final_box_soup)
 
-        return f'''
-<div class="{box_type}-box">
-    {toggle_html}
-    <div class="{box_type}-detail">
-        {box_content_html}
-    </div>
-</div>
-'''
+def transform_lists_to_timelines(soup):
+    """
+    Identifies <ul> elements that look like timelines (based on <li> structure)
+    and adds the 'timeline' class to them.
+    """
+    for ul in soup.find_all('ul'):
+        is_timeline = False
+        li_children = ul.find_all('li', recursive=False)
+        if not li_children:
+            continue
 
-    return box_pattern.sub(replace_box_markup, text_content)
-
-def process_timeline_markup(text_content):
-    """Converts timeline markdown into HTML <ul><li> structure, handling nested custom boxes."""
-    timeline_item_pattern = re.compile(
-        r'^- \*\*(?P<time>[^*]+?)\*\*:\s*(?P<emoji><span class="emoji">[^<]+?</span>)?\s*(?P<content>.+?)'
-        r'(?=\n^- \*\*|\n\n(?![ \t]*[-*+\d])|\Z)', # Lookahead for next item, or two newlines NOT followed by list/heading
-        re.MULTILINE | re.DOTALL
-    )
-    
-    timeline_html_items = []
-    
-    matches = list(timeline_item_pattern.finditer(text_content))
-
-    if not matches:
-        return text_content # No timeline found, return original content
-
-    for match in matches:
-        time_part = match.group('time').strip()
-        emoji_part = match.group('emoji') if match.group('emoji') else ''
-        content_md = match.group('content').strip()
-
-        # Process content_md: it might contain nested markdown, including custom boxes.
-        # Pass content_md to process_custom_boxes, then parse with markdown_parser.
-        processed_content_html = markdown_parser.parse(process_custom_boxes(content_md))
+        timeline_candidate_score = 0
+        for li in li_children:
+            # Check if the li starts with <strong> and contains a colon, typical for timeline items
+            first_child = next(li.children, None)
+            if first_child and first_child.name == 'strong' and ':' in li.get_text():
+                timeline_candidate_score += 1
         
-        # Remove outer <p> tags if mistune adds them unnecessarily around block elements
-        processed_content_html = re.sub(r'^<p>(.*)</p>$', r'\1', processed_content_html, flags=re.DOTALL)
-        
-        timeline_html_items.append(f'''
-        <li>
-            <strong>{time_part}</strong>: {emoji_part} {processed_content_html}
-        </li>
-        ''')
-    
-    return '<ul class="timeline">\n' + "".join(timeline_html_items) + '</ul>\n'
+        # If a good portion of LIs match the pattern, consider it a timeline
+        if li_children and (timeline_candidate_score / len(li_children)) > 0.5:
+            is_timeline = True
 
-def markdown_to_html_with_structure(markdown_text_input):
+        if is_timeline:
+            ul['class'] = ul.get('class', []) + ['timeline']
+            # Further structural changes to LIs can be done here if needed,
+            # but current CSS for .timeline and .emoji should handle most cases.
+
+def markdown_to_html_with_structure(markdown_text_input, markdown_parser_instance):
     """
     Orchestrates the conversion of markdown to HTML, applying specific structural transformations
     for timelines, info/note boxes, and tables.
     """
-    html_content = ""
+    # Step 1: Convert custom box syntax to temporary HTML placeholders.
+    # The content *inside* these placeholders remains as Markdown.
+    md_with_placeholders = convert_custom_boxes_to_placeholders(markdown_text_input)
+
+    # Step 2: Parse the entire modified Markdown (with placeholders) using mistune.
+    # mistune will convert the Markdown content (including inside placeholders) to HTML.
+    base_html_from_mistune = markdown_parser_instance(md_with_placeholders) # Changed to call instance directly
+
+    # Step 3: Parse mistune's HTML output with BeautifulSoup.
     try:
-        if re.search(r'^- \*\*[^*]+\*\*:', markdown_text_input, re.MULTILINE):
-            # If the section starts with a timeline pattern, process as timeline
-            html_content = process_timeline_markup(markdown_text_input)
-        else:
-            # Otherwise, process general markdown with custom boxes
-            html_content = markdown_parser.parse(process_custom_boxes(markdown_text_input))
-
-        # html_content should now always be a string due to RobustMarkdownParser
-        # and explicit handling. BeautifulSoup should receive a valid string.
-        
-        soup = BeautifulSoup(html_content, 'html.parser')
-
-    except Exception as e: # Catch a broader exception for debugging, will refine later
-        print(f"MAJOR ERROR: BeautifulSoup or Markdown parsing failed for a section. Error: {e}")
-        print(f"The problematic content type was: {type(html_content)}")
-        print(f"Problematic markdown_text_input (first 500 chars): {markdown_text_input[:500]}...")
+        soup = BeautifulSoup(base_html_from_mistune, 'html.parser')
+    except Exception as e:
+        print(f"ERROR: BeautifulSoup parsing failed. Error: {e}")
+        print(f"Markdown input (first 500 chars): {markdown_text_input[:500]}...")
+        print(f"MD with placeholders (first 500 chars): {md_with_placeholders[:500]}...")
+        print(f"Base HTML from mistune (first 500 chars): {str(base_html_from_mistune)[:500]}...")
         # Provide a fallback HTML content for this section to prevent total crash
-        soup = BeautifulSoup(f'<div class="error-section note-box"><p class="th">⚠️ ไม่สามารถประมวลผลส่วนนี้ได้ โปรดตรวจสอบ Markdown (มีข้อผิดพลาดร้ายแรง).</p><p class="en">⚠️ Could not process this section. Please check Markdown (critical error).</p></div>', 'html.parser')
+        error_html = f'<div class="error-section note-box"><p class="th">⚠️ ไม่สามารถประมวลผลส่วนนี้ได้ (เกิดข้อผิดพลาด BeautifulSoup).</p><p class="en">⚠️ Could not process this section (BeautifulSoup error).</p><pre>{html.escape(str(e))}</pre></div>'
+        return error_html
 
+    # Step 4: Finalize custom boxes.
+    # Find placeholders and replace them with the full box HTML structure.
+    finalize_custom_boxes_from_placeholders(soup, markdown_parser_instance)
+
+    # Step 5: Transform lists that look like timelines.
+    transform_lists_to_timelines(soup)
+
+    # Step 6: Process tables (wrap in container, add classes).
     for table in soup.find_all('table'):
         table_container = soup.new_tag('div', attrs={'class': 'table-container'})
         table.wrap(table_container)
@@ -182,12 +223,11 @@ def markdown_to_html_with_structure(markdown_text_input):
         for row in table.find_all('tr'):
             cells = row.find_all(['td', 'th'])
             if cells and len(cells) > 0:
-                first_cell_text = cells[0].get_text().strip().lower()
+                first_cell_text = cells[0].get_text(strip=True).lower()
                 if 'รวม' in first_cell_text or 'total' in first_cell_text:
                     row['class'] = row.get('class', []) + ['total']
                 elif 'งบประมาณที่เหลือ' in first_cell_text or 'remaining' in first_cell_text:
                     row['class'] = row.get('class', []) + ['remaining']
-
     return str(soup)
 
 
@@ -665,9 +705,11 @@ def build_full_html_plan():
                     </h1>
                 '''
             
-            body_markdown = re.sub(r'#+\s*([^\n]+)\n?', '', markdown_text, count=1).strip() # Use count=1
+            # Extract body (everything after the first H1/H2 title line)
+            body_markdown_match = re.search(r'#+\s+[^\n]+\n(.*)', markdown_text, re.DOTALL)
+            body_markdown_content = body_markdown_match.group(1).strip() if body_markdown_match else markdown_text.strip()
 
-            processed_body_html = markdown_to_html_with_structure(body_markdown)
+            processed_body_html = markdown_to_html_with_structure(body_markdown_content, markdown_parser)
             
             div_tag.clear()
             if title_html_tag:
@@ -705,6 +747,31 @@ def build_full_html_plan():
         f_out.write(template_soup.prettify())
 
     print(f"✅ Generated: {output_filename}")
+
+def extract_multilang_title_from_line(title_line):
+    """Extracts Thai and English titles from a single markdown title line."""
+    th_title = title_line
+    en_title = title_line
+
+    # Check for "Thai - English" pattern
+    split_match = re.match(r'(.+?)\s+-\s*(.+)', title_line)
+    if split_match:
+        th_title = split_match.group(1).strip()
+        en_title = split_match.group(2).strip()
+    else:
+        # Check for embedded span tags (less common for H1 from MD but good for robustness)
+        temp_soup = BeautifulSoup(f"<h1>{title_line}</h1>", 'html.parser')
+        h1_tag = temp_soup.h1
+        if h1_tag:
+            th_span = h1_tag.find('span', class_='th')
+            en_span = h1_tag.find('span', class_='en')
+            if th_span: th_title = th_span.decode_contents().strip()
+            if en_span: en_title = en_span.decode_contents().strip()
+            
+            if not th_span and not en_span: th_title = en_title = h1_tag.get_text(strip=True)
+            elif not th_span: th_title = en_title # if only en_span exists, use its content for th_title
+            elif not en_span: en_title = th_title # if only th_span exists, use its content for en_title
+    return th_title, en_title
 
 
 # Run the build process
