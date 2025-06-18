@@ -255,8 +255,8 @@ class MarkdownProcessor:
                     if nested_content:
                         html_parts.append(f'''
                         <button class="timeline-toggle" onclick="toggleTimelineDetail('{item_id}')">
-                            <span class="th">รายละเอียด ▼</span>
-                            <span class="en">Details ▼</span>
+                            <span class="th">▶</span>
+                            <span class="en">▶</span>
                         </button>
                         <div class="timeline-detail" id="{item_id}" style="display: none;">''')
                         
@@ -332,8 +332,8 @@ class HtmlTemplate:
 {CONTENT_SECTIONS}
     </div>
     <a class="back-to-top" href="#toc">
-        <span class="th">🔙 กลับไปหน้าหลัก</span>
-        <span class="en">🔙 Back to Top</span>
+        <span class="th">🏠</span>
+        <span class="en">🏠</span>
     </a>
     <script>{JS_CONTENT}</script>
 </body>
@@ -442,9 +442,10 @@ class HtmlTemplate:
 
         .timeline-toggle {
             background: var(--primary-light); color: white; border: none;
-            padding: 0.4rem 0.8rem; border-radius: 0.25rem; cursor: pointer;
-            font-size: 0.8rem; margin: 0.5rem 0 0.25rem 0;
+            padding: 0.3rem 0.6rem; border-radius: 0.25rem; cursor: pointer;
+            font-size: 0.9rem; margin: 0.5rem 0 0.25rem 0;
             transition: all 0.3s ease; display: inline-block;
+            min-width: 1.8rem; text-align: center;
         }
 
         .timeline-toggle:hover { background: var(--primary-color); }
@@ -529,6 +530,67 @@ class HtmlTemplate:
             .lang-switcher { top: 0.5rem; right: 0.5rem; }
             .back-to-top { bottom: 1rem; right: 1rem; padding: 0.75rem; }
         }
+        
+        /* ===== Enhanced Info Sections ===== */
+        .info-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+        
+        .info-header {
+            background: var(--card-bg);
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .info-header:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+        
+        .info-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+        
+        .info-header:hover h3 {
+            color: white;
+        }
+        
+        .organized-content {
+            padding: 1rem 0;
+        }
+        
+        /* ===== Summary Tables (Weather/Transportation) ===== */
+        .summary-section {
+            margin: 1.5rem 0;
+        }
+        
+        .summary-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .summary-section table {
+            box-shadow: none;
+            border-radius: 0;
+        }
+        
+        .summary-section td {
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .summary-section tr:last-child td {
+            border-bottom: none;
+        }
         '''
 
     @staticmethod
@@ -570,18 +632,18 @@ class HtmlTemplate:
                 return;
             }
             
-            const isVisible = detailElement.style.display !== 'none' && detailElement.style.display !== '';
+            const isVisible = detailElement.style.display === 'block';
             
             if (isVisible) {
                 // Hide the detail
                 detailElement.style.display = 'none';
                 toggleButton.classList.remove('expanded');
-                toggleButton.innerHTML = '<span class="th">รายละเอียด ▼</span><span class="en">Details ▼</span>';
+                toggleButton.innerHTML = '<span class="th">▶</span><span class="en">▶</span>';
             } else {
                 // Show the detail
                 detailElement.style.display = 'block';
                 toggleButton.classList.add('expanded');
-                toggleButton.innerHTML = '<span class="th">รายละเอียด ▲</span><span class="en">Details ▲</span>';
+                toggleButton.innerHTML = '<span class="th">▼</span><span class="en">▼</span>';
             }
         }
         
@@ -799,6 +861,15 @@ class TripGenerator:
                         # Process content based on type
                         if section_id.startswith('day'):
                             html_body = self.markdown_processor.process_timeline_markdown(body)
+                        elif section_id == 'accommodation':
+                            # Process accommodation as timeline with hotel info
+                            html_body = self._process_accommodation_as_timeline(body)
+                        elif section_id in ['transportation', 'weather']:
+                            # Process as summary tables like budget
+                            html_body = process_as_summary_table(body, section_id)
+                        elif section_id == 'tips':
+                            # Process tips as organized info sections
+                            html_body = self._process_info_section(body, section_id)
                         else:
                             html_body = self.markdown_processor.basic_md_to_html(body)
                         
@@ -872,6 +943,222 @@ class TripGenerator:
             
         return output_path
 
+    def _process_accommodation_as_timeline(self, md_text: str) -> str:
+        """Process accommodation content as timeline format"""
+        if not md_text or not md_text.strip():
+            return ""
+        
+        lines = md_text.strip().splitlines()
+        html_parts = ['<ul class="timeline">']
+        counter = 0
+        
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
+            
+            # Look for night/day patterns
+            if re.match(r'.*(คืนที่|Night|Day).*', line) and ('**' in line or line.startswith('###')):
+                # Extract title
+                title = re.sub(r'[#*]', '', line).strip()
+                
+                # Collect details
+                details = []
+                j = i + 1
+                while j < len(lines) and not re.match(r'.*(คืนที่|Night|Day).*', lines[j].strip()):
+                    if lines[j].strip() and not lines[j].startswith('##'):
+                        details.append(lines[j].strip())
+                    j += 1
+                
+                # Create timeline item
+                item_id = f"hotel-{counter}"
+                html_parts.append('<li>')
+                html_parts.append(f'<div class="timeline-main"><strong>🏨 {title}</strong></div>')
+                
+                if details:
+                    html_parts.append(f'''
+                    <button class="timeline-toggle" onclick="toggleTimelineDetail('{item_id}')">
+                        <span class="th">▶</span>
+                        <span class="en">▶</span>
+                    </button>
+                    <div class="timeline-detail" id="{item_id}" style="display: none;">''')
+                    
+                    for detail in details:
+                        if detail.startswith('- '):
+                            html_parts.append(f'<p>• {detail[2:]}</p>')
+                        else:
+                            html_parts.append(f'<p>{detail}</p>')
+                    
+                    html_parts.append('</div>')
+                
+                html_parts.append('</li>')
+                counter += 1
+                i = j - 1
+            
+            i += 1
+        
+        html_parts.append('</ul>')
+        return '\n'.join(html_parts)
+
+
+def process_as_summary_table(md_text: str, section_type: str) -> str:
+    """Process weather/transportation as summary tables like budget section"""
+    if not md_text or not md_text.strip():
+        return ""
+    
+    lines = md_text.strip().splitlines()
+    html_parts = []
+    current_table = []
+    table_headers = []
+    
+    # Define section-specific styling
+    section_config = {
+        'weather': {
+            'icon': '🌤️',
+            'color': 'var(--info-bg)',
+            'border': 'var(--info-border)'
+        },
+        'transportation': {
+            'icon': '🚆',
+            'color': 'var(--note-bg)', 
+            'border': 'var(--note-border)'
+        }
+    }
+    
+    config = section_config.get(section_type, section_config['weather'])
+    
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        
+        # Major subsections (###) become table sections
+        if line.startswith('### '):
+            # Close previous table if exists
+            if current_table:
+                html_parts.append('</tbody></table></div>')
+                current_table = []
+            
+            # Start new table section
+            title = line[4:].strip()
+            html_parts.append(f'''
+            <div class="summary-section" style="border-left: 4px solid {config['border']}; background: {config['color']}; margin: 1.5rem 0; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 2px 4px var(--shadow);">
+                <h3 style="background: {config['border']}; color: white; margin: 0; padding: 1rem; font-size: 1.1rem;">{config['icon']} {title}</h3>
+                <div class="table-container">
+                    <table style="margin: 0; border-radius: 0;">
+                        <tbody>''')
+            current_table = [title]
+        
+        # Content becomes table rows
+        elif line and not line.startswith('#'):
+            if line.startswith('- '):
+                # List items become table rows
+                content = line[2:].strip()
+                # Split on colon or dash for key-value pairs
+                if ':' in content:
+                    key, value = content.split(':', 1)
+                    key = key.strip()
+                    value = value.strip()
+                elif '-' in content and not content.startswith('-'):
+                    parts = content.split('-', 1)
+                    if len(parts) == 2:
+                        key, value = parts[0].strip(), parts[1].strip()
+                    else:
+                        key, value = content, ""
+                else:
+                    key, value = content, ""
+                
+                # Process markdown in key and value
+                key = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', key)
+                value = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', value)
+                value = re.sub(r'\*(.*?)\*', r'<em>\1</em>', value)
+                
+                if value:
+                    html_parts.append(f'<tr><td style="font-weight: 600; padding: 0.75rem; width: 40%; background: rgba(255,255,255,0.7);">{key}</td><td style="padding: 0.75rem;">{value}</td></tr>')
+                else:
+                    html_parts.append(f'<tr><td colspan="2" style="font-weight: 600; padding: 0.75rem; background: rgba(255,255,255,0.5); text-align: center;">{key}</td></tr>')
+            
+            elif line.startswith('**') and line.endswith('**'):
+                # Bold items become section headers
+                header = line[2:-2].strip()
+                html_parts.append(f'<tr><td colspan="2" style="font-weight: bold; padding: 1rem; background: rgba(255,255,255,0.9); border-top: 2px solid {config["border"]}; text-align: center; color: {config["border"]};">{header}</td></tr>')
+            
+            elif line.strip():
+                # Regular paragraphs become full-width rows
+                content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', line)
+                html_parts.append(f'<tr><td colspan="2" style="padding: 0.75rem; line-height: 1.6;">{content}</td></tr>')
+        
+        i += 1
+    
+    # Close final table if exists
+    if current_table:
+        html_parts.append('</tbody></table></div></div>')
+    
+    return '\n'.join(html_parts)
+    
+    def _process_info_section(self, md_text: str, section_type: str) -> str:
+        """Process transportation, weather, tips as organized sections"""
+        if not md_text or not md_text.strip():
+            return ""
+        
+        lines = md_text.strip().splitlines()
+        html_parts = ['<div class="organized-content">']
+        current_section = None
+        counter = 0
+        
+        # Get icon for section type
+        section_icons = {
+            'transportation': '🚆',
+            'weather': '🌤️', 
+            'tips': '💡'
+        }
+        
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
+            
+            # Subsections (###)
+            if line.startswith('### '):
+                if current_section:
+                    html_parts.append('</div></div>')
+                
+                title = line[4:].strip()
+                icon = section_icons.get(section_type, '📝')
+                section_id = f"{section_type}-{counter}"
+                
+                html_parts.append(f'''
+                <div class="info-section">
+                    <div class="info-header" onclick="toggleTimelineDetail('{section_id}')">
+                        <h3>{icon} {title}</h3>
+                        <button class="timeline-toggle" onclick="toggleTimelineDetail('{section_id}')">
+                            <span class="th">▶</span>
+                            <span class="en">▶</span>
+                        </button>
+                    </div>
+                    <div class="timeline-detail" id="{section_id}" style="display: none;">''')
+                
+                current_section = section_id
+                counter += 1
+            
+            # Content
+            elif line and current_section:
+                if line.startswith('- '):
+                    content = line[2:].strip()
+                    content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', content)
+                    html_parts.append(f'<p style="margin: 0.5rem 0; padding-left: 1rem;">• {content}</p>')
+                elif line.startswith('**') and line.endswith('**'):
+                    subheading = line[2:-2].strip()
+                    html_parts.append(f'<h4 style="color: var(--primary-dark); margin: 1rem 0 0.5rem 0;">{subheading}</h4>')
+                elif not line.startswith('#'):
+                    content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', content)
+                    html_parts.append(f'<p>{line}</p>')
+            
+            i += 1
+        
+        if current_section:
+            html_parts.append('</div></div>')
+        
+        html_parts.append('</div>')
+        return '\n'.join(html_parts)
+
 
 def main():
     """Main execution function"""
@@ -927,3 +1214,397 @@ def main():
 
 if __name__ == "__main__":
     exit(main())
+
+
+# ===== ENHANCED FUNCTIONS - Fix Issues =====
+
+def get_enhanced_js() -> str:
+    """Get ENHANCED JavaScript with FIXED expand/collapse and icons"""
+    return '''
+    // ===== Language Switching =====
+    function switchLanguage(lang) {
+        const body = document.body;
+        const buttons = document.querySelectorAll('.lang-btn');
+        
+        // Remove all language classes
+        body.classList.remove('lang-th', 'lang-en');
+        body.classList.add(`lang-${lang}`);
+        
+        // Update button states
+        buttons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.id === `btn-${lang}`) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // Save to localStorage (with error handling)
+        try {
+            localStorage.setItem('tokyo-trip-lang', lang);
+        } catch (e) {
+            console.warn('LocalStorage not available:', e);
+        }
+    }
+    
+    // ===== Timeline Expand/Collapse - FIXED & IMPROVED! =====
+    function toggleTimelineDetail(elementId) {
+        const detailElement = document.getElementById(elementId);
+        const toggleButton = document.querySelector(`button[onclick="toggleTimelineDetail('${elementId}')"`);
+        
+        if (!detailElement || !toggleButton) {
+            console.warn(`Timeline detail not found: ${elementId}`);
+            return;
+        }
+        
+        // Check current state - using computed style for reliability
+        const computedStyle = window.getComputedStyle(detailElement);
+        const isVisible = computedStyle.display !== 'none';
+        
+        if (isVisible) {
+            // Hide the detail
+            detailElement.style.display = 'none';
+            toggleButton.classList.remove('expanded');
+            toggleButton.innerHTML = '<span class="th">📋</span><span class="en">📋</span>';
+        } else {
+            // Show the detail
+            detailElement.style.display = 'block';
+            toggleButton.classList.add('expanded');
+            toggleButton.innerHTML = '<span class="th">📖</span><span class="en">📖</span>';
+        }
+    }
+    
+    // Make toggleTimelineDetail globally available
+    window.toggleTimelineDetail = toggleTimelineDetail;
+    
+    // ===== Initialize Timeline Toggle =====
+    function initializeTimelineToggle() {
+        console.log('🔧 Initializing timeline toggle...');
+        
+        // Find all timeline detail elements and hide them initially
+        const timelineDetails = document.querySelectorAll('.timeline-detail');
+        timelineDetails.forEach(detail => {
+            detail.style.display = 'none';
+        });
+        
+        console.log(`✅ Timeline toggle initialized for ${timelineDetails.length} details`);
+    }
+    
+    // ===== Smooth Scrolling =====
+    function initializeSmoothScrolling() {
+        const links = document.querySelectorAll('a[href^="#"]');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    }
+    
+    // ===== Main Initialization =====
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🇯🇵 Tokyo Trip 2026 HTML Generator - ENHANCED VERSION LOADING...');
+        
+        // Initialize language (with localStorage fallback)
+        try {
+            const savedLang = localStorage.getItem('tokyo-trip-lang');
+            const defaultLang = (savedLang && (savedLang === 'th' || savedLang === 'en')) ? savedLang : 'th';
+            switchLanguage(defaultLang);
+        } catch (e) {
+            console.warn('LocalStorage not available, using default language');
+            switchLanguage('th');
+        }
+        
+        // Initialize all features
+        initializeTimelineToggle();
+        initializeSmoothScrolling();
+        
+        console.log('✅ Tokyo Trip 2026 ENHANCED - All features initialized!');
+        console.log('🎉 Timeline expand/collapse: WORKING WITH ICONS!');
+        console.log('🌍 Language switching: WORKING!');
+        console.log('📱 Mobile responsive: WORKING!');
+    });
+    '''
+
+
+def process_accommodation_timeline(md_text: str) -> str:
+    """Process accommodation content as timeline format"""
+    if not md_text or not md_text.strip():
+        return ""
+    
+    lines = md_text.strip().splitlines()
+    html_parts = ['<ul class="timeline">']
+    timeline_counter = 0
+    
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        
+        # Look for accommodation entries (night patterns)
+        if re.match(r'.*คืน.*|.*Night.*|.*วัน.*Day.*', line) and ('**' in line or line.startswith('###')):
+            # Extract accommodation title
+            title = re.sub(r'[#*]', '', line).strip()
+            
+            # Look for nested content
+            nested_content = []
+            j = i + 1
+            
+            while j < len(lines):
+                next_line = lines[j].strip()
+                # Stop if we hit another accommodation entry
+                if re.match(r'.*คืน.*|.*Night.*|.*วัน.*Day.*', next_line) and ('**' in next_line or next_line.startswith('###')):
+                    break
+                # Stop if we hit a major header
+                if next_line.startswith('##'):
+                    break
+                
+                if next_line:
+                    nested_content.append(next_line)
+                j += 1
+            
+            # Create timeline item
+            item_id = f"accom-{timeline_counter}"
+            html_parts.append('<li>')
+            html_parts.append(f'<div class="timeline-main">')
+            html_parts.append(f'<strong>🏨 {title}</strong>')
+            html_parts.append('</div>')
+            
+            # Add expandable details
+            if nested_content:
+                html_parts.append(f'''
+                <button class="timeline-toggle" onclick="toggleTimelineDetail('{item_id}')">
+                    <span class="th">📋</span>
+                    <span class="en">📋</span>
+                </button>
+                <div class="timeline-detail" id="{item_id}" style="display: none;">''')
+                
+                # Process nested content as simple HTML
+                for content_line in nested_content:
+                    if content_line.startswith('- '):
+                        html_parts.append(f'<p>• {content_line[2:]}</p>')
+                    elif content_line.strip():
+                        html_parts.append(f'<p>{content_line}</p>')
+                
+                html_parts.append('</div>')
+            
+            html_parts.append('</li>')
+            timeline_counter += 1
+            i = j - 1
+        
+        # Regular content
+        elif line and not line.startswith('#'):
+            html_parts.append(f'<p>{line}</p>')
+        
+        i += 1
+    
+    html_parts.append('</ul>')
+    return '\n'.join(html_parts)
+
+
+def process_simple_section(md_text: str, section_type: str = "general") -> str:
+    """Process transportation, weather, tips sections in a clean, organized way"""
+    if not md_text or not md_text.strip():
+        return ""
+    
+    lines = md_text.strip().splitlines()
+    html_parts = []
+    current_section = None
+    section_counter = 0
+    
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        
+        # Major subsections (###)
+        if line.startswith('### '):
+            title = line[4:].strip()
+            
+            # Close previous section if exists
+            if current_section:
+                html_parts.append('</div></div>')
+            
+            # Start new section
+            section_id = f"{section_type}-{section_counter}"
+            icon = get_section_icon(title, section_type)
+            
+            html_parts.append(f'''
+            <div class="info-section">
+                <div class="info-header" onclick="toggleTimelineDetail('{section_id}')">
+                    <h3>{icon} {title}</h3>
+                    <button class="timeline-toggle" onclick="toggleTimelineDetail('{section_id}')">
+                        <span class="th">📋</span>
+                        <span class="en">📋</span>
+                    </button>
+                </div>
+                <div class="timeline-detail" id="{section_id}" style="display: none;">''')
+            
+            current_section = section_id
+            section_counter += 1
+        
+        # Content within sections
+        elif line and current_section:
+            if line.startswith('- '):
+                content = line[2:].strip()
+                # Process inline markdown
+                content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', content)
+                content = re.sub(r'\*(.*?)\*', r'<em>\1</em>', content)
+                content = re.sub(r'`(.*?)`', r'<code>\1</code>', content)
+                html_parts.append(f'<p class="list-item">• {content}</p>')
+            elif line.startswith('**') and line.endswith('**'):
+                # Subheading
+                subheading = line[2:-2].strip()
+                html_parts.append(f'<h4>{subheading}</h4>')
+            elif line.strip():
+                # Regular paragraph
+                content = line
+                content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', content)
+                content = re.sub(r'\*(.*?)\*', r'<em>\1</em>', content)
+                content = re.sub(r'`(.*?)`', r'<code>\1</code>', content)
+                html_parts.append(f'<p>{content}</p>')
+        
+        # Content without section (add to general area)
+        elif line and not current_section:
+            if line.startswith('- '):
+                content = line[2:].strip()
+                content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', content)
+                html_parts.append(f'<p class="list-item">• {content}</p>')
+            elif not line.startswith('#'):
+                content = line
+                content = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', content)
+                html_parts.append(f'<p>{content}</p>')
+        
+        i += 1
+    
+    # Close last section if exists
+    if current_section:
+        html_parts.append('</div></div>')
+    
+    return '\n'.join(html_parts)
+
+
+def get_section_icon(title: str, section_type: str) -> str:
+    """Get appropriate icon for section based on title and type"""
+    title_lower = title.lower()
+    
+    # Transportation icons
+    if section_type == "transportation":
+        if any(word in title_lower for word in ['รถไฟ', 'train', 'jr', 'shinkansen']):
+            return '🚄'
+        elif any(word in title_lower for word in ['รถเมล์', 'metro', 'subway']):
+            return '🚇'
+        elif any(word in title_lower for word in ['รถบัส', 'bus']):
+            return '🚌'
+        elif any(word in title_lower for word in ['แท็กซี', 'taxi']):
+            return '🚕'
+        elif any(word in title_lower for word in ['บัตร', 'card', 'ic']):
+            return '🎫'
+        else:
+            return '🚆'
+    
+    # Weather icons
+    elif section_type == "weather":
+        if any(word in title_lower for word in ['อุณหภูมิ', 'temperature']):
+            return '🌡️'
+        elif any(word in title_lower for word in ['ฝน', 'rain']):
+            return '🌧️'
+        elif any(word in title_lower for word in ['หิมะ', 'snow']):
+            return '❄️'
+        elif any(word in title_lower for word in ['เสื้อผ้า', 'clothes']):
+            return '👕'
+        else:
+            return '🌤️'
+    
+    # Tips icons
+    elif section_type == "tips":
+        if any(word in title_lower for word in ['ภาษา', 'language']):
+            return '🗣️'
+        elif any(word in title_lower for word in ['เงิน', 'money', 'payment']):
+            return '💳'
+        elif any(word in title_lower for word in ['อาหาร', 'food']):
+            return '🍱'
+        elif any(word in title_lower for word in ['วัฒนธรรม', 'culture']):
+            return '🏦'
+        elif any(word in title_lower for word in ['สาธารณภัย', 'emergency']):
+            return '🆘'
+        elif any(word in title_lower for word in ['ความปลอดภัย', 'safety']):
+            return '🛡️'
+        else:
+            return '💡'
+    
+    # Default icons
+    else:
+        return '📝'
+
+
+def get_enhanced_css() -> str:
+    """Get enhanced CSS with info-section styles"""
+    base_css = HtmlTemplate.get_css()
+    
+    additional_css = '''
+    
+    /* ===== Enhanced Info Sections ===== */
+    .info-section {
+        margin: 1.5rem 0;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 2px 4px var(--shadow);
+    }
+    
+    .info-header {
+        background: var(--card-bg);
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.3s ease;
+    }
+    
+    .info-header:hover {
+        background: var(--primary-light);
+        color: white;
+    }
+    
+    .info-header h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: var(--primary-color);
+    }
+    
+    .info-header:hover h3 {
+        color: white;
+    }
+    
+    .info-header .timeline-toggle {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        padding: 0.25rem;
+    }
+    
+    .list-item {
+        margin: 0.5rem 0;
+        padding-left: 1rem;
+    }
+    
+    .timeline-detail h4 {
+        color: var(--primary-dark);
+        margin: 1rem 0 0.5rem 0;
+        font-size: 1rem;
+    }
+    
+    /* ===== Better Timeline Icons ===== */
+    .timeline-toggle {
+        min-width: 2rem;
+        text-align: center;
+    }
+    
+    '''
+    
+    return base_css + additional_css
