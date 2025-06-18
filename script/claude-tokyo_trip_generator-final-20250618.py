@@ -454,9 +454,31 @@ class HtmlTemplate:
         .timeline-detail {
             margin-top: 0.5rem; padding: 0.75rem;
             border-left: 2px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.7);
+            background: #e8e8e8; /* สีเทาเข้มกว่าเดิม */
             border-radius: 0.25rem; 
             /* REMOVE display: none - let JavaScript control this */
+        }
+        
+        /* เล็กลง bullet ใน timeline-detail */
+        .timeline-detail p {
+            font-size: 0.85rem; /* เล็กลง */
+            margin: 0.25rem 0;
+            line-height: 1.4;
+        }
+        
+        .timeline-detail li {
+            font-size: 0.85rem; /* เล็กลง */
+            margin: 0.15rem 0;
+        }
+        
+        .timeline-detail ul {
+            margin: 0.3rem 0;
+            padding-left: 1rem; /* ลด indent */
+        }
+        
+        /* เฉพาะ bullet ที่ขึ้นต้นด้วย • */
+        .timeline-detail p:has-text("•") {
+            padding-left: 0.5rem;
         }
         
         /* FORCE timeline detail visibility when shown */
@@ -641,85 +663,41 @@ class HtmlTemplate:
         function toggleTimelineDetail(elementId) {
             console.log('🔧 Toggle called for:', elementId);
             
-            // Try multiple methods to find the element
-            let detailElement = document.getElementById(elementId);
-            
-            if (!detailElement) {
-                // Fallback: try querySelector
-                detailElement = document.querySelector(`#${elementId}`);
-            }
-            
-            if (!detailElement) {
-                // Fallback: try by class and data attribute
-                detailElement = document.querySelector(`[id="${elementId}"]`);
-            }
+            const detailElement = document.getElementById(elementId);
+            const toggleButton = document.querySelector(`button[onclick*="${elementId}"]`);
             
             if (!detailElement) {
                 console.error(`❌ CANNOT FIND ELEMENT: ${elementId}`);
-                console.log('Available timeline details:');
-                document.querySelectorAll('.timeline-detail').forEach((el, i) => {
-                    console.log(`  ${i}: id="${el.id}" class="${el.className}"`);
-                });
                 return;
             }
             
-            // Find the button - try multiple selectors
-            let toggleButton = document.querySelector(`button[onclick*="${elementId}"]`);
-            
-            if (!toggleButton) {
-                toggleButton = document.querySelector(`button[onclick="toggleTimelineDetail('${elementId}')"]`);
-            }
-            
-            if (!toggleButton) {
-                console.warn(`❌ Toggle button not found for: ${elementId}`);
-                console.log('Available buttons:', document.querySelectorAll('.timeline-toggle').length);
-            }
-            
-            // FORCE the style change directly
+            // Check current display state using computed style
             const currentDisplay = window.getComputedStyle(detailElement).display;
             const isCurrentlyHidden = currentDisplay === 'none';
             
-            console.log(`Element found: ${detailElement.tagName}#${detailElement.id}`);
-            console.log(`Current computed display: ${currentDisplay}`);
-            console.log(`Current inline style: ${detailElement.style.display}`);
-            console.log(`Is hidden: ${isCurrentlyHidden}`);
+            console.log(`Current display: ${currentDisplay} | Hidden: ${isCurrentlyHidden}`);
             
             if (isCurrentlyHidden) {
-                // Show the detail - FORCE IT!
+                // Show the detail
                 detailElement.style.display = 'block';
-                detailElement.style.visibility = 'visible';
-                detailElement.setAttribute('style', 'display: block !important;');
                 
                 if (toggleButton) {
                     toggleButton.classList.add('expanded');
                     toggleButton.innerHTML = '<span class="th">▼</span><span class="en">▼</span>';
                 }
                 
-                console.log('✅ FORCED SHOW:', elementId);
-                console.log('New inline style:', detailElement.style.display);
-                console.log('New computed style:', window.getComputedStyle(detailElement).display);
+                console.log('✅ SHOWN:', elementId);
             } else {
                 // Hide the detail
                 detailElement.style.display = 'none';
-                detailElement.setAttribute('style', 'display: none;');
                 
                 if (toggleButton) {
                     toggleButton.classList.remove('expanded');
                     toggleButton.innerHTML = '<span class="th">▶</span><span class="en">▶</span>';
                 }
                 
-                console.log('✅ FORCED HIDE:', elementId);
+                console.log('✅ HIDDEN:', elementId);
             }
-            
-            // Double-check after change
-            setTimeout(() => {
-                const newDisplay = window.getComputedStyle(detailElement).display;
-                console.log(`🔍 Final check - Display is now: ${newDisplay}`);
-                if (newDisplay === 'none' && isCurrentlyHidden) {
-                    console.error('❌ STYLE CHANGE FAILED! Trying brute force...');
-                    detailElement.style.cssText = 'display: block !important; visibility: visible !important;';
-                }
-            }, 100);
         }
         
         // Make toggleTimelineDetail globally available
@@ -729,24 +707,15 @@ class HtmlTemplate:
         function initializeTimelineToggle() {
             console.log('🔧 Initializing timeline toggle...');
             
-            // Find all timeline detail elements and FORCE hide them initially
+            // Find all timeline detail elements and hide them (they start as block)
             const timelineDetails = document.querySelectorAll('.timeline-detail');
             timelineDetails.forEach((detail, index) => {
-                // FORCE HIDE with multiple methods
+                // Change from default block to hidden
                 detail.style.display = 'none';
-                detail.style.visibility = 'hidden';
-                detail.setAttribute('style', 'display: none !important; visibility: hidden !important;');
-                console.log(`Hidden timeline-${index}:`, detail.id);
+                console.log(`🙈 Hidden timeline-${index}:`, detail.id);
             });
             
-            console.log(`✅ Timeline toggle initialized for ${timelineDetails.length} details`);
-            
-            // Test: try to show first element
-            if (timelineDetails.length > 0) {
-                console.log('🧪 Testing first element visibility...');
-                const firstElement = timelineDetails[0];
-                console.log('First element computed style:', window.getComputedStyle(firstElement).display);
-            }
+            console.log(`✅ Timeline toggle initialized - HIDDEN ${timelineDetails.length} details`);
         }
         
         // ===== Smooth Scrolling =====
