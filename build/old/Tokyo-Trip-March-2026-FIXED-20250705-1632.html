@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทริปโตเกียว มีนาคม 2026 - พ่อลูกเที่ยวรู้</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --text-color: #1f2937;
+            --bg-color: #ffffff;
+            --card-bg: #f8fafc;
+            --border-color: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info-bg: #dbeafe;
+            --info-border: #3b82f6;
+            --note-bg: #f3f4f6;
+            --note-border: #6b7280;
+            --table-header: #f1f5f9;
+            --table-border: #d1d5db;
+            --table-alt: #f9fafb;
+            --pending: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding-top: 3rem;
+        }
+
+        /* Language switcher */
+        .lang-switcher, .language-switcher {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lang-btn, .language-switcher button {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--primary-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active, .language-switcher button.active,
+        .lang-btn:hover, .language-switcher button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Language visibility */
+        .lang-en .th,
+        .lang-th .en {
+            display: none;
+        }
+
+        .lang-th .th,
+        .lang-en .en {
+            display: inline;
+        }
+
+        .lang-en .en-block, 
+        .lang-th .th-block {
+            display: block;
+        }
+
+        .lang-en .th-block, 
+        .lang-th .en-block {
+            display: none;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        section h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        section h2 {
+            color: var(--primary-dark);
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        /* Timeline styles */
+        .timeline {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-color);
+        }
+
+        .timeline li {
+            position: relative;
+            padding: 1rem 0 1rem 3rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .timeline li::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 1.5rem;
+            width: 1rem;
+            height: 1rem;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary-color);
+        }
+
+        .timeline li:last-child {
+            border-bottom: none;
+        }
+
+        /* Info/Note boxes - THE MAGIC THAT MAKES IT WORK */
+        .info-box, .note-box {
+            border-left: 4px solid var(--info-border);
+            background: var(--info-bg);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        .note-box {
+            border-left-color: var(--note-border);
+            background: var(--note-bg);
+        }
+
+        .info-toggle, .note-toggle {
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            user-select: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .info-toggle:hover, .note-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 0.25rem;
+            padding: 0.25rem;
+            margin: -0.25rem;
+        }
+
+        .info-toggle::after, .note-toggle::after {
+            content: "▼";
+            transition: transform 0.3s ease;
+            font-size: 0.8em;
+        }
+
+        .info-toggle.collapsed::after, .note-toggle.collapsed::after {
+            transform: rotate(-90deg);
+        }
+
+        .info-detail, .note-detail {
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, margin-top 0.4s ease-out;
+            max-height: 3000px;
+            margin-top: 0.5rem;
+        }
+
+        .info-detail.collapsed, .note-detail.collapsed {
+            max-height: 0;
+            margin-top: 0;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px var(--shadow);
+            background: white;
+        }
+
+        table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--table-border);
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--table-header);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        tr:nth-child(even) {
+            background: var(--table-alt);
+        }
+
+        /* Day overview cards */
+        .day-overviews {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .day-overview {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .day-overview:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .day-overview h3 a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 0.5rem; }
+            header { padding: 1rem; }
+            header h1 { font-size: 1.5rem; }
+            section { padding: 1rem; }
+            .day-overviews { grid-template-columns: 1fr; }
+            .lang-switcher, .language-switcher { top: 0.5rem; right: 0.5rem; }
+            .back-to-top { bottom: 1rem; right: 1rem; padding: 0.75rem; }
+        }
+        </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="th">ทริปโตเกียว มีนาคม 2026</span><span class="en">Tokyo Trip March 2026</span></h1>
+            <div class="subtitle">
+                <span class="th">8 วัน 7 คืน พ่อลูกเที่ยวรู้ - Arilek & Pojai</span>
+                <span class="en">8 Days 7 Nights Father-Daughter Adventure - Arilek & Pojai</span>
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn" onclick="switchLanguage('th')">TH</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h2><span class="th">ภาพรวมการเดินทาง</span><span class="en">Trip Overview</span></h2>
+            <div class="nav-grid">
+                <a href="#day-1" class="nav-card">
+                    <h3><span class="th">วันที่ 1: เดินทางสู่โตเกียว</span><span class="en">Day 1: Journey to Tokyo</span></h3>
+                    <div class="date"><span class="th">6 มีนาคม 2026</span><span class="en">March 6, 2026</span></div>
+                    <div class="desc"><span class="th">เดินทางจากกรุงเทพไปโตเกียว เช็คอินโรงแรม</span><span class="en">Flight from Bangkok to Tokyo, hotel check-in</span></div>
+                </a>
+                <a href="#day-2" class="nav-card">
+                    <h3><span class="th">วันที่ 2: อาซากุซา และวัดเซนโซจิ</span><span class="en">Day 2: Asakusa & Sensoji Temple</span></h3>
+                    <div class="date"><span class="th">7 มีนาคม 2026</span><span class="en">March 7, 2026</span></div>
+                    <div class="desc"><span class="th">เยี่ยมชมวัดเก่าแก่ ชมยานนากามิเซ</span><span class="en">Visit ancient temples, traditional Tokyo</span></div>
+                </a>
+                <a href="#day-3" class="nav-card">
+                    <h3><span class="th">วันที่ 3: อุเอโนะ และฮาราจุกุ</span><span class="en">Day 3: Ueno & Harajuku</span></h3>
+                    <div class="date"><span class="th">8 มีนาคม 2026</span><span class="en">March 8, 2026</span></div>
+                    <div class="desc"><span class="th">สวนอุเอโนะ ย่านแฟชั่นเทรนดี้</span><span class="en">Ueno Park and trendy Harajuku district</span></div>
+                </a>
+                <a href="#day-4" class="nav-card">
+                    <div class="birthday-badge">🎂 วันเกิด!</div>
+                    <h3><span class="th">วันที่ 4: วันเกิดปอยไจ่! 🎂</span><span class="en">Day 4: Pojai's Birthday! 🎂</span></h3>
+                    <div class="date"><span class="th">9 มีนาคม 2026</span><span class="en">March 9, 2026</span></div>
+                    <div class="desc"><span class="th">วันพิเศษปอยไจ่! ดิสนีย์ซี กิจกรรมพิเศษ</span><span class="en">Special birthday celebration! DisneySea</span></div>
+                </a>
+                <a href="#day-5" class="nav-card">
+                    <h3><span class="th">วันที่ 5: ชิบุยะ และช้อปปิ้ง</span><span class="en">Day 5: Shibuya & Shopping</span></h3>
+                    <div class="date"><span class="th">10 มีนาคม 2026</span><span class="en">March 10, 2026</span></div>
+                    <div class="desc"><span class="th">เดินชิบุยะ ช้อปปิ้งซื้อของฝาก</span><span class="en">Explore Shibuya, shopping for souvenirs</span></div>
+                </a>
+                <a href="#day-6" class="nav-card">
+                    <h3><span class="th">วันที่ 6: ฟูจิ-คิว ไฮแลนด์</span><span class="en">Day 6: Fuji-Q Highland</span></h3>
+                    <div class="date"><span class="th">11 มีนาคม 2026</span><span class="en">March 11, 2026</span></div>
+                    <div class="desc"><span class="th">สวนสนุกฟูจิ-คิว ชมภูเขาไฟฟูจิ</span><span class="en">Fuji-Q Highland theme park, Mount Fuji</span></div>
+                </a>
+                <a href="#day-7" class="nav-card">
+                    <h3><span class="th">วันที่ 7: โอไดบะ และเตรียมกลับ</span><span class="en">Day 7: Odaiba & Departure Prep</span></h3>
+                    <div class="date"><span class="th">12 มีนาคม 2026</span><span class="en">March 12, 2026</span></div>
+                    <div class="desc"><span class="th">เที่ยวโอไดบะ ช้อปปิ้งครั้งสุดท้าย</span><span class="en">Odaiba sightseeing, last-minute shopping</span></div>
+                </a>
+                <a href="#day-8" class="nav-card">
+                    <h3><span class="th">วันที่ 8: เดินทางกลับบ้าน</span><span class="en">Day 8: Journey Home</span></h3>
+                    <div class="date"><span class="th">13 มีนาคม 2026</span><span class="en">March 13, 2026</span></div>
+                    <div class="desc"><span class="th">เดินทางกลับจากโตเกียวสู่กรุงเทพฯ</span><span class="en">Flight from Tokyo back to Bangkok</span></div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="content-section" id="overview">
+            <h2><span class="th">ข้อมูลทั่วไป</span><span class="en">General Information</span></h2>
+            <div class="info-box">
+                <div class="info-toggle">
+                    <span class="th">📋 ข้อมูลสำคัญ</span><span class="en">📋 Important Information</span>
+                </div>
+                <div class="info-detail">
+                    <p><strong>วันเดินทาง:</strong> 6-13 มีนาคม 2026 (8 วัน 7 คืน)</p>
+                    <p><strong>ผู้เดินทาง:</strong> Arilek (พ่อ) และ Pojai (ลูกสาว 11 ขวบ)</p>
+                    <p><strong>งบประมาณ:</strong> ประมาณ 100,000 บาท + buffer 30-50k</p>
+                    <p><strong>ที่พัก:</strong> โรงแรมในย่านชิบุยะ</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section" id="day-4">
+            <h2><span class="th">วันที่ 4 - วันเกิดปอยไจ่! 🎂</span><span class="en">Day 4 - Pojai's Birthday! 🎂</span></h2>
+            <ul class="timeline">
+                <li>
+                    <div class="timeline-main">09:00 - เดินทางไปดิสนีย์ซี</div>
+                    <button class="timeline-toggle" onclick="toggleTimelineDetail('timeline-1')">
+                        <span class="th">รายละเอียด ▼</span><span class="en">Details ▼</span>
+                    </button>
+                    <div class="timeline-detail" id="timeline-1" style="display: none;">
+                        <h4>🚊 การเดินทาง</h4>
+                        <ul>
+                            <li>ขึ้นรถไฟ JR จาก Shimbashi → Maihama (15 นาที)</li>
+                            <li>ต่อ Disney Resort Line → Tokyo DisneySea (5 นาที)</li>
+                            <li>รวมเวลาเดินทาง: ประมาณ 30 นาที</li>
+                        </ul>
+                        <h4>🎟️ ตั๋วเข้า</h4>
+                        <ul>
+                            <li>ซื้อ 1-Day Passport ล่วงหน้าออนไลน์</li>
+                            <li>ราคา: ผู้ใหญ่ 8,900 เยน, เด็ก 5,600 เยน</li>
+                            <li>จองเวลาเข้าเล่นเครื่องเล่นผ่านแอพ</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-main">12:00 - กิจกรรมพิเศษวันเกิด</div>
+                    <button class="timeline-toggle" onclick="toggleTimelineDetail('timeline-2')">
+                        <span class="th">รายละเอียด ▼</span><span class="en">Details ▼</span>
+                    </button>
+                    <div class="timeline-detail" id="timeline-2" style="display: none;">
+                        <h4>🎂 Birthday Celebration</h4>
+                        <ul>
+                            <li>ขอ Birthday Button ที่ Guest Relations</li>
+                            <li>ถ่ายรูปกับ Mickey & Minnie พิเศษ</li>
+                            <li>ซื้อของที่ระลึกวันเกิดพิเศษ</li>
+                            <li>อาหารกลางวันที่ Magellan's (หรู ๆ สำหรับวันพิเศษ)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Language switching
+        function switchLanguage(lang) {
+            const body = document.body;
+            const buttons = document.querySelectorAll('.lang-btn, .language-switcher button');
+            
+            body.classList.remove('lang-th', 'lang-en');
+            body.classList.add(`lang-${lang}`);
+            
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === lang || btn.id === `btn-${lang}`) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            try {
+                localStorage.setItem('tokyo-trip-lang', lang);
+            } catch (e) {}
+            
+            console.log(`Language switched to: ${lang}`);
+        }
+
+        // THE MAGIC FUNCTION THAT MAKES EXPAND/COLLAPSE WORK
+        function initializeCollapsibleBoxes() {
+            console.log('🔧 Initializing collapsible boxes...');
+            
+            const toggles = document.querySelectorAll('.info-toggle, .note-toggle');
+            console.log(`Found ${toggles.length} toggle elements`);
+            
+            toggles.forEach((toggle, index) => {
+                // Start collapsed
+                toggle.classList.add('collapsed');
+                const detail = toggle.nextElementSibling;
+                
+                if (detail && (detail.classList.contains('info-detail') || detail.classList.contains('note-detail'))) {
+                    detail.classList.add('collapsed');
+                    
+                    console.log(`Setting up toggle ${index + 1}`);
+                    
+                    // Remove any existing click handlers
+                    toggle.replaceWith(toggle.cloneNode(true));
+                    const newToggle = document.querySelectorAll('.info-toggle, .note-toggle')[index];
+                    const newDetail = newToggle.nextElementSibling;
+                    
+                    newToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const isCollapsed = newDetail.classList.contains('collapsed');
+                        
+                        console.log(`Toggle clicked: ${isCollapsed ? 'expanding' : 'collapsing'}`);
+                        
+                        if (isCollapsed) {
+                            newDetail.classList.remove('collapsed');
+                            newToggle.classList.remove('collapsed');
+                        } else {
+                            newDetail.classList.add('collapsed');
+                            newToggle.classList.add('collapsed');
+                        }
+                    });
+                } else {
+                    console.warn(`No matching detail element for toggle ${index + 1}`);
+                }
+            });
+            
+            console.log('✅ Collapsible boxes initialized!');
+        }
+
+        // THE MAGIC FUNCTION FOR TIMELINE DETAILS EXPAND/COLLAPSE
+        function toggleTimelineDetail(detailId) {
+            const detail = document.getElementById(detailId);
+            const button = document.querySelector(`[onclick="toggleTimelineDetail('${detailId}')"]`);
+            
+            if (!detail || !button) {
+                console.warn(`Timeline detail not found: ${detailId}`);
+                return;
+            }
+            
+            const isHidden = detail.style.display === 'none' || !detail.style.display;
+            
+            if (isHidden) {
+                detail.style.display = 'block';
+                button.textContent = button.textContent.replace('▼', '▲');
+                button.classList.add('expanded');
+                console.log(`Timeline detail expanded: ${detailId}`);
+            } else {
+                detail.style.display = 'none';
+                button.textContent = button.textContent.replace('▲', '▼');
+                button.classList.remove('expanded');
+                console.log(`Timeline detail collapsed: ${detailId}`);
+            }
+        }
+        
+        // Make toggleTimelineDetail globally available
+        window.toggleTimelineDetail = toggleTimelineDetail;
+        
+        // Initialize timeline functionality
+        function initializeTimelineToggle() {
+            console.log('🔧 Initializing timeline toggle...');
+            
+            // Find all timeline detail elements and hide them initially
+            const timelineDetails = document.querySelectorAll('.timeline-detail');
+            timelineDetails.forEach(detail => {
+                detail.style.display = 'none';
+            });
+            
+            console.log(`✅ Timeline toggle initialized for ${timelineDetails.length} details`);
+        }
+
+        // Smooth scrolling
+        function initializeSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Back to top button
+        function initializeBackToTop() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (backToTop) {
+                window.addEventListener('scroll', function() {
+                    if (window.pageYOffset > 300) {
+                        backToTop.style.opacity = '1';
+                        backToTop.style.pointerEvents = 'auto';
+                    } else {
+                        backToTop.style.opacity = '0.5';
+                        backToTop.style.pointerEvents = 'none';
+                    }
+                });
+            }
+        }
+
+        // Currency conversion
+        function updateCurrencyDisplay() {
+            const yenToThb = 0.23;
+            const yenElements = document.querySelectorAll('[data-yen]');
+            
+            yenElements.forEach(element => {
+                const yenAmount = parseInt(element.dataset.yen);
+                if (!isNaN(yenAmount)) {
+                    const thbAmount = Math.round(yenAmount * yenToThb);
+                    element.textContent = `¥${yenAmount.toLocaleString()} (฿${thbAmount.toLocaleString()})`;
+                }
+            });
+        }
+
+        // Main initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🇯🇵 Tokyo Trip 2026 Ultimate Fixer - Loading...');
+            
+            // Language setup
+            try {
+                const savedLang = localStorage.getItem('tokyo-trip-lang');
+                if (savedLang && (savedLang === 'th' || savedLang === 'en')) {
+                    switchLanguage(savedLang);
+                } else {
+                    switchLanguage('th');
+                }
+            } catch (e) {
+                switchLanguage('th');
+            }
+            
+            // Setup language switcher buttons
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchLanguage(this.getAttribute('data-lang'));
+                });
+            });
+            
+            // Initialize all features
+            initializeCollapsibleBoxes();
+            initializeTimelineToggle();
+            initializeSmoothScrolling();
+            initializeBackToTop();
+            updateCurrencyDisplay();
+            
+            // Debug info
+            const infoBoxes = document.querySelectorAll('.info-box, .note-box');
+            const toggles = document.querySelectorAll('.info-toggle, .note-toggle');
+            console.log(`📊 Found ${infoBoxes.length} info/note boxes, ${toggles.length} toggles`);
+            
+            console.log('✅ Tokyo Trip 2026 Ultimate Fixer - READY WITH WORKING EXPAND/COLLAPSE!');
+        });
+        </script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+#!/usr/bin/env python3
+"""Tokyo Trip Generator - PERFECT VERSION ✅ READY TO RUN!"""
+import datetime
+from pathlib import Path
+
+def main():
+    print("🇯🇵  TOKYO TRIP GENERATOR - PERFECT VERSION  🇯🇵")
+    
+    # สร้าง HTML สมบูรณ์
+    html = f'''<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทริปโตเกียว มีนาคม 2026 - พ่อลูกเที่ยวรู้</title>
+    <style>
+:root {{
+    --primary: #2E86AB; --secondary: #A23B72; --accent: #F18F01; --success: #C73E1D;
+    --background: #F5F9FC; --card-bg: #FFFFFF; --text-primary: #2C3E50; --text-secondary: #5A6C7D;
+    --border: #E1E8ED; --shadow: 0 4px 6px rgba(0,0,0,0.1); --border-radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}}
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{ font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: var(--text-primary);
+    background: linear-gradient(135deg, var(--background) 0%, #E8F4F8 100%); min-height: 100vh; }}
+.container {{ max-width: 1200px; margin: 0 auto; padding: 2rem; }}
+.header {{ text-align: center; margin-bottom: 3rem; padding: 2rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white; border-radius: var(--border-radius); box-shadow: var(--shadow); }}
+.header h1 {{ font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 700; }}
+.header .subtitle {{ font-size: 1.2rem; opacity: 0.9; margin-bottom: 1.5rem; }}
+.language-switcher {{ display: flex; justify-content: center; gap: 1rem; }}
+.lang-btn {{ padding: 0.5rem 1.5rem; border: 2px solid var(--primary); background: white;
+    color: var(--primary); border-radius: 25px; cursor: pointer; font-weight: 600; transition: var(--transition); }}
+.lang-btn.active {{ background: var(--primary); color: white; transform: translateY(-2px); box-shadow: var(--shadow); }}
+.lang-btn:hover {{ transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }}
+.lang-th .en {{ display: none; }} .lang-en .th {{ display: none; }} body:not([class*="lang-"]) .en {{ display: none; }}
+.nav-section {{ background: var(--card-bg); border-radius: var(--border-radius); padding: 2rem;
+    margin-bottom: 2rem; box-shadow: var(--shadow); }}
+.nav-section h2 {{ color: var(--primary); margin-bottom: 1.5rem; font-size: 2rem;
+    border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem; }}
+.nav-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }}
+.nav-card {{ background: linear-gradient(135deg, var(--accent) 0%, #F39C12 100%); color: white;
+    padding: 1.5rem; border-radius: var(--border-radius); text-decoration: none; transition: var(--transition);
+    position: relative; overflow: hidden; }}
+.nav-card:hover {{ transform: translateY(-5px) scale(1.02); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }}
+.nav-card h3 {{ font-size: 1.3rem; margin-bottom: 0.5rem; }}
+.nav-card .date {{ font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem; }}
+.nav-card .desc {{ font-size: 0.95rem; opacity: 0.95; }}
+.birthday-badge {{ position: absolute; top: -5px; right: -5px; background: var(--success); color: white;
+    padding: 0.3rem 0.6rem; border-radius: 15px; font-size: 0.7rem; font-weight: bold; animation: pulse 2s infinite; }}
+@keyframes pulse {{ 0%, 100% {{ transform: scale(1); }} 50% {{ transform: scale(1.1); }} }}
+.content-section {{ background: var(--card-bg); border-radius: var(--border-radius); padding: 2rem;
+    margin-bottom: 2rem; box-shadow: var(--shadow); }}
+.content-section h2 {{ color: var(--primary); margin-bottom: 1.5rem; font-size: 2rem;
+    border-bottom: 3px solid var(--accent); padding-bottom: 0.5rem; }}
+.content-section p {{ margin-bottom: 1rem; color: var(--text-secondary); }}
+.content-section ul {{ margin: 1rem 0; padding-left: 2rem; }}
+.content-section li {{ margin-bottom: 0.5rem; color: var(--text-secondary); }}
+.info-box, .note-box {{ margin: 1.5rem 0; border-radius: var(--border-radius); overflow: hidden;
+    box-shadow: var(--shadow); transition: var(--transition); }}
+.info-box {{ border-left: 4px solid var(--primary); }}
+.note-box {{ border-left: 4px solid var(--accent); }}
+.info-toggle, .note-toggle {{ background: linear-gradient(135deg, var(--primary) 0%, #3498DB 100%);
+    color: white; padding: 1rem; cursor: pointer; font-weight: 600; display: flex;
+    justify-content: space-between; align-items: center; transition: var(--transition); }}
+.note-toggle {{ background: linear-gradient(135deg, var(--accent) 0%, #F39C12 100%); }}
+.info-toggle:hover, .note-toggle:hover {{ transform: translateX(5px); }}
+.info-toggle::after, .note-toggle::after {{ content: '▼'; transition: transform 0.3s ease; font-size: 0.9rem; }}
+.info-toggle.collapsed::after, .note-toggle.collapsed::after {{ transform: rotate(-90deg); }}
+.info-detail, .note-detail {{ background: var(--card-bg); padding: 1.5rem; max-height: 1000px;
+    overflow: hidden; transition: all 0.3s ease; }}
+.info-detail.collapsed, .note-detail.collapsed {{ max-height: 0; padding-top: 0; padding-bottom: 0; margin-top: 0; }}
+.timeline {{ position: relative; list-style: none; margin: 2rem 0; padding-left: 2rem; }}
+.timeline::before {{ content: ''; position: absolute; left: 1rem; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(to bottom, var(--primary), var(--secondary)); }}
+.timeline li {{ position: relative; margin-bottom: 2rem; background: var(--card-bg);
+    border-radius: var(--border-radius); box-shadow: var(--shadow); transition: var(--transition); }}
+.timeline li:hover {{ transform: translateX(5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }}
+.timeline li::before {{ content: ''; position: absolute; left: -1.5rem; top: 1rem; width: 12px; height: 12px;
+    background: var(--accent); border-radius: 50%; border: 3px solid var(--card-bg); box-shadow: 0 0 0 2px var(--primary); }}
+.timeline-main {{ padding: 1rem 1.5rem; font-weight: 600; color: var(--text-primary); border-bottom: 1px solid var(--border); }}
+.timeline-toggle {{ background: var(--primary); color: white; border: none; padding: 0.5rem 1rem;
+    margin: 0.5rem 1.5rem 1rem 1.5rem; border-radius: 20px; cursor: pointer; font-weight: 500;
+    transition: var(--transition); font-size: 0.9rem; }}
+.timeline-toggle:hover {{ background: var(--secondary); transform: scale(1.05); }}
+.timeline-toggle.expanded {{ background: var(--success); }}
+.timeline-detail {{ padding: 0 1.5rem 1.5rem 1.5rem; color: var(--text-secondary);
+    border-top: 1px solid var(--border); background: #FAFBFC; }}
+.timeline-detail h4 {{ color: var(--primary); margin: 1rem 0 0.5rem 0; }}
+.timeline-detail ul {{ margin: 0.5rem 0; padding-left: 1.5rem; }}
+.timeline-detail li {{ margin-bottom: 0.3rem; position: relative; background: none; box-shadow: none; transform: none; }}
+.timeline-detail li::before {{ display: none; }}
+@media (max-width: 768px) {{
+    .container {{ padding: 1rem; }} .header h1 {{ font-size: 1.8rem; }}
+    .nav-grid {{ grid-template-columns: 1fr; gap: 1rem; }}
+    .language-switcher {{ position: sticky; top: 1rem; z-index: 100; background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(10px); padding: 1rem; border-radius: var(--border-radius); margin: -1rem -1rem 2rem -1rem; }}
+    .timeline {{ padding-left: 1rem; }} .timeline::before {{ left: 0.5rem; }} .timeline li::before {{ left: -1rem; }}
+}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="th">ทริปโตเกียว มีนาคม 2026</span><span class="en">Tokyo Trip March 2026</span></h1>
+            <div class="subtitle">
+                <span class="th">8 วัน 7 คืน พ่อลูกเที่ยวรู้ - Arilek & Pojai</span>
+                <span class="en">8 Days 7 Nights Father-Daughter Adventure - Arilek & Pojai</span>
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn" onclick="switchLanguage('th')">TH</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h2><span class="th">ภาพรวมการเดินทาง</span><span class="en">Trip Overview</span></h2>
+            <div class="nav-grid">
+                <a href="#day-1" class="nav-card">
+                    <h3><span class="th">วันที่ 1: เดินทางสู่โตเกียว</span><span class="en">Day 1: Journey to Tokyo</span></h3>
+                    <div class="date"><span class="th">6 มีนาคม 2026</span><span class="en">March 6, 2026</span></div>
+                    <div class="desc"><span class="th">เดินทางจากกรุงเทพไปโตเกียว เช็คอินโรงแรม</span><span class="en">Flight from Bangkok to Tokyo, hotel check-in</span></div>
+                </a>
+                <a href="#day-2" class="nav-card">
+                    <h3><span class="th">วันที่ 2: อาซากุซา และวัดเซนโซจิ</span><span class="en">Day 2: Asakusa & Sensoji Temple</span></h3>
+                    <div class="date"><span class="th">7 มีนาคม 2026</span><span class="en">March 7, 2026</span></div>
+                    <div class="desc"><span class="th">เยี่ยมชมวัดเก่าแก่ ชมยานนากามิเซ</span><span class="en">Visit ancient temples, traditional Tokyo</span></div>
+                </a>
+                <a href="#day-3" class="nav-card">
+                    <h3><span class="th">วันที่ 3: อุเอโนะ และฮาราจุกุ</span><span class="en">Day 3: Ueno & Harajuku</span></h3>
+                    <div class="date"><span class="th">8 มีนาคม 2026</span><span class="en">March 8, 2026</span></div>
+                    <div class="desc"><span class="th">สวนอุเอโนะ ย่านแฟชั่นเทรนดี้</span><span class="en">Ueno Park and trendy Harajuku district</span></div>
+                </a>
+                <a href="#day-4" class="nav-card">
+                    <div class="birthday-badge">🎂 วันเกิด!</div>
+                    <h3><span class="th">วันที่ 4: วันเกิดปอยไจ่! 🎂</span><span class="en">Day 4: Pojai's Birthday! 🎂</span></h3>
+                    <div class="date"><span class="th">9 มีนาคม 2026</span><span class="en">March 9, 2026</span></div>
+                    <div class="desc"><span class="th">วันพิเศษปอยไจ่! ดิสนีย์ซี กิจกรรมพิเศษ</span><span class="en">Special birthday celebration! DisneySea</span></div>
+                </a>
+                <a href="#day-5" class="nav-card">
+                    <h3><span class="th">วันที่ 5: ชิบุยะ และช้อปปิ้ง</span><span class="en">Day 5: Shibuya & Shopping</span></h3>
+                    <div class="date"><span class="th">10 มีนาคม 2026</span><span class="en">March 10, 2026</span></div>
+                    <div class="desc"><span class="th">เดินชิบุยะ ช้อปปิ้งซื้อของฝาก</span><span class="en">Explore Shibuya, shopping for souvenirs</span></div>
+                </a>
+                <a href="#day-6" class="nav-card">
+                    <h3><span class="th">วันที่ 6: ฟูจิ-คิว ไฮแลนด์</span><span class="en">Day 6: Fuji-Q Highland</span></h3>
+                    <div class="date"><span class="th">11 มีนาคม 2026</span><span class="en">March 11, 2026</span></div>
+                    <div class="desc"><span class="th">สวนสนุกฟูจิ-คิว ชมภูเขาไฟฟูจิ</span><span class="en">Fuji-Q Highland theme park, Mount Fuji</span></div>
+                </a>
+                <a href="#day-7" class="nav-card">
+                    <h3><span class="th">วันที่ 7: โอไดบะ และเตรียมกลับ</span><span class="en">Day 7: Odaiba & Departure Prep</span></h3>
+                    <div class="date"><span class="th">12 มีนาคม 2026</span><span class="en">March 12, 2026</span></div>
+                    <div class="desc"><span class="th">เที่ยวโอไดบะ ช้อปปิ้งครั้งสุดท้าย</span><span class="en">Odaiba sightseeing, last-minute shopping</span></div>
+                </a>
+                <a href="#day-8" class="nav-card">
+                    <h3><span class="th">วันที่ 8: เดินทางกลับบ้าน</span><span class="en">Day 8: Journey Home</span></h3>
+                    <div class="date"><span class="th">13 มีนาคม 2026</span><span class="en">March 13, 2026</span></div>
+                    <div class="desc"><span class="th">เดินทางกลับจากโตเกียวสู่กรุงเทพฯ</span><span class="en">Flight from Tokyo back to Bangkok</span></div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="content-section" id="overview">
+            <h2><span class="th">ข้อมูลทั่วไป</span><span class="en">General Information</span></h2>
+            <div class="info-box">
+                <div class="info-toggle">
+                    <span class="th">📋 ข้อมูลสำคัญ</span><span class="en">📋 Important Information</span>
+                </div>
+                <div class="info-detail">
+                    <p><strong>วันเดินทาง:</strong> 6-13 มีนาคม 2026 (8 วัน 7 คืน)</p>
+                    <p><strong>ผู้เดินทาง:</strong> Arilek (พ่อ) และ Pojai (ลูกสาว 11 ขวบ)</p>
+                    <p><strong>งบประมาณ:</strong> ประมาณ 100,000 บาท + buffer 30-50k</p>
+                    <p><strong>ที่พัก:</strong> โรงแรมในย่านชิบุยะ</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section" id="day-4">
+            <h2><span class="th">วันที่ 4 - วันเกิดปอยไจ่! 🎂</span><span class="en">Day 4 - Pojai's Birthday! 🎂</span></h2>
+            <ul class="timeline">
+                <li>
+                    <div class="timeline-main">09:00 - เดินทางไปดิสนีย์ซี</div>
+                    <button class="timeline-toggle" onclick="toggleTimelineDetail('timeline-1')">
+                        <span class="th">รายละเอียด ▼</span><span class="en">Details ▼</span>
+                    </button>
+                    <div class="timeline-detail" id="timeline-1" style="display: none;">
+                        <h4>🚊 การเดินทาง</h4>
+                        <ul>
+                            <li>ขึ้นรถไฟ JR จาก Shimbashi → Maihama (15 นาที)</li>
+                            <li>ต่อ Disney Resort Line → Tokyo DisneySea (5 นาที)</li>
+                            <li>รวมเวลาเดินทาง: ประมาณ 30 นาที</li>
+                        </ul>
+                        <h4>🎟️ ตั๋วเข้า</h4>
+                        <ul>
+                            <li>ซื้อ 1-Day Passport ล่วงหน้าออนไลน์</li>
+                            <li>ราคา: ผู้ใหญ่ 8,900 เยน, เด็ก 5,600 เยน</li>
+                            <li>จองเวลาเข้าเล่นเครื่องเล่นผ่านแอพ</li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-main">12:00 - กิจกรรมพิเศษวันเกิด</div>
+                    <button class="timeline-toggle" onclick="toggleTimelineDetail('timeline-2')">
+                        <span class="th">รายละเอียด ▼</span><span class="en">Details ▼</span>
+                    </button>
+                    <div class="timeline-detail" id="timeline-2" style="display: none;">
+                        <h4>🎂 Birthday Celebration</h4>
+                        <ul>
+                            <li>ขอ Birthday Button ที่ Guest Relations</li>
+                            <li>ถ่ายรูปกับ Mickey & Minnie พิเศษ</li>
+                            <li>ซื้อของที่ระลึกวันเกิดพิเศษ</li>
+                            <li>อาหารกลางวันที่ Magellan's (หรู ๆ สำหรับวันพิเศษ)</li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+function switchLanguage(lang) {{
+    const body = document.body;
+    body.classList.remove('lang-th', 'lang-en');
+    body.classList.add(`lang-${{lang}}`);
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.querySelector(`[onclick="switchLanguage('${{lang}}')"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+}}
+
+function toggleTimelineDetail(detailId) {{
+    const detail = document.getElementById(detailId);
+    const button = document.querySelector(`[onclick="toggleTimelineDetail('${{detailId}}')"]`);
+    if (!detail || !button) return;
+    const isHidden = detail.style.display === 'none' || !detail.style.display;
+    if (isHidden) {{
+        detail.style.display = 'block';
+        button.textContent = button.textContent.replace('▼', '▲');
+        button.classList.add('expanded');
+    }} else {{
+        detail.style.display = 'none';
+        button.textContent = button.textContent.replace('▲', '▼');
+        button.classList.remove('expanded');
+    }}
+}}
+
+function initializeCollapsibleBoxes() {{
+    document.querySelectorAll('.info-box, .note-box').forEach(box => {{
+        const toggle = box.querySelector('.info-toggle, .note-toggle');
+        const detail = box.querySelector('.info-detail, .note-detail');
+        if (toggle && detail) {{
+            toggle.classList.add('collapsed');
+            detail.classList.add('collapsed');
+            toggle.addEventListener('click', () => {{
+                const isCollapsed = detail.classList.contains('collapsed');
+                if (isCollapsed) {{
+                    detail.classList.remove('collapsed');
+                    toggle.classList.remove('collapsed');
+                }} else {{
+                    detail.classList.add('collapsed');
+                    toggle.classList.add('collapsed');
+                }}
+            }});
+        }}
+    }});
+}}
+
+window.toggleTimelineDetail = toggleTimelineDetail;
+window.switchLanguage = switchLanguage;
+
+if (document.readyState === 'loading') {{
+    document.addEventListener('DOMContentLoaded', () => {{
+        initializeCollapsibleBoxes();
+        switchLanguage('th');
+    }});
+}} else {{
+    initializeCollapsibleBoxes();
+    switchLanguage('th');
+}}
+    </script>
+</body>
+</html>'''
+    
+    # สร้างไฟล์
+    build_dir = Path(__file__).parent.parent / "build"
+    build_dir.mkdir(exist_ok=True)
+    
+    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M")
+    filename = f"Tokyo-Trip-March-2026-PERFECT-{timestamp}.html"
+    filepath = build_dir / filename
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(html)
+    
+    print(f"✅ SUCCESS! HTML file generated:")
+    print(f"📄 File: {filename}")
+    print(f"💾 Size: {len(html):,} characters")
+    print(f"📍 Path: {filepath}")
+    print()
+    print("🚀 Features included:")
+    print("   ✅ Beautiful responsive design")
+    print("   ✅ Timeline expand/collapse functionality")
+    print("   ✅ Info boxes with toggle")
+    print("   ✅ Language switching (TH/EN)")
+    print("   ✅ 8-day overview with birthday badge")
+    print("   ✅ Mobile-friendly layout")
+    print()
+    print("🎉 PERFECT VERSION COMPLETE! Ready for Tokyo trip!")
+
+if __name__ == "__main__":
+    main()

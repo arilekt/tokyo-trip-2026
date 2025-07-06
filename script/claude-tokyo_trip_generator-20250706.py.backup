@@ -1,0 +1,556 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Tokyo Trip Generator - 2025-07-06 Version (Fixed)
+================================================
+สร้าง HTML ไฟล์สำหรับทริปโตเกียว โดยอ่านเนื้อหาจาก content/*.md 
+และใส่ลงใน template.html ให้ถูกต้องตามรูปแบบที่ต้องการ
+
+Features:
+- อ่าน .md files จาก content/th/ และ content/en/
+- สร้าง navigation cards grid 
+- แปลง Markdown เป็น HTML
+- รวมเนื้อหาใน template.html
+- Multi-language support (TH/EN)
+- Timeline expand/collapse functionality
+
+Author: Claude AI Assistant
+Date: 6 July 2025
+"""
+
+import os
+import re
+import datetime
+from pathlib import Path
+
+class TokyoTripGenerator:
+    def __init__(self):
+        # Setup paths
+        self.script_dir = Path(__file__).parent
+        self.project_dir = self.script_dir.parent
+        self.content_dir = self.project_dir / "content"
+        self.th_dir = self.content_dir / "th"
+        self.en_dir = self.content_dir / "en"
+        self.build_dir = self.project_dir / "build"
+        self.template_file = self.script_dir / "template" / "template.html"
+        
+        # Create build directory if not exists
+        self.build_dir.mkdir(exist_ok=True)
+        
+        print(f"🏗️ Tokyo Trip Generator Initialized")
+        print(f"📁 Thai content: {self.th_dir}")
+        print(f"📁 English content: {self.en_dir}")
+        print(f"📁 Build output: {self.build_dir}")
+        print(f"📄 Template: {self.template_file}")
+    
+    def read_file(self, file_path):
+        """อ่านไฟล์ด้วย UTF-8 encoding"""
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return f.read()
+        except FileNotFoundError:
+            print(f"⚠️ File not found: {file_path}")
+            return ""
+        except Exception as e:
+            print(f"❌ Error reading {file_path}: {e}")
+            return ""
+    
+    def markdown_to_html(self, markdown_text):
+        """แปลง Markdown เป็น HTML"""
+        if not markdown_text.strip():
+            return ""
+        
+        html = markdown_text
+        
+        # Headers
+        html = re.sub(r'^#### (.+)$', r'<h4>\1</h4>', html, flags=re.MULTILINE)
+        html = re.sub(r'^### (.+)$', r'<h3>\1</h3>', html, flags=re.MULTILINE)
+        html = re.sub(r'^## (.+)$', r'<h2>\1</h2>', html, flags=re.MULTILINE)
+        html = re.sub(r'^# (.+)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
+        
+        # Bold and italic
+        html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', html)
+        html = re.sub(r'\*(.+?)\*', r'<em>\1</em>', html)
+        
+        # Tables (basic markdown table support)
+        html = self.convert_tables(html)
+        
+        # Timeline items (เช่น - **เวลา**: เนื้อหา)
+        html = self.convert_timeline_items(html)
+        
+        # Lists
+        html = self.convert_lists(html)
+        
+        # Paragraphs
+        html = self.convert_paragraphs(html)
+        
+        return html
+    
+    def convert_tables(self, html):
+        """แปลง markdown tables เป็น HTML tables"""
+        lines = html.split('\n')
+        result = []
+        in_table = False
+        
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
+            
+            # ตรวจสอบว่าเป็น table header
+            if '|' in line and not in_table and line.count('|') >= 2:
+                # ตรวจสอบบรรทัดถัดไปว่าเป็น separator
+                if i + 1 < len(lines) and re.match(r'^\s*\|[\s\-\|:]*\|\s*$', lines[i + 1]):
+                    in_table = True
+                    result.append('<table class="table">')
+                    result.append('<thead>')
+                    
+                    # Header row
+                    headers = [cell.strip() for cell in line.split('|') if cell.strip()]
+                    result.append('<tr>')
+                    for header in headers:
+                        result.append(f'<th>{header}</th>')
+                    result.append('</tr>')
+                    result.append('</thead>')
+                    result.append('<tbody>')
+                    
+                    i += 2  # ข้าม separator line
+                    continue
+                    
+            elif '|' in line and in_table and line.count('|') >= 2:
+                # Table row
+                cells = [cell.strip() for cell in line.split('|') if cell.strip()]
+                if cells:
+                    result.append('<tr>')
+                    for cell in cells:
+                        result.append(f'<td>{cell}</td>')
+                    result.append('</tr>')
+                else:
+                    # จบ table
+                    result.append('</tbody>')
+                    result.append('</table>')
+                    in_table = False
+                    
+            elif in_table and ('|' not in line or line.count('|') < 2):
+                # จบ table
+                result.append('</tbody>')
+                result.append('</table>')
+                in_table = False
+                result.append(line)
+                
+            else:
+                result.append(line)
+                
+            i += 1
+        
+        # ปิด table ถ้ายังเปิดอยู่
+        if in_table:
+            result.append('</tbody>')
+            result.append('</table>')
+            
+        return '\n'.join(result)
+    
+    def convert_timeline_items(self, html):
+        """แปลง timeline items เป็น HTML timeline"""
+        lines = html.split('\n')
+        result = []
+        in_timeline = False
+        timeline_id = 0
+        
+        for line in lines:
+            # ตรวจสอบ timeline item pattern: - **เวลา**: เนื้อหา
+            timeline_match = re.match(r'^\s*-\s*\*\*([^*]+)\*\*:\s*(.+)', line)
+            
+            if timeline_match:
+                if not in_timeline:
+                    result.append('<ul class="timeline">')
+                    in_timeline = True
+                    
+                time_text = timeline_match.group(1)
+                content_text = timeline_match.group(2)
+                timeline_id += 1
+                
+                result.append('<li>')
+                result.append(f'<div class="timeline-main">{time_text}: {content_text}</div>')
+                result.append(f'<button class="timeline-toggle" onclick="toggleTimelineDetail(\'timeline-{timeline_id}\')">' +
+                             f'<span class="th">รายละเอียด ▼</span><span class="en">Details ▼</span></button>')
+                result.append(f'<div class="timeline-detail" id="timeline-{timeline_id}" style="display: none;">')
+                
+            elif line.strip().startswith('  -') and in_timeline:
+                # Sub-item ของ timeline
+                sub_content = line.strip()[2:].strip()
+                result.append(f'<ul><li>{sub_content}</li></ul>')
+                
+            elif line.strip().startswith('  ') and in_timeline and line.strip():
+                # รายละเอียดเพิ่มเติม
+                detail_content = line.strip()
+                result.append(f'<p>{detail_content}</p>')
+                
+            else:
+                if in_timeline:
+                    # ปิด timeline detail และ li
+                    result.append('</div>')
+                    result.append('</li>')
+                    
+                    # ถ้าไม่ใช่ timeline item ใหม่ ให้ปิด timeline
+                    if not re.match(r'^\s*-\s*\*\*([^*]+)\*\*:\s*(.+)', line):
+                        result.append('</ul>')
+                        in_timeline = False
+                        
+                result.append(line)
+        
+        # ปิด timeline ถ้ายังเปิดอยู่
+        if in_timeline:
+            result.append('</div>')
+            result.append('</li>')
+            result.append('</ul>')
+            
+        return '\n'.join(result)
+    
+    def convert_lists(self, html):
+        """แปลง lists"""
+        lines = html.split('\n')
+        result = []
+        in_list = False
+        
+        for line in lines:
+            if re.match(r'^\s*[-*]\s+', line):
+                if not in_list:
+                    result.append('<ul>')
+                    in_list = True
+                item = re.sub(r'^\s*[-*]\s+', '', line)
+                result.append(f'<li>{item}</li>')
+            else:
+                if in_list:
+                    result.append('</ul>')
+                    in_list = False
+                result.append(line)
+        
+        if in_list:
+            result.append('</ul>')
+            
+        return '\n'.join(result)
+    
+    def convert_paragraphs(self, html):
+        """แปลง paragraphs"""
+        lines = html.split('\n')
+        result = []
+        
+        for line in lines:
+            line = line.strip()
+            if line and not line.startswith('<') and not re.match(r'^\s*[-*]\s+', line):
+                result.append(f'<p>{line}</p>')
+            else:
+                result.append(line)
+                
+        return '\n'.join(result)
+    
+    def read_content_files(self):
+        """อ่านไฟล์ content ทั้งหมด"""
+        content_data = {}
+        
+        # อ่านไฟล์ภาษาไทย
+        if self.th_dir.exists():
+            for md_file in sorted(self.th_dir.glob("*.md")):
+                file_key = md_file.stem  # เช่น 001-overview
+                content_data[file_key] = {
+                    'th': self.read_file(md_file),
+                    'en': ''
+                }
+                print(f"📄 Read TH: {md_file.name}")
+        
+        # อ่านไฟล์ภาษาอังกฤษ (ถ้ามี)
+        if self.en_dir.exists():
+            for md_file in sorted(self.en_dir.glob("*.md")):
+                file_key = md_file.stem
+                if file_key in content_data:
+                    content_data[file_key]['en'] = self.read_file(md_file)
+                    print(f"📄 Read EN: {md_file.name}")
+                else:
+                    content_data[file_key] = {
+                        'th': '',
+                        'en': self.read_file(md_file)
+                    }
+                    print(f"📄 Read EN: {md_file.name}")
+        
+        return content_data
+    
+    def extract_day_info(self, day_content):
+        """ดึงข้อมูลสำคัญจาก day content เพื่อสร้าง navigation card"""
+        content = day_content.get('th', '')
+        
+        # ดึง title หลัก
+        title_match = re.search(r'^# (.+?)$', content, re.MULTILINE)
+        title = title_match.group(1) if title_match else ""
+        
+        # ดึงวันที่
+        date_match = re.search(r'(\d+ มีนาคม \d+)', title)
+        date = date_match.group(1) if date_match else ""
+        
+        # ดึงคำอธิบายสั้นๆ จาก title หรือเนื้อหา
+        if '-' in title:
+            desc = title.split('-', 1)[1].strip()
+        else:
+            # หา paragraph แรกที่ไม่ใช่ header
+            desc_match = re.search(r'\n\n(.+?)(?:\n\n|\n#|$)', content)
+            desc = desc_match.group(1).strip() if desc_match else ""
+        
+        return {
+            'title': title,
+            'date': date,
+            'desc': desc
+        }
+    
+    def build_nav_section(self, content_data):
+        """สร้าง nav-section พร้อม navigation cards"""
+        
+        # สร้าง navigation cards
+        nav_cards = []
+        day_files = sorted([k for k in content_data.keys() if k.startswith('00') and k[2:3].isdigit() and int(k[2:3]) >= 3])
+        
+        for i, file_key in enumerate(day_files, 1):
+            if file_key.startswith('003'):  # day1
+                nav_cards.append(f'''
+                <a href="#day-1" class="nav-card">
+                    <h3><span class="th">วันที่ 1: เดินทางสู่โตเกียว</span><span class="en">Day 1: Journey to Tokyo</span></h3>
+                    <div class="date"><span class="th">6 มีนาคม 2026</span><span class="en">March 6, 2026</span></div>
+                    <div class="desc"><span class="th">เดินทางจากกรุงเทพไปโตเกียว เช็คอินโรงแรม</span><span class="en">Flight from Bangkok to Tokyo, hotel check-in</span></div>
+                </a>''')
+            elif file_key.startswith('004'):  # day2
+                nav_cards.append(f'''
+                <a href="#day-2" class="nav-card">
+                    <h3><span class="th">วันที่ 2: อาซากุซา และวัดเซนโซจิ</span><span class="en">Day 2: Asakusa & Sensoji Temple</span></h3>
+                    <div class="date"><span class="th">7 มีนาคม 2026</span><span class="en">March 7, 2026</span></div>
+                    <div class="desc"><span class="th">เยี่ยมชมวัดเก่าแก่ ชมยานนากามิเซ</span><span class="en">Visit ancient temples, traditional Tokyo</span></div>
+                </a>''')
+            elif file_key.startswith('005'):  # day3
+                nav_cards.append(f'''
+                <a href="#day-3" class="nav-card">
+                    <h3><span class="th">วันที่ 3: อุเอโนะ และฮาราจุกุ</span><span class="en">Day 3: Ueno & Harajuku</span></h3>
+                    <div class="date"><span class="th">8 มีนาคม 2026</span><span class="en">March 8, 2026</span></div>
+                    <div class="desc"><span class="th">สวนอุเอโนะ ย่านแฟชั่นเทรนดี้</span><span class="en">Ueno Park and trendy Harajuku district</span></div>
+                </a>''')
+            elif file_key.startswith('006'):  # day4 - วันเกิด
+                nav_cards.append(f'''
+                <a href="#day-4" class="nav-card">
+                    <div class="birthday-badge">🎂 วันเกิด!</div>
+                    <h3><span class="th">วันที่ 4: วันเกิดปอยไจ่! 🎂</span><span class="en">Day 4: Pojai's Birthday! 🎂</span></h3>
+                    <div class="date"><span class="th">9 มีนาคม 2026</span><span class="en">March 9, 2026</span></div>
+                    <div class="desc"><span class="th">วันพิเศษปอยไจ่! ดิสนีย์ซี กิจกรรมพิเศษ</span><span class="en">Special birthday celebration! DisneySea</span></div>
+                </a>''')
+            elif file_key.startswith('007'):  # day5
+                nav_cards.append(f'''
+                <a href="#day-5" class="nav-card">
+                    <h3><span class="th">วันที่ 5: ชิบุยะ และช้อปปิ้ง</span><span class="en">Day 5: Shibuya & Shopping</span></h3>
+                    <div class="date"><span class="th">10 มีนาคม 2026</span><span class="en">March 10, 2026</span></div>
+                    <div class="desc"><span class="th">เดินชิบุยะ ช้อปปิ้งซื้อของฝาก</span><span class="en">Explore Shibuya, shopping for souvenirs</span></div>
+                </a>''')
+            elif file_key.startswith('008'):  # day6
+                nav_cards.append(f'''
+                <a href="#day-6" class="nav-card">
+                    <h3><span class="th">วันที่ 6: ฟูจิ-คิว ไฮแลนด์</span><span class="en">Day 6: Fuji-Q Highland</span></h3>
+                    <div class="date"><span class="th">11 มีนาคม 2026</span><span class="en">March 11, 2026</span></div>
+                    <div class="desc"><span class="th">สวนสนุกฟูจิ-คิว ชมภูเขาไฟฟูจิ</span><span class="en">Fuji-Q Highland theme park, Mount Fuji</span></div>
+                </a>''')
+            elif file_key.startswith('009'):  # day7
+                nav_cards.append(f'''
+                <a href="#day-7" class="nav-card">
+                    <h3><span class="th">วันที่ 7: โอไดบะ และเตรียมกลับ</span><span class="en">Day 7: Odaiba & Departure Prep</span></h3>
+                    <div class="date"><span class="th">12 มีนาคม 2026</span><span class="en">March 12, 2026</span></div>
+                    <div class="desc"><span class="th">เที่ยวโอไดบะ ช้อปปิ้งครั้งสุดท้าย</span><span class="en">Odaiba sightseeing, last-minute shopping</span></div>
+                </a>''')
+            elif file_key.startswith('010'):  # day8
+                nav_cards.append(f'''
+                <a href="#day-8" class="nav-card">
+                    <h3><span class="th">วันที่ 8: เดินทางกลับบ้าน</span><span class="en">Day 8: Journey Home</span></h3>
+                    <div class="date"><span class="th">13 มีนาคม 2026</span><span class="en">March 13, 2026</span></div>
+                    <div class="desc"><span class="th">เดินทางกลับจากโตเกียวสู่กรุงเทพฯ</span><span class="en">Flight from Tokyo back to Bangkok</span></div>
+                </a>''')
+        
+        nav_section = f'''
+        <div class="nav-section">
+            <h2><span class="th">ภาพรวมการเดินทาง</span><span class="en">Trip Overview</span></h2>
+            <div class="nav-grid">
+                {"".join(nav_cards)}
+            </div>
+        </div>
+        '''
+        
+        return nav_section
+    
+    def build_content_sections(self, content_data):
+        """สร้าง content-sections จาก content files"""
+        sections_html = ""
+        
+        # เรียงลำดับไฟล์ตามหมายเลข และให้ overview เป็นส่วนแรก
+        all_keys = sorted(content_data.keys())
+        
+        for file_key in all_keys:
+            content = content_data[file_key]
+            
+            # แปลง markdown เป็น HTML
+            th_html = self.markdown_to_html(content['th'])
+            en_html = self.markdown_to_html(content['en'] if content['en'] else content['th'])
+            
+            # สร้าง section ID
+            if file_key.startswith('003'):
+                section_id = "day-1"
+            elif file_key.startswith('004'):
+                section_id = "day-2"
+            elif file_key.startswith('005'):
+                section_id = "day-3"
+            elif file_key.startswith('006'):
+                section_id = "day-4"
+            elif file_key.startswith('007'):
+                section_id = "day-5"
+            elif file_key.startswith('008'):
+                section_id = "day-6"
+            elif file_key.startswith('009'):
+                section_id = "day-7"
+            elif file_key.startswith('010'):
+                section_id = "day-8"
+            else:
+                section_id = file_key.replace('-', '_')
+            
+            section_html = f'''
+            <div class="content-section" id="{section_id}">
+                <div class="th">
+                    {th_html}
+                </div>
+                <div class="en">
+                    {en_html}
+                </div>
+            </div>
+            '''
+            
+            sections_html += section_html
+            print(f"✅ Built section: {file_key} → #{section_id}")
+        
+        return sections_html
+    
+    def add_back_to_top(self, html):
+        """เพิ่ม back to top button"""
+        back_to_top_html = '''
+        <div class="back-to-top" onclick="scrollToTop()" style="
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            font-size: 1.2rem;
+            z-index: 1000;
+            transition: var(--transition);
+        ">⬆</div>
+        
+        <script>
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.style.opacity = '1';
+            } else {
+                backToTop.style.opacity = '0.7';
+            }
+        });
+        </script>
+        '''
+        
+        # เพิ่มก่อน </body>
+        html = html.replace('</body>', back_to_top_html + '</body>')
+        return html
+    
+    def generate_html(self):
+        """สร้าง HTML file หลัก"""
+        print("\n🚀 Starting HTML generation...")
+        
+        # อ่าน template
+        template_html = self.read_file(self.template_file)
+        if not template_html:
+            print("❌ Could not read template file!")
+            return None
+        
+        # อ่าน content files
+        content_data = self.read_content_files()
+        if not content_data:
+            print("❌ No content files found!")
+            return None
+        
+        # สร้าง nav section พร้อม cards
+        nav_section = self.build_nav_section(content_data)
+        
+        # สร้าง content sections
+        content_sections = self.build_content_sections(content_data)
+        
+        # แทนที่ nav-section ใน template
+        nav_pattern = r'<div class="nav-section">.*?</div>(?=\s*<div class="content-section")'
+        template_html = re.sub(nav_pattern, nav_section, template_html, flags=re.DOTALL)
+        
+        # แทนที่ content-sections ใน template  
+        content_pattern = r'<div class="content-section".*?</div>(?=\s*</div>\s*</body>)'
+        template_html = re.sub(content_pattern, content_sections, template_html, flags=re.DOTALL)
+        
+        # เพิ่ม back to top
+        template_html = self.add_back_to_top(template_html)
+        
+        # สร้างชื่อไฟล์
+        timestamp = datetime.datetime.now().strftime("%Y%m%d")
+        output_filename = f"Tokyo-Trip-March-2026-Generated-{timestamp}.html"
+        output_path = self.build_dir / output_filename
+        
+        # บันทึกไฟล์
+        try:
+            with open(output_path, 'w', encoding='utf-8') as f:
+                f.write(template_html)
+            
+            file_size = output_path.stat().st_size
+            print(f"\n🎉 HTML generated successfully!")
+            print(f"📄 File: {output_filename}")
+            print(f"📍 Path: {output_path}")
+            print(f"📊 Size: {file_size:,} bytes ({file_size/1024:.1f} KB)")
+            
+            return output_path
+            
+        except Exception as e:
+            print(f"❌ Error writing file: {e}")
+            return None
+
+def main():
+    """Main function"""
+    print("🇯🇵 Tokyo Trip Generator 2025-07-06 (Fixed)")
+    print("=" * 50)
+    
+    generator = TokyoTripGenerator()
+    result = generator.generate_html()
+    
+    if result:
+        print("\n✅ Generation completed successfully!")
+        print(f"🌐 Open {result} in your browser to view the guide.")
+        print("\n📋 Features included:")
+        print("   ✅ Navigation cards grid (8 days)")
+        print("   ✅ Content sections from markdown files")
+        print("   ✅ Timeline expand/collapse functionality")
+        print("   ✅ Multi-language support (TH/EN)")
+        print("   ✅ Back to top button")
+        print("   ✅ Responsive design")
+    else:
+        print("\n❌ Generation failed!")
+        return 1
+    
+    return 0
+
+if __name__ == "__main__":
+    exit(main())
