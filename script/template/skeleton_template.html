@@ -524,25 +524,31 @@
         // 📅 Timeline Details Toggle
         function toggleTimelineDetail(detailId) {
             const detail = document.getElementById(detailId);
-            const button = document.querySelector(`[onclick="toggleTimelineDetail('${detailId}')"]`);
+            const button = document.querySelector(`[onclick*="${detailId}"]`);
             
             if (!detail || !button) {
                 console.warn(`⚠️ Timeline detail not found: ${detailId}`);
                 return;
             }
             
-            const isHidden = detail.style.display === 'none' || !detail.style.display;
+            const isHidden = detail.style.display === 'none' || detail.style.maxHeight === '0px' || !detail.style.maxHeight;
             
             if (isHidden) {
                 detail.style.display = 'block';
-                button.textContent = button.textContent.replace('▼', '▲');
+                // Use a short delay to allow display:block to apply before calculating scrollHeight
+                setTimeout(() => {
+                    detail.style.maxHeight = detail.scrollHeight + "px";
+                    detail.style.opacity = "1";
+                }, 10);
                 button.classList.add('expanded');
-                console.log(`👆 Expanded: ${detailId}`);
+                button.querySelectorAll('.th, .en').forEach(span => span.textContent = span.textContent.replace('▼', '▲'));
             } else {
-                detail.style.display = 'none';
-                button.textContent = button.textContent.replace('▲', '▼');
+                detail.style.maxHeight = '0px';
+                detail.style.opacity = '0';
+                // Optional: hide after transition
+                setTimeout(() => { if (detail.style.maxHeight === '0px') detail.style.display = 'none'; }, 300);
                 button.classList.remove('expanded');
-                console.log(`👇 Collapsed: ${detailId}`);
+                button.querySelectorAll('.th, .en').forEach(span => span.textContent = span.textContent.replace('▲', '▼'));
             }
         }
 
@@ -615,9 +621,9 @@
             
             // Initialize timeline details (hide all)
             document.querySelectorAll('.timeline-detail').forEach(detail => {
-                if (!detail.style.display) {
-                    detail.style.display = 'none';
-                }
+                detail.style.maxHeight = '0px';
+                detail.style.opacity = '0';
+                detail.style.display = 'none';
             });
             
             console.log('✅ App initialized successfully!');
