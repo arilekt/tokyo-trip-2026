@@ -520,22 +520,58 @@ class TokyoTripGeneratorV3:
         return text
 
     def _convert_paragraphs(self, text):
-        """ห่อข้อความที่ยังไม่ถูกแปลงเป็น HTML ด้วย <p> tags"""
-        lines = text.split('\n\n')
+        """
+        🆕 FIXED: Convert paragraphs with proper line break handling
+        แยกบรรทัดให้ถูกต้อง แทนที่จะรวมทุกอย่างใน <p> เดียว
+        """
+        # Split by double newlines to get paragraph blocks
+        blocks = text.split('\n\n')
         result = []
         
-        for line in lines:
-            stripped_line = line.strip()
+        for block in blocks:
+            stripped_block = block.strip()
+            
             # Skip if already HTML, header, placeholder, or empty
-            if not stripped_line or stripped_line.startswith(('<', '#', '__PLACEHOLDER_')):
-                result.append(line)
+            if not stripped_block or stripped_block.startswith(('<', '#', '__PLACEHOLDER_')):
+                result.append(block)
+                continue
+            
+            # 🆕 FIXED: Process line by line within each block
+            lines = stripped_block.split('\n')
+            processed_lines = []
+            
+            for line in lines:
+                stripped_line = line.strip()
+                if not stripped_line:
+                    continue
+                    
+                # Skip lines that are already HTML
+                if stripped_line.startswith('<'):
+                    processed_lines.append(line)
+                else:
+                    # 🆕 Check for special patterns that should be separate lines
+                    if re.match(r'\*\*[^*]+:\*\*', stripped_line):
+                        # **Label:** content - make it a separate formatted line
+                        formatted = re.sub(r'\*\*([^*]+):\*\*\s*(.*)', r'<p><strong>\1:</strong> \2</p>', stripped_line)
+                        processed_lines.append(formatted)
+                    elif stripped_line.startswith('- '):
+                        # List item - keep as is (will be processed by _convert_simple_lists)
+                        processed_lines.append(line)
+                    else:
+                        # Regular line - wrap in <p>
+                        processed_lines.append(f'<p>{stripped_line}</p>')
+            
+            if processed_lines:
+                result.append('\n'.join(processed_lines))
             else:
-                result.append(f'<p>{stripped_line}</p>')
+                result.append(block)
         
         return '\n\n'.join(result)
+        
+
 
     def build_nav_section(self, content_data):
-        """สร้าง Navigation Cards แบบ Dynamic"""
+        """สร้าง Navigation Cards แบบ Dynamic - 🆕 FIXED VERSION"""
         print("🏗️ Building dynamic navigation section...")
         nav_cards_html = ""
         
@@ -559,11 +595,9 @@ class TokyoTripGeneratorV3:
             th_date = th_date_match.group(1).strip() if th_date_match else ""
             en_date = en_date_match.group(1).strip() if en_date_match else th_date
 
-            # Extract short description (more flexible pattern)
-            th_desc_match = re.search(r'(?:^|\n)([^#\*\n].{20,100}[^\n]*)', th_md)
-            en_desc_match = re.search(r'(?:^|\n)([^#\*\n].{20,100}[^\n]*)', en_md)
-            th_desc = th_desc_match.group(1).strip() if th_desc_match else "รายละเอียดการเดินทาง"
-            en_desc = en_desc_match.group(1).strip() if en_desc_match else th_desc
+            # 🆕 FIXED: Extract and format description with line breaks and bold text
+            th_desc_html = self._extract_and_format_description(th_md)
+            en_desc_html = self._extract_and_format_description(en_md) if en_md != th_md else th_desc_html
 
             section_id = self.get_section_id(key)
             
@@ -575,13 +609,70 @@ class TokyoTripGeneratorV3:
                 {birthday_badge}
                 <h3><span class="th">{th_title}</span><span class="en">{en_title}</span></h3>
                 <div class="date"><span class="th">{th_date}</span><span class="en">{en_date}</span></div>
-                <div class="desc"><span class="th">{th_desc}</span><span class="en">{en_desc}</span></div>
+                <div class="desc">
+                    <span class="th">{th_desc_html}</span>
+                    <span class="en">{en_desc_html}</span>
+                </div>
             </a>'''
 
         return f'''<div class="nav-section">
             <h2><span class="th">ภาพรวมการเดินทาง</span><span class="en">Trip Overview</span></h2>
             <div class="nav-grid">{nav_cards_html}</div>
-        </div>'''
+        </div>'''        
+
+    def _extract_and_format_description(self, md_content):
+        """
+        🆕 NEW METHOD: Extract and format description for nav cards
+        - Convert **bold** to <strong>
+        - Convert - list items to <br>• format or remove
+        - Add line breaks between logical sections
+        """
+        if not md_content:
+            return "รายละเอียดการเดินทาง"
+        
+        # Try to find description patterns
+        description_lines = []
+        
+        # Look for **วันที่:**, **สถานที่:**, **ไฮไลต์:** patterns
+        lines = md_content.split('\n')
+        in_description_section = False
+        
+        for line in lines:
+            stripped = line.strip()
+            
+            # Skip headers and empty lines
+            if not stripped or stripped.startswith('#'):
+                continue
+                
+            # Check for description pattern lines
+            if re.match(r'\*\*[^*]+:\*\*', stripped):
+                # Convert **Label:** content to <strong>Label:</strong> content
+                formatted_line = re.sub(r'\*\*([^*]+):\*\*\s*(.*)', r'<strong>\1:</strong> \2', stripped)
+                description_lines.append(formatted_line)
+                in_description_section = True
+            elif stripped.startswith('- ') and len(description_lines) < 4:  # Limit list items
+                # Convert - item to bullet point
+                item_text = stripped[2:].strip()
+                # Process **bold** in list items
+                item_text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', item_text)
+                description_lines.append(f'• {item_text}')
+            elif in_description_section and len(stripped) > 20 and len(description_lines) < 3:
+                # Regular description line
+                formatted_line = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', stripped)
+                description_lines.append(formatted_line)
+        
+        # If no structured description found, extract first meaningful paragraph
+        if not description_lines:
+            for line in lines:
+                stripped = line.strip()
+                if len(stripped) > 30 and not stripped.startswith(('#', '*', '-', '>')):
+                    formatted_line = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', stripped)
+                    description_lines.append(formatted_line)
+                    break
+        
+        # Join with line breaks (limit to 3 lines for nav card)
+        result = '<br>'.join(description_lines[:3])
+        return result if result else "รายละเอียดการเดินทาง"
 
     def build_content_sections(self, content_data):
         """สร้าง Content Sections ทั้งหมด"""

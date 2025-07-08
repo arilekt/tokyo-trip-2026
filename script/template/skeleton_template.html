@@ -173,8 +173,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         .content-section {
@@ -185,17 +192,33 @@
             box-shadow: var(--shadow);
         }
 
-        .content-section h1, .content-section h2 {
+        .content-section h1,
+        .content-section h2 {
             color: var(--primary);
             margin-bottom: 1.5rem;
             border-bottom: 3px solid var(--accent);
             padding-bottom: 0.5rem;
         }
 
-        .content-section h1 { font-size: 2.2rem; }
-        .content-section h2 { font-size: 1.8rem; }
-        .content-section h3 { font-size: 1.4rem; color: var(--secondary); margin: 1.5rem 0 1rem 0; }
-        .content-section h4 { font-size: 1.2rem; color: var(--text-primary); margin: 1rem 0 0.5rem 0; }
+        .content-section h1 {
+            font-size: 2.2rem;
+        }
+
+        .content-section h2 {
+            font-size: 1.8rem;
+        }
+
+        .content-section h3 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .content-section h4 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin: 1rem 0 0.5rem 0;
+        }
 
         .content-section p {
             margin-bottom: 1rem;
@@ -259,7 +282,8 @@
             border-bottom: none;
         }
 
-        .info-box, .note-box {
+        .info-box,
+        .note-box {
             margin: 1.5rem 0;
             border-radius: var(--border-radius);
             overflow: hidden;
@@ -267,10 +291,16 @@
             transition: var(--transition);
         }
 
-        .info-box { border-left: 4px solid var(--primary); }
-        .note-box { border-left: 4px solid var(--accent); }
+        .info-box {
+            border-left: 4px solid var(--primary);
+        }
 
-        .info-toggle, .note-toggle {
+        .note-box {
+            border-left: 4px solid var(--accent);
+        }
+
+        .info-toggle,
+        .note-toggle {
             background: linear-gradient(135deg, var(--primary) 0%, #3498DB 100%);
             color: white;
             padding: 1rem;
@@ -286,21 +316,25 @@
             background: linear-gradient(135deg, var(--accent) 0%, #F39C12 100%);
         }
 
-        .info-toggle:hover, .note-toggle:hover {
+        .info-toggle:hover,
+        .note-toggle:hover {
             transform: translateX(5px);
         }
 
-        .info-toggle::after, .note-toggle::after {
+        .info-toggle::after,
+        .note-toggle::after {
             content: '▼';
             transition: transform 0.3s ease;
             font-size: 0.9rem;
         }
 
-        .info-toggle.collapsed::after, .note-toggle.collapsed::after {
+        .info-toggle.collapsed::after,
+        .note-toggle.collapsed::after {
             transform: rotate(-90deg);
         }
 
-        .info-detail, .note-detail {
+        .info-detail,
+        .note-detail {
             background: var(--card-bg);
             padding: 1.5rem;
             max-height: 1000px;
@@ -308,7 +342,8 @@
             transition: all 0.3s ease;
         }
 
-        .info-detail.collapsed, .note-detail.collapsed {
+        .info-detail.collapsed,
+        .note-detail.collapsed {
             max-height: 0;
             padding-top: 0;
             padding-bottom: 0;
@@ -450,10 +485,19 @@
 
         /* 📱 Mobile Responsive */
         @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .header h1 { font-size: 1.8rem; }
-            .nav-grid { grid-template-columns: 1fr; gap: 1rem; }
-            
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
             .language-switcher {
                 position: sticky;
                 top: 1rem;
@@ -464,19 +508,56 @@
                 border-radius: var(--border-radius);
                 margin: -1rem -1rem 2rem -1rem;
             }
-            
-            .timeline { padding-left: 1rem; }
-            .timeline::before { left: 0.5rem; }
-            .timeline li::before { left: -1rem; }
-            
+
+            .timeline {
+                padding-left: 1rem;
+            }
+
+            .timeline::before {
+                left: 0.5rem;
+            }
+
+            .timeline li::before {
+                left: -1rem;
+            }
+
             .table-container {
                 border-radius: 8px;
             }
-            
-            .table th, .table td {
+
+            .table th,
+            .table td {
                 padding: 0.6rem 0.8rem;
                 font-size: 0.9rem;
             }
+        }
+
+        /* 🆕 Enhanced nav-card description styling */
+        .nav-card .desc {
+            font-size: 0.9rem;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+
+        .nav-card .desc br {
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-card .desc strong {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+
+        /* 🆕 Better content section paragraph spacing */
+        .content-section p {
+            margin-bottom: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .content-section p strong {
+            color: var(--text-primary);
+            font-weight: 600;
         }
     </style>
 </head>
@@ -512,12 +593,12 @@
             const body = document.body;
             body.classList.remove('lang-th', 'lang-en');
             body.classList.add(`lang-${lang}`);
-            
+
             // Update active button
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.querySelector(`[onclick="switchLanguage('${lang}')"]`);
             if (activeBtn) activeBtn.classList.add('active');
-            
+
             console.log(`🌐 Language switched to: ${lang}`);
         }
 
@@ -525,14 +606,14 @@
         function toggleTimelineDetail(detailId) {
             const detail = document.getElementById(detailId);
             const button = document.querySelector(`[onclick*="${detailId}"]`);
-            
+
             if (!detail || !button) {
                 console.warn(`⚠️ Timeline detail not found: ${detailId}`);
                 return;
             }
-            
+
             const isHidden = detail.style.display === 'none' || detail.style.maxHeight === '0px' || !detail.style.maxHeight;
-            
+
             if (isHidden) {
                 detail.style.display = 'block';
                 // Use a short delay to allow display:block to apply before calculating scrollHeight
@@ -555,20 +636,20 @@
         // 📦 Collapsible Info/Note Boxes
         function initializeCollapsibleBoxes() {
             console.log('🔧 Initializing collapsible boxes...');
-            
+
             document.querySelectorAll('.info-box, .note-box').forEach(box => {
                 const toggle = box.querySelector('.info-toggle, .note-toggle');
                 const detail = box.querySelector('.info-detail, .note-detail');
-                
+
                 if (toggle && detail) {
                     // Start collapsed
                     toggle.classList.add('collapsed');
                     detail.classList.add('collapsed');
-                    
+
                     // Add click handler
                     toggle.addEventListener('click', () => {
                         const isCollapsed = detail.classList.contains('collapsed');
-                        
+
                         if (isCollapsed) {
                             detail.classList.remove('collapsed');
                             toggle.classList.remove('collapsed');
@@ -576,12 +657,12 @@
                             detail.classList.add('collapsed');
                             toggle.classList.add('collapsed');
                         }
-                        
+
                         console.log(`📦 Box toggled: ${isCollapsed ? 'expanded' : 'collapsed'}`);
                     });
                 }
             });
-            
+
             console.log('✅ Collapsible boxes initialized');
         }
 
@@ -598,7 +679,7 @@
         function handleBackToTopVisibility() {
             const backToTop = document.querySelector('.back-to-top');
             const scrolled = window.pageYOffset;
-            
+
             if (scrolled > 300) {
                 backToTop.style.opacity = '0.8';
                 backToTop.style.transform = 'translateY(0)';
@@ -611,21 +692,21 @@
         // 🏁 Initialize Everything
         function initializeApp() {
             console.log('🚀 Initializing Tokyo Trip App...');
-            
+
             // Initialize features
             initializeCollapsibleBoxes();
             switchLanguage('th'); // Start with Thai
-            
+
             // Add scroll listener for back to top
             window.addEventListener('scroll', handleBackToTopVisibility);
-            
+
             // Initialize timeline details (hide all)
             document.querySelectorAll('.timeline-detail').forEach(detail => {
                 detail.style.maxHeight = '0px';
                 detail.style.opacity = '0';
                 detail.style.display = 'none';
             });
-            
+
             console.log('✅ App initialized successfully!');
             console.log('🎯 Features: Language switching, Timeline toggle, Collapsible boxes, Back to top');
         }
