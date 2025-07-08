@@ -96,12 +96,8 @@ class TokyoTripGeneratorV3:
 
     def markdown_to_html(self, markdown_text):
         """
-        🔥 THE MAGIC FUNCTION! 
-        Converts Markdown to HTML using PLACEHOLDER STRATEGY to prevent
-        double-processing of complex elements like timelines and tables.
-        
-        🎯 Strategy: Isolate -> Convert -> Replace
-        🆕 v3.1: รองรับ Multiple Timeline Formats และแก้ไข Section Markers
+        🔥 THE MAGIC FUNCTION - ENHANCED VERSION! 
+        เพิ่มการรองรับ timeline patterns ที่หลากหลาย
         """
         if not markdown_text or not markdown_text.strip():
             return ""
@@ -146,25 +142,64 @@ class TokyoTripGeneratorV3:
                 return add_placeholder(self._process_infobox_block(match.group(0)))
             text = box_pattern.sub(box_repl, text)
 
-        # 🌟 Extended Timeline Patterns (multiple formats)
-        # 1. Time-based timelines: - **HH:MM**: content
+        # 🌟 ENHANCED Timeline Patterns (multiple formats) - 🆕 IMPROVED!
+        
+        # 1. 🆕 Time-range timelines: - **HH:MM-HH:MM**: content
+        timeline_range_pattern = re.compile(r'((?:^- \*\*\d+:\d+\s*-\s*\d+:\d+\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
+        
+        # 2. 🆕 Time with location: - **HH:MM (Location)**: content  
+        timeline_location_pattern = re.compile(r'((?:^- \*\*\d+:\d+\s*\([^)]+\)\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
+        
+        # 3. 🆕 Complex time patterns: - **Morning**, **Evening**, **All Day**: content
+        timeline_text_pattern = re.compile(r'((?:^- \*\*(?:Morning|Evening|Afternoon|Night|All Day|มื้อเช้า|มื้อกลางวัน|มื้อเย็น|ตอนเช้า|ตอนบ่าย|ตอนเย็น|ตอนค่ำ|ทั้งวัน)\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
+        
+        # 4. 🔄 Original time-based timelines: - **HH:MM**: content (keep existing)
         timeline_time_pattern = re.compile(r'((?:^- \*\*\d+:\d+\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
-        # 2. Highlight timelines: - **text**: content (for daily highlights)
-        timeline_highlight_pattern = re.compile(r'((?:^- \*\*(?!\d+:\d+)[^*]+\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
-        # 3. Step-based timelines: - **Step N**: content
+        
+        # 5. 🔄 Highlight timelines: - **text**: content (existing)
+        timeline_highlight_pattern = re.compile(r'((?:^- \*\*(?!\d+:\d+)(?!Morning|Evening|Afternoon|Night|All Day|มื้อเช้า|มื้อกลางวัน|มื้อเย็น|ตอนเช้า|ตอนบ่าย|ตอนเย็น|ตอนค่ำ|ทั้งวัน)[^*]+\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
+        
+        # 6. 🔄 Step-based timelines: - **Step N**: content (existing)
         timeline_step_pattern = re.compile(r'((?:^- \*\*(?:Step|ขั้นตอน|ไฮไลต์|รายละเอียด)[^*]*\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
-        # 4. 🆕 H3-based timelines: ### Title + content below
+        
+        # 7. 🔄 H3-based timelines: ### Title + content below (existing)
         timeline_h3_pattern = re.compile(r'((?:^### [^\n]+\n(?:(?!^###)[^\n]*\n?)*)+)', re.MULTILINE)
         
-        # Process time-based timelines first (highest priority)
+        # 🚀 Process in priority order (most specific first)
+        
+        # 1. Time ranges (highest priority)
+        range_timelines_found = timeline_range_pattern.findall(text)
+        if range_timelines_found:
+            print(f"   ⏰ Found {len(range_timelines_found)} time-range timeline blocks")
+            def range_timeline_repl(match):
+                return add_placeholder(self._process_timeline_block(match.group(1), 'range'))
+            text = timeline_range_pattern.sub(range_timeline_repl, text)
+        
+        # 2. Time with location
+        location_timelines_found = timeline_location_pattern.findall(text)
+        if location_timelines_found:
+            print(f"   📍 Found {len(location_timelines_found)} time-location timeline blocks")
+            def location_timeline_repl(match):
+                return add_placeholder(self._process_timeline_block(match.group(1), 'location'))
+            text = timeline_location_pattern.sub(location_timeline_repl, text)
+        
+        # 3. Text-based time periods
+        text_timelines_found = timeline_text_pattern.findall(text)
+        if text_timelines_found:
+            print(f"   🌅 Found {len(text_timelines_found)} text-time timeline blocks")
+            def text_timeline_repl(match):
+                return add_placeholder(self._process_timeline_block(match.group(1), 'text'))
+            text = timeline_text_pattern.sub(text_timeline_repl, text)
+                
+        # 4. Standard time-based timelines
         timelines_found = timeline_time_pattern.findall(text)
         if timelines_found:
-            print(f"   ⏰ Found {len(timelines_found)} time-based timeline blocks")
+            print(f"   ⏰ Found {len(timelines_found)} standard time-based timeline blocks")
             def timeline_repl(match):
                 return add_placeholder(self._process_timeline_block(match.group(1), 'time'))
             text = timeline_time_pattern.sub(timeline_repl, text)
             
-        # Process highlight timelines
+        # 5. Process highlight timelines
         highlight_timelines_found = timeline_highlight_pattern.findall(text)
         if highlight_timelines_found:
             print(f"   🌟 Found {len(highlight_timelines_found)} highlight timeline blocks")
@@ -172,7 +207,7 @@ class TokyoTripGeneratorV3:
                 return add_placeholder(self._process_timeline_block(match.group(1), 'highlight'))
             text = timeline_highlight_pattern.sub(highlight_timeline_repl, text)
             
-        # Process step-based timelines
+        # 6. Process step-based timelines
         step_timelines_found = timeline_step_pattern.findall(text)
         if step_timelines_found:
             print(f"   📋 Found {len(step_timelines_found)} step timeline blocks")
@@ -180,7 +215,7 @@ class TokyoTripGeneratorV3:
                 return add_placeholder(self._process_timeline_block(match.group(1), 'step'))
             text = timeline_step_pattern.sub(step_timeline_repl, text)
             
-        # 🆕 Process H3-based timelines (### headings)
+        # 7. 🆕 Process H3-based timelines (### headings)
         h3_timelines_found = timeline_h3_pattern.findall(text)
         if h3_timelines_found:
             print(f"   🏨 Found {len(h3_timelines_found)} H3-based timeline blocks")
@@ -299,10 +334,10 @@ class TokyoTripGeneratorV3:
         print(f"      ✅ Generated H3 timeline with {len(timeline_items)} items")
         return final_timeline
         
+
     def _build_timeline_item(self, entry, timeline_type='time'):
         """
-        Build individual timeline <li> item following template.html.old structure
-        🆕 v3.1: รองรับ different timeline types
+        🆕 ENHANCED: Build individual timeline <li> item with support for new formats
         """
         time = entry['time']
         main_content = entry['main_content']
@@ -311,9 +346,18 @@ class TokyoTripGeneratorV3:
         # Generate unique timeline ID
         timeline_id = f"timeline-{timeline_type}-{hash(time + main_content) % 10000}"
         
-        # Start with timeline-main div (format depends on type)
-        if timeline_type == 'time' and re.match(r'\d+:\d+', time):
-            # Time format: 09:00
+        # 🆕 Enhanced format handling for different timeline types
+        if timeline_type == 'range':
+            # Time range format: 09:30-12:00
+            item_html = f'<div class="timeline-main"><strong>{time}:</strong> {main_content}</div>'
+        elif timeline_type == 'location':
+            # Time with location: 09:30 (Tokyo Station)
+            item_html = f'<div class="timeline-main"><strong>{time}:</strong> {main_content}</div>'
+        elif timeline_type == 'text':
+            # Text-based time: Morning, Evening, etc.
+            item_html = f'<div class="timeline-main"><strong>{time}:</strong> {main_content}</div>'
+        elif timeline_type == 'time' and re.match(r'\d+:\d+', time):
+            # Standard time format: 09:00
             item_html = f'<div class="timeline-main"><strong>{time}:</strong> {main_content}</div>'
         elif timeline_type == 'h3':
             # H3 format: just the title (no colon)
@@ -337,6 +381,16 @@ class TokyoTripGeneratorV3:
                 </div>'''
         
         return f'                <li>\n                    {item_html}\n                </li>'
+
+    print("🔧 Enhanced Timeline Regex Patterns:")
+    print("✅ **HH:MM-HH:MM**: (time ranges)")
+    print("✅ **HH:MM (Location)**: (time with location)")  
+    print("✅ **Morning/Evening**: (text-based periods)")
+    print("✅ **HH:MM**: (standard times) - existing")
+    print("✅ **Text**: (highlights) - existing")
+    print("✅ **Step N**: (steps) - existing")
+    print("✅ ### Headers (h3-based) - existing")
+    print("\n🎯 Replace markdown_to_html() และ _build_timeline_item() methods")
     
     def _process_timeline_details(self, details):
         """
@@ -739,7 +793,7 @@ class TokyoTripGeneratorV3:
 
         # Generate output filename with timestamp
         timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        output_filename = f"Tokyo-Trip-March-2026-v3.1-FIXED-{timestamp}.html"
+        output_filename = f"Tokyo-Trip-March-2026-v3.1-{timestamp}.html"
         output_path = self.build_dir / output_filename
 
         # Write final HTML file
