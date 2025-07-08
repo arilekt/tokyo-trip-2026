@@ -94,10 +94,11 @@ class TokyoTripGeneratorV3:
         print(f"   - Found {len(content_data)} content entries.")
         return content_data
 
+
     def markdown_to_html(self, markdown_text):
         """
-        🔥 THE MAGIC FUNCTION - ENHANCED VERSION! 
-        เพิ่มการรองรับ timeline patterns ที่หลากหลาย
+        🔥 THE MAGIC FUNCTION - FIXED HEADER PROCESSING ORDER! 
+        🆕 ย้าย header processing ไปก่อน complex blocks เพื่อป้องกันการรบกวน
         """
         if not markdown_text or not markdown_text.strip():
             return ""
@@ -121,6 +122,15 @@ class TokyoTripGeneratorV3:
         text = re.sub(r'^```\s*$', '', text, flags=re.MULTILINE)
         text = re.sub(r'^---\s*$', '\n', text, flags=re.MULTILINE)
         
+        # 🆕 STEP 1.5: Process headers FIRST (before complex blocks)
+        print("   🔧 Processing headers first...")
+        
+        # Headers (order matters: longer first to avoid conflicts)
+        text = re.sub(r'^#### (.*)$', r'<h4>\1</h4>', text, flags=re.MULTILINE)
+        text = re.sub(r'^### (.*)$', r'<h3>\1</h3>', text, flags=re.MULTILINE)
+        text = re.sub(r'^## (.*)$', r'<h2>\1</h2>', text, flags=re.MULTILINE)
+        text = re.sub(r'^# (.*)$', r'<h1>\1</h1>', text, flags=re.MULTILINE)
+        
         # 🎯 STEP 2: Process and replace complex blocks with placeholders
         print("   🔧 Processing complex blocks with placeholder strategy...")
         
@@ -142,28 +152,28 @@ class TokyoTripGeneratorV3:
                 return add_placeholder(self._process_infobox_block(match.group(0)))
             text = box_pattern.sub(box_repl, text)
 
-        # 🌟 ENHANCED Timeline Patterns (multiple formats) - 🆕 IMPROVED!
+        # 🌟 Enhanced Timeline Patterns (multiple formats)
         
-        # 1. 🆕 Time-range timelines: - **HH:MM-HH:MM**: content
+        # 1. Time-range timelines: - **HH:MM-HH:MM**: content
         timeline_range_pattern = re.compile(r'((?:^- \*\*\d+:\d+\s*-\s*\d+:\d+\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
         
-        # 2. 🆕 Time with location: - **HH:MM (Location)**: content  
+        # 2. Time with location: - **HH:MM (Location)**: content  
         timeline_location_pattern = re.compile(r'((?:^- \*\*\d+:\d+\s*\([^)]+\)\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
         
-        # 3. 🆕 Complex time patterns: - **Morning**, **Evening**, **All Day**: content
+        # 3. Complex time patterns: - **Morning**, **Evening**, etc.
         timeline_text_pattern = re.compile(r'((?:^- \*\*(?:Morning|Evening|Afternoon|Night|All Day|มื้อเช้า|มื้อกลางวัน|มื้อเย็น|ตอนเช้า|ตอนบ่าย|ตอนเย็น|ตอนค่ำ|ทั้งวัน)\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
         
-        # 4. 🔄 Original time-based timelines: - **HH:MM**: content (keep existing)
+        # 4. Original time-based timelines: - **HH:MM**: content
         timeline_time_pattern = re.compile(r'((?:^- \*\*\d+:\d+\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
         
-        # 5. 🔄 Highlight timelines: - **text**: content (existing)
+        # 5. Highlight timelines: - **text**: content (excluding time patterns)
         timeline_highlight_pattern = re.compile(r'((?:^- \*\*(?!\d+:\d+)(?!Morning|Evening|Afternoon|Night|All Day|มื้อเช้า|มื้อกลางวัน|มื้อเย็น|ตอนเช้า|ตอนบ่าย|ตอนเย็น|ตอนค่ำ|ทั้งวัน)[^*]+\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
         
-        # 6. 🔄 Step-based timelines: - **Step N**: content (existing)
+        # 6. Step-based timelines: - **Step N**: content
         timeline_step_pattern = re.compile(r'((?:^- \*\*(?:Step|ขั้นตอน|ไฮไลต์|รายละเอียด)[^*]*\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
         
-        # 7. 🔄 H3-based timelines: ### Title + content below (existing)
-        timeline_h3_pattern = re.compile(r'((?:^### [^\n]+\n(?:(?!^###)[^\n]*\n?)*)+)', re.MULTILINE)
+        # 7. 🆕 Modified H3-based timelines: <h3> + content below (now that headers are processed)
+        timeline_h3_pattern = re.compile(r'((?:^<h3>[^<]+</h3>\n(?:(?!^<h3>)[^\n]*\n?)*)+)', re.MULTILINE)
         
         # 🚀 Process in priority order (most specific first)
         
@@ -215,23 +225,20 @@ class TokyoTripGeneratorV3:
                 return add_placeholder(self._process_timeline_block(match.group(1), 'step'))
             text = timeline_step_pattern.sub(step_timeline_repl, text)
             
-        # 7. 🆕 Process H3-based timelines (### headings)
+        # 7. Process H3-based timelines (now looking for <h3> tags)
         h3_timelines_found = timeline_h3_pattern.findall(text)
         if h3_timelines_found:
             print(f"   🏨 Found {len(h3_timelines_found)} H3-based timeline blocks")
             def h3_timeline_repl(match):
-                return add_placeholder(self._process_h3_timeline_block(match.group(1)))
+                return add_placeholder(self._process_h3_timeline_block_html(match.group(1)))
             text = timeline_h3_pattern.sub(h3_timeline_repl, text)
 
-        # 🎯 STEP 3: Process the remaining simple markdown (now safe from interference)
+        # 🎯 STEP 3: Process the remaining simple markdown (headers already processed)
         print("   🔧 Processing simple markdown...")
         html = text
         
-        # Headers (order matters: longer first)
-        html = re.sub(r'^#### (.*)$', r'<h4>\1</h4>', html, flags=re.MULTILINE)
-        html = re.sub(r'^### (.*)$', r'<h3>\1</h3>', html, flags=re.MULTILINE)
-        html = re.sub(r'^## (.*)$', r'<h2>\1</h2>', html, flags=re.MULTILINE)
-        html = re.sub(r'^# (.*)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
+        # 🆕 Skip header processing since it's already done
+        # Headers are already processed in STEP 1.5
         
         # Text formatting
         html = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', html)
@@ -249,6 +256,54 @@ class TokyoTripGeneratorV3:
             html = html.replace(placeholder, content)
 
         return html.strip()
+    
+
+    def _process_h3_timeline_block_html(self, h3_block):
+        """
+        🆕 NEW METHOD: Process H3-based blocks that are already converted to HTML
+        <h3>Title</h3>\n content... → timeline item with details
+        """
+        print("      🏨 Processing H3-based timeline block (HTML)...")
+        
+        timeline_items = []
+        
+        # Split by <h3> to get individual items
+        h3_items = re.split(r'^<h3>', h3_block, flags=re.MULTILINE)[1:]  # Skip first empty item
+        
+        for item in h3_items:
+            lines = item.strip().split('\n')
+            if not lines:
+                continue
+                
+            # First line contains the title with </h3> tag
+            title_line = lines[0].strip()
+            title_match = re.match(r'([^<]+)</h3>', title_line)
+            title = title_match.group(1).strip() if title_match else title_line
+            
+            # Rest is content (details)
+            content_lines = lines[1:] if len(lines) > 1 else []
+            
+            # Create timeline entry
+            entry = {
+                'time': title,  # H3 title becomes timeline label
+                'main_content': '',  # No separate main content for H3 format
+                'details': content_lines # Pass raw lines to be processed
+            }
+            
+            timeline_items.append(self._build_timeline_item(entry, 'h3'))
+        
+        # Generate final timeline HTML
+        final_timeline = f'<ul class="timeline">\n' + '\n'.join(timeline_items) + '\n</ul>'
+        print(f"      ✅ Generated H3 timeline with {len(timeline_items)} items")
+        return final_timeline
+
+    print("🔧 Header Processing Fix:")
+    print("✅ Headers (####, ###, ##, #) now processed BEFORE complex blocks")
+    print("✅ Prevents #### from interfering with timeline regex patterns")
+    print("✅ H3 timeline pattern updated to work with processed <h3> tags")
+    print("✅ Added _process_h3_timeline_block_html() for HTML-based H3 processing")
+    print("\n🎯 Replace markdown_to_html() method และเพิ่ม _process_h3_timeline_block_html() method")    
+    
 
     def _process_timeline_block(self, timeline_md, timeline_type='time'):
         """
