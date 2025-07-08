@@ -284,13 +284,12 @@ class TokyoTripGeneratorV3:
             
             # Rest is content (details)
             content_lines = lines[1:] if len(lines) > 1 else []
-            content = '\n'.join(content_lines).strip()
             
             # Create timeline entry
             entry = {
                 'time': title,  # H3 title becomes timeline label
                 'main_content': '',  # No separate main content for H3 format
-                'details': [content] if content else []
+                'details': content_lines # Pass raw lines to be processed by _process_timeline_details
             }
             
             timeline_items.append(self._build_timeline_item(entry, 'h3'))
@@ -342,44 +341,54 @@ class TokyoTripGeneratorV3:
     def _process_timeline_details(self, details):
         """
         Process timeline detail lines into proper HTML like template.html.old
-        🆕 v3.1: Extended emoji support for better section detection
+        🆕 v3.1 FIXED: Handles both old (emoji-based) and new (H3-based) detail formats.
+        - Emoji lines or **Bold** lines -> <h4>
+        - "- item" -> <ul><li>...</li></ul>
+        - Other lines -> <p> with inline formatting
         """
         html_parts = []
-        current_section = None
-        current_items = []
-        
-        for detail in details:
-            # Check if this is a section header (starts with emoji or special chars)
-            # 🆕 Extended emoji list for better detection
-            if re.match(r'^[🚊🎟️🎂📋🗺️🍽️🎪🛍️🏨🎯🚇🏃‍♂️💰🎌🎭🎨🎵🎮🏟️🎢🎡🎠🎈🎉🎊🎁🎀🎄🎃🍰🧁🍭🍬🍫🍩🍪🥧🍺🍻🥂🍾🍷🍸🍹🍴🥄🔸📍⭐🌟💫⚡🔥❄️🌸🌺🌻🌷🌹🏔️🗻🏕️🏞️🚲🚗🚕🚌🚎🏍️✈️🚁⛴️🚤⛵🎫💳💴💵💶💷🧾]', detail):
-                # Save previous section
-                if current_section and current_items:
-                    html_parts.append(f'<h4>{current_section}</h4>')
+        in_list = False
+
+        def close_list_if_open():
+            nonlocal in_list
+            if in_list:
+                html_parts.append('</ul>')
+                in_list = False
+
+        def process_inline_formatting(text):
+            text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
+            text = re.sub(r'\*(.*?)\*', r'<em>\1</em>', text)
+            return text
+
+        for detail_line in details:
+            stripped_line = detail_line.strip()
+            if not stripped_line:
+                continue
+
+            # Check for headers (Emoji or **Bold** lines)
+            # Added '📅' for check-in/out lines
+            emoji_header_pattern = r'^[🚊🎟️🎂📋🗺️🍽️🎪🛍️🏨🎯🚇🏃‍♂️💰🎌🎭🎨🎵🎮🏟️🎢🎡🎠🎈🎉🎊🎁🎀🎄🎃🍰🧁🍭🍬🍫🍩🍪🥧🍺🍻🥂🍾🍷🍸🍹🍴🥄🔸📍⭐🌟💫⚡🔥❄️🌸🌺🌻🌷🌹🏔️🗻🏕️🏞️🚲🚗🚕🚌🚎🏍️✈️🚁⛴️🚤⛵🎫💳💴💵💶💷🧾📅]'
+            bold_header_pattern = r'^\s*\*\*([^*]+)\*\*.*'
+            
+            if re.match(emoji_header_pattern, stripped_line) or re.match(bold_header_pattern, stripped_line):
+                close_list_if_open()
+                html_parts.append(f'<h4>{process_inline_formatting(stripped_line)}</h4>')
+            
+            # Check for list items
+            elif stripped_line.startswith('- '):
+                if not in_list:
                     html_parts.append('<ul>')
-                    for item in current_items:
-                        html_parts.append(f'<li>{item}</li>')
-                    html_parts.append('</ul>')
-                
-                # Start new section
-                current_section = detail
-                current_items = []
+                    in_list = True
+                item_content = stripped_line[2:].strip()
+                html_parts.append(f'<li>{process_inline_formatting(item_content)}</li>')
+            
+            # Otherwise, it's a paragraph
             else:
-                # This is a list item under current section
-                current_items.append(detail)
-        
-        # Don't forget the last section!
-        if current_section and current_items:
-            html_parts.append(f'<h4>{current_section}</h4>')
-            html_parts.append('<ul>')
-            for item in current_items:
-                html_parts.append(f'<li>{item}</li>')
-            html_parts.append('</ul>')
-        
-        # If no sections found, treat all as simple paragraphs
-        if not html_parts:
-            for detail in details:
-                if detail.strip():
-                    html_parts.append(f'<p>{detail}</p>')
+                close_list_if_open()
+                html_parts.append(f'<p>{process_inline_formatting(stripped_line)}</p>')
+
+        # Close any open list at the end
+        close_list_if_open()
         
         return '\n                    '.join(html_parts)
 
