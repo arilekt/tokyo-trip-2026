@@ -483,20 +483,150 @@
             opacity: 1;
         }
 
-        /* 📱 Mobile Responsive */
+        /* 📱 Enhanced Mobile Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
             }
 
+            /* 🔥 MAIN HEADER */
             .header h1 {
                 font-size: 1.8rem;
             }
+            
+            .header .subtitle {
+                font-size: 1rem;
+            }
 
+            /* 🎯 CONTENT SECTION HEADERS - สำคัญที่สุด! */
+            .content-section h1 {
+                font-size: 1.6rem !important;
+            }
+
+            .content-section h2 {
+                font-size: 1.4rem !important;
+            }
+
+            .content-section h3 {
+                font-size: 1.2rem !important;
+            }
+            
+            .content-section h4 {
+                font-size: 1.1rem !important;
+            }
+
+            /* 🗺️ NAVIGATION SECTION */
+            .nav-section h2 {
+                font-size: 1.5rem !important;
+            }
+
+            /* 📝 NAV CARDS */
+            .nav-card h3 {
+                font-size: 1.1rem !important;
+            }
+            
+            .nav-card .date {
+                font-size: 0.8rem !important;
+            }
+            
+            .nav-card .desc {
+                font-size: 0.85rem !important;
+            }
+
+            /* ⏰ TIMELINE */
+            .timeline-main {
+                font-size: 0.95rem !important;
+                padding: 1rem 1.2rem !important;
+            }
+            
+            .timeline-toggle {
+                font-size: 0.85rem !important;
+                padding: 0.5rem 1rem !important;
+            }
+
+            /* 📊 TABLES */
+            .table th, .table td {
+                padding: 0.6rem 0.8rem !important;
+                font-size: 0.9rem !important;
+            }
+
+            /* 🎯 GENERAL TEXT */
+            .content-section p {
+                font-size: 0.95rem !important;
+            }
+            
+            .content-section li {
+                font-size: 0.9rem !important;
+            }
+
+            /* 🔙 BACK TO TOP BUTTON */
+            .back-to-top {
+                width: 45px !important;
+                height: 45px !important;
+                font-size: 1.2rem !important;
+            }
+
+            /* 🏗️ GRID ADJUSTMENTS */
             .nav-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
+            
+            /* 📱 TIMELINE MOBILE ADJUSTMENTS */
+            .timeline {
+                padding-left: 1.5rem !important;
+            }
+            
+            .timeline li::before {
+                left: -1.5rem !important;
+                width: 12px !important;
+                height: 12px !important;
+            }
+            
+            .timeline::before {
+                left: 0.75rem !important;
+                width: 2px !important;
+            }
+        }
+
+        /* 📱 EXTRA SMALL MOBILE (< 480px) */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.8rem;
+            }
+
+            /* หัวข้อเล็กลงอีก */
+            .header h1 {
+                font-size: 1.5rem !important;
+            }
+            
+            .content-section h1 {
+                font-size: 1.4rem !important;
+            }
+
+            .content-section h2 {
+                font-size: 1.2rem !important;
+            }
+
+            .content-section h3 {
+                font-size: 1.1rem !important;
+            }
+            
+            .nav-section h2 {
+                font-size: 1.3rem !important;
+            }
+
+            /* ข้อความเล็กลง */
+            .content-section p {
+                font-size: 0.9rem !important;
+            }
+            
+            /* Timeline ปรับเล็กลง */
+            .timeline-main {
+                font-size: 0.9rem !important;
+                padding: 0.8rem 1rem !important;
+            }
+        }
 
             .language-switcher {
                 position: sticky;
