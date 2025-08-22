@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:pantip.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
