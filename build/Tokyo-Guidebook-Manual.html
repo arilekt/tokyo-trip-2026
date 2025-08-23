@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗼 Tokyo Travel Guide 2026 - คู่มือเที่ยวโตเกียว</title>
+    <style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #A23B72;
+            --accent: #F18F01;
+            --success: #27AE60;
+            --danger: #E74C3C;
+            --background: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-primary: #2C3E50;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: var(--background);
+        }
+
+        .guidebook {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--border-radius);
+        }
+
+        .cover {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 3rem;
+        }
+
+        .cover h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .cover p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .toc {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .toc h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .toc-item:last-child {
+            border-bottom: none;
+        }
+
+        .toc-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .toc-link:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .section-header {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h4 {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--primary);
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #FFF3E0, #FFECB3);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--accent);
+            margin: 1.5rem 0;
+        }
+
+        .tip {
+            background: linear-gradient(135deg, #E8F5E8, #F0F8FF);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--success);
+            margin: 1.5rem 0;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #FFF5F5, #FFEBEE);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--danger);
+            margin: 1.5rem 0;
+        }
+
+        .info-box {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .info-box h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: var(--background);
+        }
+
+        .price {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .restaurant-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border);
+        }
+
+        .restaurant-name {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .budget-summary {
+            background: linear-gradient(135deg, #E3F2FD, #F0F8FF);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .budget-total {
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .guidebook {
+                padding: 1rem;
+            }
+            
+            .cover h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .restaurant-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            .guidebook {
+                box-shadow: none;
+                max-width: none;
+                margin: 0;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="guidebook">
+        
+        <!-- Cover Page -->
+        <div class="cover">
+            <h1>🗼 Tokyo Travel Guide 2026</h1>
+            <p>คู่มือเที่ยวโตเกียว มีนาคม 2026</p>
+            <p>8 วัน 7 คืน | ฉลองวันเกิดครับรอบ 11 ปี</p>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>📋 สารบัญ</h2>
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <a href="#overview" class="toc-link">
+                        <span class="emoji">🗼</span> ภาพรวมการเดินทาง
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#accommodation" class="toc-link">
+                        <span class="emoji">🏨</span> ที่พัก & โรงแรม
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#camera" class="toc-link">
+                        <span class="emoji">📷</span> การซื้อกล้อง (ของขวัญวันเกิด)
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#food" class="toc-link">
+                        <span class="emoji">🍽️</span> ร้านอาหารแนะนำ
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#shopping" class="toc-link">
+                        <span class="emoji">🛍️</span> ช้อปปิ้ง & ของฝาก
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#transportation" class="toc-link">
+                        <span class="emoji">🚊</span> การเดินทาง
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#budget" class="toc-link">
+                        <span class="emoji">💰</span> งบประมาณ
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#tips" class="toc-link">
+                        <span class="emoji">💡</span> เคล็ดลับการเดินทาง
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section">
+            <div class="section-header">
+                <h2 class="section-title">🗼 ภาพรวมการเดินทาง</h2>
+                <p class="section-subtitle">8 วัน 7 คืน ฉลองวันเกิดครบรอบ 11 ปี</p>
+            </div>
+
+            <div class="highlight">
+                <h4>📅 ระยะเวลา</h4>
+                <p><strong>ศุกร์ที่ 6 – ศุกร์ที่ 13 มีนาคม 2026 (8 วัน 7 คืน)</strong></p>
+                
+                <h4>✈️ ผู้เดินทาง</h4>
+                <p>🧍 Arilek (คุณพ่อ) + 👧 Nuntnaphat (พอใจ วัย 11 ปี)</p>
+                
+                <h4>🎂 วัตถุประสงค์</h4>
+                <p>ฉลองวันเกิดครบรอบ 11 ปี พอใจ (9 มีนาคม)</p>
+            </div>
+
+            <h3>🗺️ เส้นทางการเดินทาง</h3>
+            <ul>
+                <li><strong>วันที่ 6 มี.ค.</strong> → ✈️ Bangkok (DMK) ไป Tokyo (NRT)</li>
+                <li><strong>วันที่ 6-7 มี.ค.</strong> → 🏙️ Tokyo (Shinagawa + Ikebukuro)</li>
+                <li><strong>วันที่ 8-10 มี.ค.</strong> → ⛰️ Kawaguchiko (ฉลองวันเกิด + ชมฟูจิ)</li>
+                <li><strong>วันที่ 10-12 มี.ค.</strong> → 🏙️ Tokyo (Ueno + Gala Yuzawa)</li>
+                <li><strong>วันที่ 12-13 มี.ค.</strong> → 🏙️ Tokyo (Shinjuku + กลับบ้าน)</li>
+                <li><strong>วันที่ 13 มี.ค.</strong> → ✈️ Tokyo (NRT) กลับ Bangkok (DMK)</li>
+            </ul>
+
+            <div class="tip">
+                <h4>🌟 ไฮไลต์ทริป</h4>
+                <ul>
+                    <li>🎂 <strong>วันเกิดพิเศษ</strong> ที่ Kawaguchiko กับวิวฟูจิซัน</li>
+                    <li>📷 <strong>ซื้อกล้องของขวัญ</strong> สำหรับพอใจ</li>
+                    <li>❄️ <strong>เล่นหิมะครั้งแรก</strong> ที่ Gala Yuzawa</li>
+                    <li>🛍️ <strong>ช้อปปิ้ง</strong> ที่ Harajuku, Shibuya, Shinjuku</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Accommodation Section -->
+        <section id="accommodation" class="section">
+            <div class="section-header">
+                <h2 class="section-title">🏨 ที่พัก & โรงแรม</h2>
+                <p class="section-subtitle">โรงแรมที่พักตลอดการเดินทาง</p>
+            </div>
+
+            <h3>🏨 Shinagawa Tobu Hotel (วันที่ 1)</h3>
+            <div class="info-box">
+                <h4>ข้อมูลโรงแรม</h4>
+                <p><strong>ที่อยู่:</strong> 4-7-6 Takanawa, Minato City, Tokyo</p>
+                <p><strong>การเดินทาง:</strong> เดิน 3 นาที จาก JR Shinagawa Station (East Exit)</p>
+                <p><strong>หมายเลขจอง:</strong> agoda.com - 1891056461</p>
+                <p><strong>ห้อง:</strong> Semi-Double Non-Smoking</p>
+                <p><strong>จุดเด่น:</strong> ใกล้สถานี, เดินทางสะดวกไปทุกที่</p>
+            </div>
+
+            <h3>🏨 Asta Hotel Ikebukuro (วันที่ 2)</h3>
+            <div class="info-box">
+                <h4>ข้อมูลโรงแรม</h4>
+                <p><strong>ทำเล:</strong> ใจกลาง Ikebukuro</p>
+                <p><strong>จุดเด่น:</strong> ใกล้ Anime street, ช้อปปิ้งสะดวก</p>
+                <p><strong>เหมาะสำหรับ:</strong> สำรวจ Otaku culture</p>
+            </div>
+
+            <h3>⛰️ Kawaguchiko Country Cottage Ban (วันที่ 3-5)</h3>
+            <div class="highlight">
+                <h4>🎂 พิเศษสำหรับวันเกิด!</h4>
+                <p><strong>วิวฟูจิซัน:</strong> ชมพระอาทิตย์ขึ้นกับฟูจิจากระเบียงห้องพัก</p>
+                <p><strong>บรรยากาศ:</strong> บ้านพักแบบ Country, เงียบสงบ</p>
+                <p><strong>กิจกรรมพิเศษ:</strong> ถ่ายรูป "Morning Birthday Girl with Fuji-san"</p>
+            </div>
+
+            <h3>🏙️ Hotels ใน Tokyo ช่วงท้าย</h3>
+            <div class="info-box">
+                <h4>Ueno Area (วันที่ 6)</h4>
+                <p>ใกล้ Gala Yuzawa, เดินทางสะดวก</p>
+                
+                <h4>Shinjuku Area (วันที่ 7)</h4>
+                <p>ช้อปปิ้งสุดท้าย, ใกล้สนามบิน</p>
+            </div>
+        </section>
+
+        <!-- Camera Section -->
+        <section id="camera" class="section">
+            <div class="section-header">
+                <h2 class="section-title">📷 การซื้อกล้อง</h2>
+                <p class="section-subtitle">ของขวัญวันเกิดล่วงหน้าสำหรับพอใจ</p>
+            </div>
+
+            <div class="highlight">
+                <h4>🎁 วัตถุประสงค์</h4>
+                <ul>
+                    <li><strong>ของขวัญวันเกิดล่วงหน้า</strong> ให้พอใจ (วันเกิด 9 มี.ค.)</li>
+                    <li><strong>ใช้ถ่ายรูประหว่างทริป</strong> โดยเฉพาะที่ Kawaguchiko + Gala Yuzawa</li>
+                    <li><strong>ประสบการณ์แรก</strong> ของการมีกล้องส่วนตัว</li>
+                </ul>
+            </div>
+
+            <h3>💰 งบประมาณสำหรับพอใจ</h3>
+            <div class="budget-summary">
+                <div class="budget-total">฿10,000 (¥45,000)</div>
+                <p>💡 <strong>เคล็ดลับ:</strong> ขอ Tax-Free เมื่อซื้อเกิน ¥5,000 (แสดงพาสปอร์ต)</p>
+            </div>
+
+            <h3>📷 กล้องแนะนำสำหรับพอใจ</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>รุ่น</th>
+                        <th>จุดเด่น</th>
+                        <th>ราคาโดยประมาณ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ricoh WG-80</strong></td>
+                        <td>กันน้ำ + กันกระแทก</td>
+                        <td class="price">¥35,000–¥42,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Canon PowerShot SX740 HS</strong></td>
+                        <td>ซูม 40x + 4K Video + WiFi</td>
+                        <td class="price">¥40,000–¥45,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sony Cyber-shot DSC-WX500</strong></td>
+                        <td>ซูม 30x + จอพับได้</td>
+                        <td class="price">¥35,000–¥40,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fujifilm FinePix XP140</strong></td>
+                        <td>กันน้ำลึก 25ม.</td>
+                        <td class="price">¥30,000–¥38,000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>📷 กล้องสำหรับคุณพ่อ</h3>
+            <div class="info-box">
+                <h4>งบประมาณ: ¥18,000-22,500</h4>
+                <p><strong>ข้อกำหนด:</strong> WiFi, มือ 2 หรือใหม่, ไม่เอาประกัน, แบตสำรอง 1 ก้อน</p>
+                
+                <h4>🎯 ตัวเลือกแรก: Canon EOS 800D</h4>
+                <ul>
+                    <li>24.2MP + 45จุด AF + LCD พับได้ + Bluetooth</li>
+                    <li>เหมาะมืออาชีพ, ปุ่มควบคุมครบ</li>
+                    <li>ราคามือ 2: <span class="price">¥18,000–¥22,000</span></li>
+                </ul>
+            </div>
+
+            <h3>📍 ร้านแนะนำ</h3>
+            
+            <h4>🏪 Bic Camera Gotanda (วันแรก)</h4>
+            <div class="restaurant-card">
+                <p><strong>เวลาทำการ:</strong> 10:00 – 21:00 (ทุกวัน)</p>
+                <p><strong>ที่อยู่:</strong> 1-2-7 Nishigotanda, Shinagawa City</p>
+                <p><strong>การเดินทาง:</strong> JR Yamanote Line 1 สถานี จาก Shinagawa</p>
+                <div class="tip">
+                    <strong>จุดเด่น:</strong> ร้านใหญ่, พนักงานพูดอังกฤษได้, มี Tax-Free Counter
+                </div>
+            </div>
+
+            <h4>🏪 Map Camera Shinjuku (Backup Plan)</h4>
+            <div class="restaurant-card">
+                <p><strong>เวลาทำการ:</strong> 10:30-20:00 (วันธรรมดา)</p>
+                <p><strong>เชี่ยวชาญ:</strong> กล้องมือ 2 คุณภาพสูง</p>
+                <div class="tip">
+                    <strong>จุดเด่น:</strong> ราคาแข่งขันได้, ต่อรองได้, มีให้เลือกเยอะ
+                </div>
+            </div>
+        </section>
+
+        <!-- Food Section -->
+        <section id="food" class="section">
+            <div class="section-header">
+                <h2 class="section-title">🍽️ ร้านอาหารแนะนำ</h2>
+                <p class="section-subtitle">คู่มือครบครันสำหรับอาหารญี่ปุ่น</p>
+            </div>
+
+            <div class="highlight">
+                <h4>🥢 มารยาทการกินแบบญี่ปุ่น</h4>
+                <ul>
+                    <li><strong>ก่อนกิน:</strong> พูด "Itadakimasu" (อิตาดากิมาสุ) = ขอรับประทาน</li>
+                    <li><strong>หลังกิน:</strong> พูด "Gochisousama" (โกชิโซโซามะ) = อร่อยมาก/ขอบคุณ</li>
+                    <li><strong>การกินซุป:</strong> ดื่มจากชาม (ไม่ต้องใช้ช้อน)</li>
+                    <li><strong>เสียงดูดๆ:</strong> ปกติ! (โดยเฉพาะราเมน + อุด้ง)</li>
+                </ul>
+            </div>
+
+            <h3>🍜 อาหารญี่ปุ่นแท้ที่ต้องลอง</h3>
+            
+            <h4>🍜 ราเมน (Ramen)</h4>
+            <div class="restaurant-grid">
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🥩 Tonkotsu</div>
+                    <p>น้ำซุปข้นจากกระดูกหมู</p>
+                    <p><strong>รสชาติ:</strong> เข้มข้น หวานมัน</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥800-1,200/ชาม</span></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🟤 Miso</div>
+                    <p>ซุปมิโสะ รสเข้มข้น</p>
+                    <p><strong>รสชาติ:</strong> เค็มหวาน เข้มข้น</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥850-1,300/ชาม</span></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🟫 Shoyu</div>
+                    <p>ซุปใส รสจืด</p>
+                    <p><strong>รสชาติ:</strong> เบา หอมซีอิ๊ว</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥750-1,100/ชาม</span></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍲 Tsukemen</div>
+                    <p>บะหมี่จิ้ม (แยกซุป)</p>
+                    <p><strong>รสชาติ:</strong> ซุปเข้มข้น จิ้มกิน</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥900-1,500/ชาม</span></p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>🏪 ร้านราเมนแนะนำ</h4>
+                <ul>
+                    <li><strong>Ichiran:</strong> มีกั้นส่วนตัว, รสชาติปรับได้</li>
+                    <li><strong>Ippudo:</strong> ราเมนคุณภาพสูง, มีสาขาเยอะ</li>
+                    <li><strong>Menya Saimi:</strong> รสชาติดั้งเดิม</li>
+                </ul>
+            </div>
+
+            <h4>🍣 ซูชิ (Sushi)</h4>
+            <div class="restaurant-grid">
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍣 Nigiri</div>
+                    <p>ข้าวปั้นหน้าปลาดิบ</p>
+                    <p><strong>แนะนำ:</strong> แซลมอน, ทูน่า, กุ้ง</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥150-500/คำ</span></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍤 Maki</div>
+                    <p>ซูชิม้วน</p>
+                    <p><strong>แนะนำ:</strong> California Roll</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥200-600/จาน</span></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍚 Chirashi</div>
+                    <p>ข้าวหน้าปลาดิบรวม</p>
+                    <p><strong>จุดเด่น:</strong> คุ้มค่า อิ่มท้อง</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥1,500-3,000/ชาม</span></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🎠 Kaiten-zushi</div>
+                    <p>ซูชิสายพาน</p>
+                    <p><strong>จุดเด่น:</strong> ราคาถูก เด็กๆ ชอบ</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥100-300/จาน</span></p>
+                </div>
+            </div>
+
+            <h4>🥩 ทองคัตสึ (Tonkatsu)</h4>
+            <div class="info-box">
+                <h4>หมูทอดกรอบนอกนุ่มใน</h4>
+                <p><strong>เสิร์ฟกับ:</strong> ข้าว + กะหล่ำปลีซอย + มิโสะซุป</p>
+                <p><strong>ราคา:</strong> <span class="price">¥1,200-2,500</span></p>
+                <p><strong>ร้านแนะนำ:</strong> Katsukura, Kozasa (Ueno)</p>
+            </div>
+
+            <h4>🍤 เทมปุระ (Tempura)</h4>
+            <div class="info-box">
+                <h4>ผัก + กุ้ง + ปลา เคลือบแป้งทอด</h4>
+                <p><strong>จิ้มกับ:</strong> น้ำจิ้มเทมปุระ + หัวไชเท้าขูด</p>
+                <p><strong>ราคา:</strong> <span class="price">¥1,500-3,000</span></p>
+                <p><strong>ร้านแนะนำ:</strong> Daikokuya (Asakusa)</p>
+            </div>
+
+            <h3>🏪 Convenience Store อาหาร</h3>
+            
+            <div class="tip">
+                <h4>💡 เคล็ดลับ: 7-Eleven / Lawson / FamilyMart</h4>
+                <p>อาหารคุณภาพดี ราคาถูก เปิด 24 ชั่วโมง</p>
+            </div>
+
+            <h4>🍙 อาหารแนะนำ</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>เมนู</th>
+                        <th>คำอธิบาย</th>
+                        <th>ราคา</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Onigiri</strong></td>
+                        <td>ข้าวปั้นไส้ต่างๆ (ทูน่า, แซลมอน)</td>
+                        <td class="price">¥120-180</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bento</strong></td>
+                        <td>ข้าวกล่อง (มีทั้งไก่ หมู ปลา)</td>
+                        <td class="price">¥400-600</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Karaage</strong></td>
+                        <td>ไก่ทอดญี่ปุ่น (กรอบนอกนุ่มใน)</td>
+                        <td class="price">¥200-300</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sandwich</strong></td>
+                        <td>แซนด์วิชนุ่มๆ (ไข่ ทูน่า)</td>
+                        <td class="price">¥150-250</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Curry Pan</strong></td>
+                        <td>ขนมปังแกงกะหรี่</td>
+                        <td class="price">¥150</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>🥤 เครื่องดื่ม</h4>
+            <ul>
+                <li><strong>Green Tea:</strong> ชาเขียวขวด <span class="price">¥100-150</span></li>
+                <li><strong>Coffee:</strong> กาแฟสด (ร้อน/เย็น) <span class="price">¥100-200</span></li>
+                <li><strong>Ramune:</strong> โซดาญี่ปุ่น <span class="price">¥120-180</span></li>
+            </ul>
+
+            <h3>🍜 สำหรับเด็ก (ราคาประหยัด)</h3>
+            <div class="restaurant-grid">
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍝 Saizeriya</div>
+                    <p>อิตาเลียนราคาประหยัด</p>
+                    <p><strong>เมนู:</strong> พิซซ่า, สปาเก็ตตี้, เมนูเด็ก</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥500-¥1,000/คน</span></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🥩 Yoshinoya</div>
+                    <p>ข้าวหน้าเนื้อญี่ปุ่นต้นตำรับ</p>
+                    <p><strong>เมนู:</strong> Gyudon (ข้าวหน้าเนื้อ)</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥300-¥500/คน</span></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍔 MOS Burger</div>
+                    <p>เบอร์เกอร์สไตล์ญี่ปุ่น</p>
+                    <p><strong>เมนู:</strong> Rice Burger (เบอร์เกอร์ข้าว)</p>
+                    <p><strong>ราคา:</strong> <span class="price">¥400-¥800/คน</span></p>
+                </div>
+            </div>
+
+            <h3>🍰 ขนมและของหวาน</h3>
+            
+            <h4>🍡 ขนมญี่ปุ่นดั้งเดิม</h4>
+            <div class="restaurant-grid">
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🐟 Taiyaki</div>
+                    <p>ขนมปลาไส้ถั่วแดง</p>
+                    <p class="price">¥200-300</p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🥞 Dorayaki</div>
+                    <p>ขนมโดราเอมอน</p>
+                    <p class="price">¥150-250</p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍡 Mochi</div>
+                    <p>ข้าวเหนียวหวาน</p>
+                    <p class="price">¥100-200</p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍢 Dango</div>
+                    <p>ลูกชิ้นข้าวเหนียวย่าง</p>
+                    <p class="price">¥300-400</p>
+                </div>
+            </div>
+
+            <h4>🍨 ขนมสมัยใหม่</h4>
+            <ul>
+                <li><strong>Crepe:</strong> เครปสไตล์ฮาราจูกุ <span class="price">¥500-800</span></li>
+                <li><strong>Soft Cream:</strong> ไอศกรีมซอฟท์เสิร์ฟ <span class="price">¥350-500</span></li>
+                <li><strong>Castella:</strong> เค้กฟองน้ำ <span class="price">¥300-600</span></li>
+                <li><strong>Melon Pan:</strong> ขนมปังเมลอน <span class="price">¥150-200</span></li>
+            </ul>
+
+            <div class="warning">
+                <h4>💰 งบอาหารแนะนำ</h4>
+                <ul>
+                    <li><strong>3 มื้อ/วัน:</strong> ประมาณ <span class="price">¥3,000</span> ต่อคน</li>
+                    <li><strong>เช้า:</strong> Convenience Store ¥300-500</li>
+                    <li><strong>กลางวัน:</strong> ร้านอาหารท้องถิ่น ¥800-1,200</li>
+                    <li><strong>เย็น:</strong> ร้านดีๆ ¥1,500-2,000</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Shopping Section -->
+        <section id="shopping" class="section">
+            <div class="section-header">
+                <h2 class="section-title">🛍️ ช้อปปิ้ง & ของฝาก</h2>
+                <p class="section-subtitle">คู่มือช้อปปิ้งแบบครบครัน</p>
+            </div>
+
+            <h3>🏪 Don Quijote (Donki) - เป้าหมายหลัก</h3>
+            <div class="highlight">
+                <h4>🎯 ทำไมต้อง Donki?</h4>
+                <ul>
+                    <li>แหล่งขนม ของฝาก และ skincare ที่ดีที่สุด</li>
+                    <li>ราคาถูก + มีครบทุกอย่างในที่เดียว</li>
+                    <li>เปิด 24 ชั่วโมง (หลายสาขา)</li>
+                </ul>
+            </div>
+
+            <h4>📍 สาขาแนะนำ</h4>
+            <ul>
+                <li><strong>MEGA Don Quijote Shibuya</strong> - ใหญ่ที่สุด, 24 ชั่วโมง</li>
+                <li><strong>Don Quijote Shinjuku Kabukicho</strong> - สะดวก, ใกล้สถานที่ท่องเที่ยว</li>
+            </ul>
+
+            <h3>🍭 ขนมและของฝากยอดนิยม</h3>
+            <div class="restaurant-grid">
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍫 Kit Kat รสพิเศษ</div>
+                    <p>มัชฉะ, ซากุระ, วาซาบิ</p>
+                    <p class="price">¥400-700/กล่อง</p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍪 Pocky รสพิเศษ</div>
+                    <p>รส Limited Edition</p>
+                    <p class="price">¥200-400/กล่อง</p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍜 Instant Ramen Ippudo</div>
+                    <p>รสเฮาส์แบรนด์</p>
+                    <p class="price">¥400-600/กล่อง</p>
+                </div>
+            </div>
+
+            <h3>🧴 Skincare แนะนำจาก Don Quijote</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ผลิตภัณฑ์</th>
+                        <th>คำอธิบาย</th>
+                        <th>ราคา</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Hada Labo Gokujyun</strong></td>
+                        <td>โลชั่นที่ดีที่สุดในญี่ปุ่น</td>
+                        <td class="price">¥800-1,200</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Biore UV Aqua Rich</strong></td>
+                        <td>ครีมกันแดด</td>
+                        <td class="price">¥1,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Heroine Make Mascara</strong></td>
+                        <td>มาสคาร่าตัวดัง</td>
+                        <td class="price">¥1,100</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>👔 เสื้อผ้า & Fashion</h3>
+            
+            <h4>🏪 GU (ประหยัด)</h4>
+            <div class="tip">
+                <p><strong>Slim Fit Jeans:</strong> ¥1,490-1,990</p>
+                <p><strong>เสื้อกันหนาว:</strong> สำหรับ Kawaguchiko</p>
+                <p><strong>ถุงมือ/หมวก:</strong> สำหรับ Gala Yuzawa</p>
+            </div>
+
+            <h4>🏪 Uniqlo (คุณภาพดี)</h4>
+            <div class="info-box">
+                <p><strong>Flagship Ginza:</strong> สาขาใหญ่ที่สุด</p>
+                <p><strong>Slim Fit Jeans:</strong> ¥2,990-3,990</p>
+                <p><strong>Ultra Stretch Slim:</strong> นิ่ม ยืดหยุ่น</p>
+            </div>
+
+            <div class="warning">
+                <h4>💡 เคล็ดลับการซื้อ</h4>
+                <ul>
+                    <li>✅ <strong>Tax-Free:</strong> ซื้อเกิน ¥5,500 แสดงพาสปอร์ต</li>
+                    <li>✅ <strong>คูปองส่วนลด:</strong> หาใน LIVE JAPAN app</li>
+                    <li>⚠️ <strong>ระวังแออัด:</strong> หลีกเลี่ยงช่วงราตรี วันหยุด</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Transportation Section -->
+        <section id="transportation" class="section">
+            <div class="section-header">
+                <h2 class="section-title">🚊 การเดินทาง</h2>
+                <p class="section-subtitle">คู่มือครบครันสำหรับการเดินทางในญี่ปุ่น</p>
+            </div>
+
+            <h3>✈️ เที่ยวบิน</h3>
+            <div class="highlight">
+                <h4>🛫 ไป: SL394 (Thai Lion Air)</h4>
+                <p><strong>เส้นทาง:</strong> DMK (ดอนเมือง) → NRT (นาริตะ)</p>
+                <p><strong>เวลา:</strong> 06:15 → 16:20 JST (6 ชม 5 นาที)</p>
+                <p><strong>มื้อบนเครื่อง:</strong> อาหารกลางวัน</p>
+                
+                <h4>🛬 กลับ: SL393 (Thai Lion Air)</h4>
+                <p><strong>เส้นทาง:</strong> NRT (นาริตะ) → DMK (ดอนเมือง)</p>
+                <p><strong>วันที่:</strong> 13 มีนาคม 2026</p>
+                <p><strong>ค่าโดยสาร:</strong> <span class="price">฿37,568</span> (2 คน ไป-กลับ)</p>
+            </div>
+
+            <h3>🚄 Narita Express (N'EX)</h3>
+            <div class="info-box">
+                <h4>สนามบิน → ชินากาวะ</h4>
+                <p><strong>ค่าใช้จ่าย:</strong> ผู้ใหญ่ ¥3,070, เด็ก ¥1,530</p>
+                <p><strong>เวลาเดินทาง:</strong> ประมาณ 70 นาที</p>
+                <p><strong>ซื้อตั๋ว:</strong> JR East Travel Service Center (หลังผ่าน ตม.)</p>
+                <p><strong>ที่นั่ง:</strong> ไม่จำเป็นต้องจอง (มีที่นั่งว่าง)</p>
+                <p><strong>วิธีไป:</strong> ตามป้าย "JR Line" ลงไปชั้นใต้ดิน</p>
+            </div>
+
+            <h3>🚌 รถบัสไป Kawaguchiko</h3>
+            <div class="info-box">
+                <h4>เส้นทาง: Tokyo → Kawaguchiko</h4>
+                <p><strong>เวลาเดินทาง:</strong> 2.5 ชั่วโมง</p>
+                <p><strong>จุดออก:</strong> Shinjuku Bus Terminal</p>
+                <p><strong>เวลาออก:</strong> ตรวจสอบ 09:00</p>
+                <p><strong>ค่าใช้จ่าย:</strong> <span class="price">¥8,000</span> (2 คน ไป-กลับ)</p>
+                <p><strong>การจอง:</strong> จองล่วงหน้าแนะนำ (เว็บไซต์หรือที่สถานี)</p>
+            </div>
+
+            <h3>🚊 JR Yamanote Line</h3>
+            <div class="tip">
+                <h4>สายหลักของโตเกียว - วิ่งเป็นวง</h4>
+                <ul>
+                    <li><strong>Shinagawa → Gotanda:</strong> 1 สถานี (¥140)</li>
+                    <li><strong>Ikebukuro → Shinjuku:</strong> 6 นาที</li>
+                    <li><strong>Ikebukuro → Akihabara:</strong> 15 นาที</li>
+                    <li><strong>วิ่งวน:</strong> รอบใน (ทวนเข็มนาฬิกา) / รอบนอก (ตามเข็มนาฬิกา)</li>
+                    <li><strong>ความถี่:</strong> 2-4 นาที/ขบวน</li>
+                </ul>
+            </div>
+
+            <h3>🚇 Tokyo Metro & Subway</h3>
+            <div class="restaurant-grid">
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🟠 Ginza Line</div>
+                    <p>สายเก่าแก่ที่สุด</p>
+                    <p><strong>เส้นทางสำคัญ:</strong> Asakusa, Ginza, Shibuya</p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🔴 Marunouchi Line</div>
+                    <p>ผ่านใจกลางเมือง</p>
+                    <p><strong>เส้นทางสำคัญ:</strong> Tokyo Station, Shinjuku</p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🔵 Tozai Line</div>
+                    <p>วิ่งตะวันออก-ตะวันตก</p>
+                    <p><strong>เส้นทางสำคัญ:</strong> Otemachi, Nakano</p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🟢 Chiyoda Line</div>
+                    <p>เชื่อมสนามบิน Haneda</p>
+                    <p><strong>เส้นทางสำคัญ:</strong> Omotesando, Meiji-jingumae</p>
+                </div>
+            </div>
+
+            <h3>🎫 บัตรเดินทางแนะนำ</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ประเภท</th>
+                        <th>ราคา</th>
+                        <th>ระยะเวลา</th>
+                        <th>คำอธิบาย</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Suica/Pasmo</strong></td>
+                        <td>¥500 (เงินมัดจำ)</td>
+                        <td>-</td>
+                        <td>บัตรอเนกประสงค์ สำหรับรถไฟ + ร้านค้า</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tokyo Metro 24h</strong></td>
+                        <td class="price">¥600</td>
+                        <td>24 ชั่วโมง</td>
+                        <td>รถไฟใต้ดิน Tokyo Metro เท่านั้น</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Greater Tokyo Pass</strong></td>
+                        <td class="price">¥1,180</td>
+                        <td>24 ชั่วโมง</td>
+                        <td>JR + Metro + บัส ในโตเกียว</td>
+                    </tr>
+                    <tr>
+                        <td><strong>JR Tokyo Wide Pass</strong></td>
+                        <td class="price">¥10,180</td>
+                        <td>3 วัน</td>
+                        <td>JR ทั่วภูมิภาค + ไป Kawaguchiko</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip">
+                <h4>💡 เคล็ดลับการเดินทาง</h4>
+                <ul>
+                    <li><strong>Rush Hour:</strong> หลีกเลี่ยง 7:30-9:30 และ 17:30-19:30</li>
+                    <li><strong>Google Maps:</strong> ใช้ได้ดี สำหรับนำทางรถไฟ</li>
+                    <li><strong>IC Card:</strong> สะดวกกว่าซื้อตั๋วทุกครั้ง</li>
+                    <li><strong>Women-only Cars:</strong> รถไฟโดยสารสำหรับผู้หญิงเท่านั้น (ช่วงเช้า)</li>
+                    <li><strong>Platform Number:</strong> ดูเลขชานชาลา ก่อนขึ้นรถ</li>
+                </ul>
+            </div>
+
+            <h3>🚕 แท็กซี่</h3>
+            <div class="warning">
+                <h4>ราคาแพงแต่สะดวก</h4>
+                <ul>
+                    <li><strong>ค่าเริ่มต้น:</strong> ¥420 (1.096km แรก)</li>
+                    <li><strong>ต่อ 280m:</strong> +¥80</li>
+                    <li><strong>เวลารอ:</strong> +¥80 ทุก 90 วินาที</li>
+                    <li><strong>ค่าโดยสารเฉลี่ย:</strong> ¥500-1,500 ในเมือง</li>
+                    <li><strong>เคล็ดลับ:</strong> พกที่อยู่เป็นภาษาญี่ปุ่น</li>
+                </ul>
+            </div>
+
+            <h3>🚶‍♂️ การเดินเท้า</h3>
+            <div class="info-box">
+                <h4>ระยะทางที่เดินได้</h4>
+                <ul>
+                    <li><strong>JR Shinagawa → Shinagawa Tobu Hotel:</strong> 3 นาที</li>
+                    <li><strong>Asakusa → Skytree:</strong> 15 นาที</li>
+                    <li><strong>Bic Camera → GU Gotanda:</strong> 2 นาที</li>
+                    <li><strong>Shibuya Crossing → Center Gai:</strong> 5 นาที</li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- Budget Section -->
+        <section id="budget" class="section">
+            <div class="section-header">
+                <h2 class="section-title">💰 งบประมาณ</h2>
+                <p class="section-subtitle">การวางแผนค่าใช้จ่ายทั้งทริปแบบรายละเอียด</p>
+            </div>
+
+            <div class="budget-summary">
+                <div class="budget-total">฿150,000</div>
+                <p>งบรวมสำหรับ 2 คน 8 วัน 7 คืน</p>
+                <p><small>อัตราแลกเปลี่ยน: 100 เยน ≈ 23.46 บาท</small></p>
+            </div>
+
+            <h3>💳 การแบ่งเงิน</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ประเภท</th>
+                        <th>จำนวน (บาท)</th>
+                        <th>จำนวน (เยน)</th>
+                        <th>วัตถุประสงค์</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>เงินสด</strong></td>
+                        <td class="price">฿10,000</td>
+                        <td class="price">¥45,000</td>
+                        <td>ร้านเล็ก, vending machine, รถบัส</td>
+                    </tr>
+                    <tr>
+                        <td><strong>บัตร You Trip</strong></td>
+                        <td class="price">฿40,000</td>
+                        <td class="price">¥170,500</td>
+                        <td>รูดตรง + กดเงินสด (ไม่เสียค่าธรรมเนียม)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>บัตรเครดิต</strong></td>
+                        <td class="price">฿100,000</td>
+                        <td class="price">¥426,000</td>
+                        <td>กรณีฉุกเฉิน + ช้อปปิ้งพิเศษ</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>📊 รายการค่าใช้จ่ายรายละเอียด</h3>
+            
+            <h4>✈️ การเดินทาง (อากาศ)</h4>
+            <div class="info-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>รายการ</th>
+                            <th>รายละเอียด</th>
+                            <th>ค่าใช้จ่าย</th>
+                            <th>สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ตั๋วเครื่องบิน</td>
+                            <td>SL394/393 ไป-กลับ</td>
+                            <td class="price">฿37,568</td>
+                            <td>✅ จ่ายแล้ว</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>🏨 ที่พัก (7 คืน)</h4>
+            <div class="info-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>วันที่</th>
+                            <th>โรงแรม</th>
+                            <th>ราคา</th>
+                            <th>สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>6 มี.ค.</td>
+                            <td>Shinagawa Tobu Hotel</td>
+                            <td class="price">฿3,200</td>
+                            <td>✅ จ่ายแล้ว</td>
+                        </tr>
+                        <tr>
+                            <td>7 มี.ค.</td>
+                            <td>Asta Hotel Ikebukuro</td>
+                            <td class="price">฿3,224</td>
+                            <td>✅ จ่ายแล้ว</td>
+                        </tr>
+                        <tr>
+                            <td>8-10 มี.ค.</td>
+                            <td>Kawaguchiko Country Cottage Ban</td>
+                            <td class="price">฿12,400</td>
+                            <td>✅ จ่ายแล้ว</td>
+                        </tr>
+                        <tr>
+                            <td>10-12 มี.ค.</td>
+                            <td>Mitsui Garden Hotel Ueno</td>
+                            <td class="price">฿14,118</td>
+                            <td>✅ จ่ายแล้ว</td>
+                        </tr>
+                        <tr>
+                            <td>12-13 มี.ค.</td>
+                            <td>Hotel Gracery Shinjuku</td>
+                            <td class="price">฿5,790</td>
+                            <td>✅ จ่ายแล้ว</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>รวมที่พัก</strong></td>
+                            <td class="price"><strong>฿38,732</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>🚅 การเดินทางในญี่ปุ่น</h4>
+            <div class="info-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>รายการ</th>
+                            <th>รายละเอียด</th>
+                            <th>ยอด (¥)</th>
+                            <th>บาท (≈)</th>
+                            <th>สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tokyo Wide Pass</td>
+                            <td>3 วัน × 2 คน</td>
+                            <td>¥20,360</td>
+                            <td class="price">฿4,776</td>
+                            <td>❗ ต้องซื้อ</td>
+                        </tr>
+                        <tr>
+                            <td>Tokyo Metro 24hr</td>
+                            <td>1 วัน × 2 คน</td>
+                            <td>¥1,600</td>
+                            <td class="price">฿375</td>
+                            <td>❗ ต้องซื้อ</td>
+                        </tr>
+                        <tr>
+                            <td>รถบัส Kawaguchiko</td>
+                            <td>ไป-กลับ × 2 คน</td>
+                            <td>¥8,000</td>
+                            <td class="price">฿1,877</td>
+                            <td>❗ ต้องจอง</td>
+                        </tr>
+                        <tr>
+                            <td>แท็กซี่เป็นครั้งคราว</td>
+                            <td>รวมทั้งทริป</td>
+                            <td>¥3,000</td>
+                            <td class="price">฿704</td>
+                            <td>⏳ จ่ายหน้างาน</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>รวมการเดินทาง</strong></td>
+                            <td><strong>¥32,960</strong></td>
+                            <td class="price"><strong>฿7,732</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>🎿 กิจกรรม & ท่องเที่ยว</h4>
+            <div class="info-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>รายการ</th>
+                            <th>รายละเอียด</th>
+                            <th>ยอด (¥)</th>
+                            <th>บาท (≈)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tokyo Skytree</td>
+                            <td>2 คน (Tembo Deck)</td>
+                            <td>¥3,050</td>
+                            <td class="price">฿715</td>
+                        </tr>
+                        <tr>
+                            <td>Gala Yuzawa</td>
+                            <td>เล่นสกี + อุปกรณ์</td>
+                            <td>¥12,000</td>
+                            <td class="price">฿2,815</td>
+                        </tr>
+                        <tr>
+                            <td>Senso-ji Temple</td>
+                            <td>เสี่ยงเซียมซี + ของที่ระลึก</td>
+                            <td>¥1,000</td>
+                            <td class="price">฿235</td>
+                        </tr>
+                        <tr>
+                            <td>พิพิธภัณฑ์ต่างๆ</td>
+                            <td>Kawaguchiko Museum</td>
+                            <td>¥1,200</td>
+                            <td class="price">฿281</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>รวมกิจกรรม</strong></td>
+                            <td><strong>¥17,250</strong></td>
+                            <td class="price"><strong>฿4,046</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="restaurant-grid">
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🍽️ อาหาร</div>
+                    <p>¥3,000 x 2 คน x 8 วัน</p>
+                    <p class="price">฿13,581</p>
+                    <p><small>เช้า ¥400 | กลาง ¥1,000 | เย็น ¥1,600</small></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">📷 กล้อง</div>
+                    <p>Canon EOS 800D + กล้องสำหรับพอใจ</p>
+                    <p class="price">฿14,100</p>
+                    <p><small>¥60,000 (¥40,000 + ¥20,000)</small></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🛍️ ช้อปปิ้ง</div>
+                    <p>ของฝาก + เสื้อผ้า + skincare</p>
+                    <p class="price">฿15,000</p>
+                    <p><small>¥64,000 (Don Quijote, GU, Uniqlo)</small></p>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-name">🎁 ของที่ระลึก</div>
+                    <p>Kit Kat, Pocky, ขนมญี่ปุ่น</p>
+                    <p class="price">฿5,000</p>
+                    <p><small>¥21,000 (Tax-Free ได้)</small></p>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <h4>📊 สรุปค่าใช้จ่ายรวม</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>หมวดหมู่</th>
+                            <th>จำนวน</th>
+                            <th>% ของงบ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>เที่ยวบิน + ที่พัก</strong></td>
+                            <td class="price">฿76,300</td>
+                            <td>51%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>อาหาร</strong></td>
+                            <td class="price">฿13,581</td>
+                            <td>9%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>การเดินทาง</strong></td>
+                            <td class="price">฿7,732</td>
+                            <td>5%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>กิจกรรม</strong></td>
+                            <td class="price">฿4,046</td>
+                            <td>3%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>กล้อง</strong></td>
+                            <td class="price">฿14,100</td>
+                            <td>9%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ช้อปปิ้ง + ของฝาก</strong></td>
+                            <td class="price">฿20,000</td>
+                            <td>13%</td>
+                        </tr>
+                        <tr style="border-top: 2px solid var(--primary);">
+                            <td><strong>รวมทั้งหมด</strong></td>
+                            <td class="price"><strong>฿135,759</strong></td>
+                            <td><strong>90%</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>เงินสำรอง</strong></td>
+                            <td class="price">฿14,241</td>
+                            <td>10%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip">
+                <h4>💡 เคล็ดลับการใช้เงิน</h4>
+                <ul>
+                    <li><strong>แลกเงิน:</strong> ใน 7-Eleven ถ้าต้องการเพิ่ม (อัตราพอใช้ได้)</li>
+                    <li><strong>เงินสด:</strong> เก็บไว้สำหรับร้านเล็กๆ, รถบัส, vending machine</li>
+                    <li><strong>บัตรเครดิต:</strong> ใช้ที่ร้านใหญ่, โรงแรม, ห้างสรรพสินค้า</li>
+                    <li><strong>Tax-Free:</strong> เมื่อซื้อเกิน ¥5,000 ต่อร้าน (แสดงพาสปอร์ต)</li>
+                    <li><strong>IC Card:</strong> เติมเงินได้ที่เครื่องขายตั๋วรถไฟ</li>
+                    <li><strong>ATM:</strong> 7-Eleven, กสิกรไทย ไม่เสียค่าธรรมเนียม</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <h4>⚠️ เตือนความจำสำคัญ</h4>
+                <ul>
+                    <li>แจ้งธนาคารก่อนเดินทางเพื่อใช้บัตรเครดิต</li>
+                    <li>เก็บใบเสร็จสำหรับ Tax Refund</li>
+                    <li>เช็คยอดเงินในบัตรก่อนออกเดินทาง</li>
+                    <li>พกเงินสำรองเผื่อกรณีฉุกเฉิน</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Tips Section -->
+        <section id="tips" class="section">
+            <div class="section-header">
+                <h2 class="section-title">💡 เคล็ดลับการเดินทาง</h2>
+                <p class="section-subtitle">สิ่งสำคัญที่ควรรู้</p>
+            </div>
+
+            <h3>📄 เอกสารสำคัญ</h3>
+            <div class="info-box">
+                <h4>เช็คลิสต์ก่อนเดินทาง</h4>
+                <ul>
+                    <li>✅ <strong>หนังสือเดินทาง (Passport)</strong> + สำเนา</li>
+                    <li>✅ <strong>ตั๋วเครื่องบิน</strong> E-ticket / Boarding Pass</li>
+                    <li>✅ <strong>เอกสารจองโรงแรม</strong> (ปริ้นท์ + มือถือ)</li>
+                    <li>✅ <strong>แผนเดินทาง</strong> (กระดาษ + มือถือ)</li>
+                    <li>✅ <strong>ข้อมูลฉุกเฉิน</strong> (เบอร์โรงแรม, สถานทูต)</li>
+                </ul>
+            </div>
+
+            <h3>🧳 การเตรียมกระเป๋า</h3>
+            <div class="warning">
+                <h4>⚠️ น้ำหนักกระเป๋า</h4>
+                <ul>
+                    <li><strong>Check-in:</strong> ≤20kg</li>
+                    <li><strong>Carry-on:</strong> ≤7kg</li>
+                    <li><strong>เคล็ดลับ:</strong> ใช้ถุงซีลสูญญากาศ</li>
+                </ul>
+            </div>
+
+            <h3>🌡️ การจัดการ Jet Lag</h3>
+            <div class="tip">
+                <h4>วิธีปรับเวลา</h4>
+                <ul>
+                    <li>✅ <strong>นอนให้เป็นเวลา</strong> ตามเวลาท้องถิ่น (21:00-22:00)</li>
+                    <li>✅ <strong>ออกแดดช่วงเช้า</strong> วันถัดไป</li>
+                    <li>✅ <strong>ดื่มน้ำเยอะๆ</strong> หลีกเลี่ยงแอลกอฮอล์</li>
+                </ul>
+            </div>
+
+            <h3>🗣️ การสื่อสาร</h3>
+            <div class="info-box">
+                <h4>คำพื้นฐานที่ควรรู้</h4>
+                <ul>
+                    <li><strong>สวัสดี:</strong> konnichiwa (こんにちは)</li>
+                    <li><strong>ขอบคุณ:</strong> arigatou gozaimasu (ありがとうございます)</li>
+                    <li><strong>ขอโทษ:</strong> sumimasen (すみません)</li>
+                    <li><strong>ไม่เป็นไร:</strong> daijoubu (だいじょうぶ)</li>
+                </ul>
+                
+                <h4>📱 แอปที่มีประโยชน์</h4>
+                <ul>
+                    <li><strong>Google Translate:</strong> Camera translation</li>
+                    <li><strong>Google Maps:</strong> นำทางและรถไฟ</li>
+                    <li><strong>LIVE JAPAN:</strong> คูปองส่วนลด</li>
+                </ul>
+            </div>
+
+            <h3>🧥 เสื้อผ้าตามฤดูกาล</h3>
+            <div class="highlight">
+                <h4>🌨️ มีนาคม = ยังหนาว!</h4>
+                <ul>
+                    <li><strong>เสื้อกันหนาว:</strong> จำเป็นสำหรับ Kawaguchiko + Gala Yuzawa</li>
+                    <li><strong>แจ็คเก็ต กันลม</strong></li>
+                    <li><strong>ผ้าพันคอ, ถุงมือ, หมวก</strong></li>
+                    <li><strong>รองเท้าบูท/กันน้ำ</strong></li>
+                </ul>
+            </div>
+
+            <h3>📷 อุปกรณ์ถ่ายภาพ</h3>
+            <div class="tip">
+                <h4>🎥 เตรียมอุปกรณ์</h4>
+                <ul>
+                    <li>✅ <strong>เลนส์ Sigma 17-70mm</strong> (ลองกล้องใหม่)</li>
+                    <li>✅ <strong>Insta360 X3</strong> + อุปกรณ์ครบชุด</li>
+                    <li>✅ <strong>SD Card Kingston Extreme</strong> (128GB + 256GB x3)</li>
+                    <li>✅ <strong>Power Bank</strong> + สายชาร์จ</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <h4>🚨 เตือนความจำ</h4>
+                <ul>
+                    <li>พกที่อยู่โรงแรมเป็นภาษาญี่ปุ่นสำหรับแท็กซี่</li>
+                    <li>แจ้งธนาคารก่อนเดินทางเพื่อใช้บัตรเครดิต</li>
+                    <li>เช็คสภาพอากาศก่อนออกเดินทางแต่ละวัน</li>
+                    <li>เก็บใบเสร็จสำหรับ Tax Refund</li>
+                </ul>
+            </div>
+        </section>
+
+        <div style="text-align: center; padding: 3rem; color: var(--text-secondary); border-top: 2px solid var(--border);">
+            <h2>🎉 Happy 11th Birthday น้องพอใจ! 🎂</h2>
+            <p>ขอให้ทริปนี้เป็นความทรงจำที่ดีที่สุด ✨</p>
+            <p><em>Generated on 23/08/2025 | Tokyo Trip Guidebook v1.0</em></p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Print button functionality
+        function printGuide() {
+            window.print();
+        }
+
+        // Add print button dynamically
+        const printBtn = document.createElement('button');
+        printBtn.innerHTML = '🖨️ พิมพ์คู่มือ';
+        printBtn.style.cssText = `
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            font-weight: 600;
+            transition: var(--transition);
+            z-index: 1000;
+        `;
+        printBtn.onclick = printGuide;
+        document.body.appendChild(printBtn);
+
+        // Hover effect for print button
+        printBtn.addEventListener('mouseover', () => {
+            printBtn.style.transform = 'translateY(-2px)';
+            printBtn.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+        });
+
+        printBtn.addEventListener('mouseout', () => {
+            printBtn.style.transform = 'translateY(0)';
+            printBtn.style.boxShadow = 'var(--shadow-lg)';
+        });
+    </script>
+</body>
+</html>

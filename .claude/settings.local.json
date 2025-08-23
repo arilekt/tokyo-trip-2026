@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "WebFetch(domain:pantip.com)"
+      "WebFetch(domain:pantip.com)",
+      "Bash(claude usage)",
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": []

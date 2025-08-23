@@ -125,11 +125,24 @@ class TokyoTripGeneratorV3:
         # 🆕 STEP 1.5: Process headers FIRST (before complex blocks)
         print("   🔧 Processing headers first...")
         
+        # Debug: Check for placeholders before header processing
+        before_headers = re.findall(r'__PLACEHOLDER_\d+__', text)
+        if before_headers:
+            print(f"   🔍 Found {len(before_headers)} placeholders before header processing")
+        
         # Headers (order matters: longer first to avoid conflicts)
         text = re.sub(r'^#### (.*)$', r'<h4>\1</h4>', text, flags=re.MULTILINE)
         text = re.sub(r'^### (.*)$', r'<h3>\1</h3>', text, flags=re.MULTILINE)
         text = re.sub(r'^## (.*)$', r'<h2>\1</h2>', text, flags=re.MULTILINE)
         text = re.sub(r'^# (.*)$', r'<h1>\1</h1>', text, flags=re.MULTILINE)
+        
+        # Debug: Check for placeholders after header processing
+        after_headers = re.findall(r'__PLACEHOLDER_\d+__', text)
+        if len(after_headers) != len(before_headers):
+            print(f"   ⚠️ Placeholder count changed during header processing: {len(before_headers)} → {len(after_headers)}")
+            lost_placeholders = set(before_headers) - set(after_headers)
+            if lost_placeholders:
+                print(f"   ❌ Lost placeholders: {lost_placeholders}")
         
         # 🎯 STEP 2: Process and replace complex blocks with placeholders
         print("   🔧 Processing complex blocks with placeholder strategy...")
@@ -173,7 +186,8 @@ class TokyoTripGeneratorV3:
         timeline_step_pattern = re.compile(r'((?:^- \*\*(?:Step|ขั้นตอน|ไฮไลต์|รายละเอียด)[^*]*\*\*:.*\n(?:  .*\n?)*)+)', re.MULTILINE)
         
         # 7. 🆕 Modified H3-based timelines: <h3> + content below (now that headers are processed)
-        timeline_h3_pattern = re.compile(r'((?:^<h3>[^<]+</h3>\n(?:(?!^<h3>)[^\n]*\n?)*)+)', re.MULTILINE)
+        # Fixed: Don't capture placeholders in H3 timeline blocks
+        timeline_h3_pattern = re.compile(r'((?:^<h3>[^<]+</h3>\n(?:(?!^<h3>)(?!__PLACEHOLDER_)[^\n]*\n?)*)+)', re.MULTILINE)
         
         # 🚀 Process in priority order (most specific first)
         
@@ -235,6 +249,12 @@ class TokyoTripGeneratorV3:
 
         # 🎯 STEP 3: Process the remaining simple markdown (headers already processed)
         print("   🔧 Processing simple markdown...")
+        
+        # Debug: Check placeholders before simple markdown processing
+        before_simple = re.findall(r'__PLACEHOLDER_\d+__', text)
+        if before_simple:
+            print(f"   🔍 Found {len(before_simple)} placeholders before simple markdown processing")
+        
         html = text
         
         # 🆕 Skip header processing since it's already done
@@ -247,13 +267,41 @@ class TokyoTripGeneratorV3:
         # Simple lists (now safe because complex timelines are placeholder-protected)
         html = self._convert_simple_lists(html)
         
+        # Debug: Check placeholders before paragraph processing
+        before_paragraphs = re.findall(r'__PLACEHOLDER_\d+__', html)
+        if before_paragraphs:
+            print(f"   🔍 Found {len(before_paragraphs)} placeholders before paragraph processing")
+        
         # Paragraphs (last)
         html = self._convert_paragraphs(html)
+        
+        # Debug: Check placeholders after paragraph processing
+        after_paragraphs = re.findall(r'__PLACEHOLDER_\d+__', html)
+        if len(after_paragraphs) != len(before_paragraphs):
+            print(f"   ⚠️ Placeholder count changed during paragraph processing: {len(before_paragraphs)} → {len(after_paragraphs)}")
+            lost_placeholders = set(before_paragraphs) - set(after_paragraphs)
+            if lost_placeholders:
+                print(f"   ❌ Lost placeholders in paragraph processing: {lost_placeholders}")
 
         # 🎯 STEP 4: Restore the complex blocks from placeholders
         print("   🔧 Restoring complex blocks from placeholders...")
+        print(f"   📊 Found {len(placeholders)} placeholders to restore")
+        
         for placeholder, content in placeholders.items():
-            html = html.replace(placeholder, content)
+            if placeholder in html:
+                html = html.replace(placeholder, content)
+                print(f"   ✅ Restored {placeholder}")
+            else:
+                print(f"   ⚠️ Placeholder not found in HTML: {placeholder}")
+                # Debug: Show where this placeholder might have gone
+                if placeholder in markdown_text:
+                    print(f"       (Still in original text)")
+
+        # Final check for any remaining placeholders
+        remaining_placeholders = re.findall(r'__PLACEHOLDER_\d+__', html)
+        if remaining_placeholders:
+            print(f"   ❌ WARNING: {len(remaining_placeholders)} placeholders not restored!")
+            print(f"       {remaining_placeholders}")
 
         return html.strip()
     
@@ -611,8 +659,11 @@ class TokyoTripGeneratorV3:
         processed_lines = []
         
         for line in lines:
+            # Skip placeholders
+            if '__PLACEHOLDER_' in line:
+                processed_lines.append(line)
             # Skip ALL timeline patterns (time, highlight, step-based)
-            if re.match(r'^\s*- \*\*[^*]+\*\*:', line):
+            elif re.match(r'^\s*- \*\*[^*]+\*\*:', line):
                 processed_lines.append(line)
             # Process simple list items
             elif re.match(r'^\s*-\s+(?!\*\*)', line):
@@ -641,7 +692,9 @@ class TokyoTripGeneratorV3:
             stripped_block = block.strip()
             
             # Skip if already HTML, header, placeholder, or empty
-            if not stripped_block or stripped_block.startswith(('<', '#', '__PLACEHOLDER_')):
+            if (not stripped_block or 
+                stripped_block.startswith(('<', '#')) or 
+                '__PLACEHOLDER_' in stripped_block):
                 result.append(block)
                 continue
             
@@ -654,8 +707,8 @@ class TokyoTripGeneratorV3:
                 if not stripped_line:
                     continue
                     
-                # Skip lines that are already HTML
-                if stripped_line.startswith('<'):
+                # Skip lines that are already HTML or placeholders
+                if stripped_line.startswith('<') or '__PLACEHOLDER_' in stripped_line:
                     processed_lines.append(line)
                 else:
                     # 🆕 Check for special patterns that should be separate lines

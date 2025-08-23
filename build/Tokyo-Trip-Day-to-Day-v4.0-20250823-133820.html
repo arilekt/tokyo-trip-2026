@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทริปโตเกียว มีนาคม 2026 - Day-to-Day Planner</title>
+    <style>
+        :root {
+            --primary: #2E86AB;
+            --secondary: #A23B72;
+            --accent: #F18F01;
+            --success: #C73E1D;
+            --background: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-primary: #2C3E50;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--background) 0%, #E8F4FD 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .header-actions button {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-actions button:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .trip-overview {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .overview-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .stat {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            background: var(--background);
+        }
+
+        .stat.special {
+            background: linear-gradient(135deg, #FFE5CC 0%, #FFF8E7 100%);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .days-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .day-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .day-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .day-card.birthday-day {
+            border: 3px solid var(--accent);
+            background: linear-gradient(135deg, var(--card-bg) 0%, #FFF8E7 100%);
+        }
+
+        .day-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transition: var(--transition);
+        }
+
+        .day-header:hover {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+        }
+
+        .day-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            min-width: 80px;
+        }
+
+        .day-title {
+            flex: 1;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .day-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .expand-indicator {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .day-card.expanded .expand-indicator {
+            transform: rotate(180deg);
+        }
+
+        .day-content {
+            display: none;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .day-content.expanded {
+            display: block;
+        }
+
+        .day-sections {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .day-section {
+            background: var(--background);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+        }
+
+        .day-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .activities-timeline {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .activity-item.activity-highlight {
+            border-left-color: var(--accent);
+        }
+
+        .activity-time {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 80px;
+            font-size: 0.9rem;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .section-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .section-content li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-content li:last-child {
+            border-bottom: none;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        /* Print Mode Styles */
+        .print-mode {
+            background: white !important;
+        }
+
+        .print-mode .day-content {
+            display: block !important;
+        }
+
+        .print-mode .header-actions {
+            display: none;
+        }
+
+        .print-mode .expand-indicator {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .day-header {
+                padding: 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .day-title {
+                font-size: 1.1rem;
+            }
+            
+            .activities-timeline {
+                gap: 0.5rem;
+            }
+            
+            .activity-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .activity-time {
+                min-width: auto;
+            }
+            
+            .overview-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media print {
+            body {
+                background: white !important;
+            }
+            
+            .day-content {
+                display: block !important;
+            }
+            
+            .header-actions,
+            .expand-indicator {
+                display: none !important;
+            }
+            
+            .day-card {
+                break-inside: avoid;
+                margin-bottom: 1rem;
+            }
+        }
+        </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🗼 ทริปโตเกียว มีนาคม 2026</h1>
+            <p class="subtitle">Day-to-Day Travel Planner | 8 วัน 7 คืน</p>
+            <div class="header-actions">
+                <button onclick="expandAll()">📖 ดูทั้งหมด</button>
+                <button onclick="collapseAll()">📑 ย่อทั้งหมด</button>
+                <button onclick="togglePrintMode()">🖨️ โหมดพิมพ์</button>
+            </div>
+        </div>
+        
+        <!-- Trip Overview -->
+        <div class="trip-overview">
+            <div class="overview-stats">
+                <div class="stat">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">วัน</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">7</span>
+                    <span class="stat-label">คืน</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">เมือง</span>
+                </div>
+                <div class="stat special">
+                    <span class="stat-number">🎂</span>
+                    <span class="stat-label">Birthday</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Days Container -->
+        <div class="days-container" id="days-container">
+            
+        <div class="day-card" id="day1">
+            <div class="day-header" onclick="toggleDay(1)">
+                <div class="day-number"> Day 1</div>
+                <div class="day-title">วันที่ 1: 6 มีนาคม 2026 (ศุกร์) - เดินทางถึงนาริตะ & ชินากาวะ</div>
+                <div class="day-date"></div>
+                <div class="expand-indicator">▼</div>
+            </div>
+            
+            <div class="day-content" id="day-content-1">
+                <div class="day-sections">
+                    
+                    <!-- Activities Timeline -->
+                    <div class="day-section">
+                        <h3>📅 กิจกรรมประจำวัน</h3>
+                        <div class="section-content">
+                            <div class="activities-timeline">
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">02:00</div>
+                    <div class="activity-content">🚗 ออกเดินทางจากบ้านไปสนามบินดอนเมือง (Taxi)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">04:30</div>
+                    <div class="activity-content">✈️ เดินทางถึงสนามบินดอนเมือง (DMK)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">06:15</div>
+                    <div class="activity-content">🛫 เที่ยวบิน SL394 (Thai Lion Air) ไปนาริตะ</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">16:20</div>
+                    <div class="activity-content">🛬 ถึงสนามบินนาริตะ (NRT) Terminal 2</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">18:30</div>
+                    <div class="activity-content">🏨 เช็คอินโรงแรม Shinagawa Tobu Hotel</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">19:00</div>
+                    <div class="activity-content">🍽️ กิจกรรมช่วงเย็น: ซื้อของขวัญ + อาหารเย็น (Gotanda)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">21:00</div>
+                    <div class="activity-content">😴 กลับโรงแรมพักผ่อน</div>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Accommodation -->
+                    
+                    
+                    <!-- Transportation -->
+                    
+        <div class="day-section">
+            <h3>🚊 การเดินทาง</h3>
+            <div class="section-content">
+                <ul><li>ออกเดินทางจากบ้านไปสนามบินดอนเมือง (Taxi)</li><li>เดินทางถึงสนามบินดอนเมือง (DMK)</li><li>เดินจาก Bic Camera ประมาณ 2 นาที</li><li>JR Okachimachi Station</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Food -->
+                    
+        <div class="day-section">
+            <h3>🍽️ อาหาร</h3>
+            <div class="section-content">
+                <ul><li>กิจกรรมช่วงเย็น: ซื้อของขวัญ + อาหารเย็น (Gotanda)</li><li>กลางวัน</li><li>เย็น (Gotanda)</li><li>แนะนำใกล้ Gotanda</li><li>, ของใช้, เครื่องสำอาง</li><li>บนเครื่อง: อาหารกลางวัน</li><li>เย็นแถว Gotanda</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Highlights -->
+                    
+        <div class="day-section">
+            <h3>⭐ ไฮไลต์</h3>
+            <div class="section-content">
+                <ul><li>บิน SL394 (Thai Lion Air) ไปนาริตะ</li><li>- ใช้ IC Card (Suica/Pasmo) หรือซื้อตั๋วเที่ยวเดียว</li><li>(วันที่ 8)</li><li>ตั๋ว: JR East Travel Service Center (หลังผ่าน ตม.)</li><li>ของขวัญ + อาหารเย็น (Gotanda)</li><li>กล้อง 📷 ให้พอใจ และ กล้อง Canon มือ 2 ให้คุณพ่อ</li><li>เสื้อกันหนาว</li><li>ตั๋วเที่ยวเดียว</li><li>กล้องของขวัญวันเกิด</li><li>เกิน ¥5,000 (แสดงพาสปอร์ต)</li><li>:</li><li>→ ไป Map Camera Shinjuku (มีเลือกเยอะกว่า, คุณภาพตรวจสอบดี)</li><li>แค่จำเป็น:</li><li>Don Quijote</li><li>เกิน ¥5,500 แสดงพาสปอร์ต</li><li>24 ชั่วโมง: หลายสาขาเปิด 24/7</li><li>- ไซส์ญี่ปุ่นอาจแตกต่าง</li><li>เพิ่ม</li><li>เกิน ¥5,500</li><li>ที่ญี่ปุ่น (ของดีกว่า + ประหยัดน้ำหนัก)</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Notes -->
+                    
+        <div class="day-section">
+            <h3>📝 หมายเหตุ</h3>
+            <div class="section-content">
+                <ul><li>สิ่งที่ต้องจด:</li><li>ระวังแออัด: หลีกเลี่ยงช่วงราตรี วันหยุด</li><li>หลักการตัดสินใจ:</li><li>เคล็ดลับสำหรับกางเกงยีนส์</li><li>แผนการใช้เงิน:</li><li>เคล็ดลับสำหรับวันแรก</li></ul>
+            </div>
+        </div>
+        
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="day-card" id="day2">
+            <div class="day-header" onclick="toggleDay(2)">
+                <div class="day-number"> Day 2</div>
+                <div class="day-title">วันที่ 2: 7 มีนาคม 2026 (เสาร์) - อิเคะบุคุโระ, อาซากุสะ & สกายทรี</div>
+                <div class="day-date"></div>
+                <div class="expand-indicator">▼</div>
+            </div>
+            
+            <div class="day-content" id="day-content-2">
+                <div class="day-sections">
+                    
+                    <!-- Activities Timeline -->
+                    <div class="day-section">
+                        <h3>📅 กิจกรรมประจำวัน</h3>
+                        <div class="section-content">
+                            <div class="activities-timeline">
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">07:00</div>
+                    <div class="activity-content">🌅 ตื่นนอน + เตรียมตัว</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">08:00</div>
+                    <div class="activity-content">🏨 เช็คเอาท์ Shinagawa Tobu Hotel</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">09:00</div>
+                    <div class="activity-content">🚃 เดินทางไป Asakusa ด้วย JR + Subway</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">15:30</div>
+                    <div class="activity-content">🏨 เดินทางไป Ikebukuro + Check-in Asta Hotel</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">21:00</div>
+                    <div class="activity-content">😴 กลับโรงแรมพักผ่อน</div>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Accommodation -->
+                    
+                    
+                    <!-- Transportation -->
+                    
+        <div class="day-section">
+            <h3>🚊 การเดินทาง</h3>
+            <div class="section-content">
+                <ul><li>เช็คเวลารถบัสไป Kawaguchiko (09:00)</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Food -->
+                    
+        <div class="day-section">
+            <h3>🍽️ อาหาร</h3>
+            <div class="section-content">
+                <ul><li>ร้านอาหารแนะนำ</li><li>อาหาร 3 มื้อ | 3,000 | 704 |</li><li>ลองอาหารญี่ปุ่นแท้ อย่างน้อย 2 เมนู</li><li>เช้าที่โรงแรม (ถ้ามี) หรือ convenience store</li><li>เย็น</li><li>เย็นที่ Ikebukuro</li><li>+ ร้านของฝาก</li><li>แนะนำ</li><li>เช้า (ใกล้ Shinagawa)</li><li>สำเร็จรูป, ขนมปัง</li><li>กลางวัน (Asakusa/Skytree)</li><li>ในหอคอย (¥1,000-2,000)</li><li>เย็น (Akihabara/Ikebukuro)</li><li>3 มื้อ | 3,000 | 704 |</li><li></li><li>ดั้งเดิม: เทมปุระ, ราเมน</li><li>ญี่ปุ่นแท้ อย่างน้อย 2 เมนู</li><li>| 3,000 | 704 |</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Highlights -->
+                    
+        <div class="day-section">
+            <h3>⭐ ไฮไลต์</h3>
+            <div class="section-content">
+                <ul><li>- IC Card (Suica/Pasmo): สะดวกที่สุด</li><li>Senso-ji Temple</li><li>Senso-ji Temple (วัดเก่าแก่ที่สุดในโตเกียว)</li><li>: ฟรี</li><li>1. Kaminarimon Gate (ประตูฟ้าร้อง)</li><li>วิว</li><li>Animate Ikebukuro</li><li>กล้องเมื่อวาน)</li><li>มา</li><li>Omamori: เครื่องรางญี่ปุ่น (¥300-500)</li><li>ตั๋วหน้างานได้ (หรือจองออนไลน์)</li><li>- กล้อง Canon EOS 800D (หรือรุ่นใกล้เคียง)</li><li>เกิน ¥5,000</li><li>สำหรับพอใจ</li><li></li><li>Metro Day Pass แทนซื้อตั๋วแยก</li><li>ของใน Akihabara</li><li>กล้องเมื่อวาน)</li><li>/เตรียม</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Notes -->
+                    
+        <div class="day-section">
+            <h3>📝 หมายเหตุ</h3>
+            <div class="section-content">
+                <ul><li>ถ้าหมอก/ฝนตก ควรเลื่อนวันอื่น</li><li>เช็คแรงดันไฟ (100V ในญี่ปุ่น)</li><li>เคล็ดลับสำหรับวันนี้</li></ul>
+            </div>
+        </div>
+        
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="day-card" id="day3">
+            <div class="day-header" onclick="toggleDay(3)">
+                <div class="day-number"> Day 3</div>
+                <div class="day-title">วันที่ 3: 8 มีนาคม 2026 (อาทิตย์) - เดินทางไป Kawaguchiko</div>
+                <div class="day-date"></div>
+                <div class="expand-indicator">▼</div>
+            </div>
+            
+            <div class="day-content" id="day-content-3">
+                <div class="day-sections">
+                    
+                    <!-- Activities Timeline -->
+                    <div class="day-section">
+                        <h3>📅 กิจกรรมประจำวัน</h3>
+                        <div class="section-content">
+                            <div class="activities-timeline">
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">07:00</div>
+                    <div class="activity-content">🌅 ตื่นนอน + เตรียมตัว</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">08:00</div>
+                    <div class="activity-content">🏨 เช็คเอาท์ Asta Hotel Ikebukuro</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">08:30</div>
+                    <div class="activity-content">🚃 เดินทางจาก Ikebukuro ไป Shinjuku</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">09:00</div>
+                    <div class="activity-content">🚌 ขึ้นรถบัสไป Kawaguchiko ที่ Shinjuku Bus Terminal</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">11:40</div>
+                    <div class="activity-content">🏔️ ถึง Kawaguchiko Bus Terminal</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">12:00</div>
+                    <div class="activity-content">🍜 อาหารกลางวันแรกใน Kawaguchiko</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">13:30</div>
+                    <div class="activity-content">🏨 เดินทางไปโรงแรม Kawaguchiko Country Cottage Ban</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">14:00</div>
+                    <div class="activity-content">🏨 เช็คอิน Kawaguchiko Country Cottage Ban</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">18:00</div>
+                    <div class="activity-content">🍽️ อาหารเย็น + ช้อปปิ้งเล็กน้อย</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">19:30</div>
+                    <div class="activity-content">🛁 กลับโรงแรม + แช่อ่างอาบน้ำญี่ปุ่น (Ofuro)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">21:00</div>
+                    <div class="activity-content">📱 วางแผนวันถัดไป + พักผ่อน</div>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Accommodation -->
+                    
+                    
+                    <!-- Transportation -->
+                    
+        <div class="day-section">
+            <h3>🚊 การเดินทาง</h3>
+            <div class="section-content">
+                <ul><li>ขึ้นรถบัสไป Kawaguchiko ที่ Shinjuku Bus Terminal</li><li>รายละเอียด: รถบัสไป Kawaguchiko</li><li>รถรับส่งฟรีจากโรงแรม (โทรแจ้งล่วงหน้า 30 นาที)</li><li>ตามป้าย "Highway Bus Terminal" จาก JR Shinjuku Station</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Food -->
+                    
+        <div class="day-section">
+            <h3>🍽️ อาหาร</h3>
+            <div class="section-content">
+                <ul><li>อาหารกลางวันแรกใน Kawaguchiko</li><li>อาหารท้องถิ่น Kawaguchiko</li><li>ลอง Houtou อาหารขึ้นชื่อ</li><li>อาหารเย็น + ช้อปปิ้งเล็กน้อย</li><li>เช้าที่โรงแรม หรือ convenience store ใกล้เคียง</li><li>กลางวันแรกใน Kawaguchiko</li><li>เย็น + ช้อปปิ้งเล็กน้อย</li><li>เช้าพรุ่งนี้</li><li>ท้องถิ่น Kawaguchiko</li><li>อื่นๆ</li><li>เล็กๆ ได้</li><li>/ของใช้</li><li>ขึ้นชื่อ</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Highlights -->
+                    
+        <div class="day-section">
+            <h3>⭐ ไฮไลต์</h3>
+            <div class="section-content">
+                <ul><li>สุดท้าย 17:00)</li><li>เดียว |</li><li>สุดท้ายขึ้น: 17:00</li><li>สุดท้ายลง: 17:30</li><li>รอบทะเลสาบ</li><li>วิวฟูจิจากห้อง</li><li>วิว: Kawaguchi-ko Ohashi Bridge</li><li>วิวฟูจิยามค่ำคืน (ถ้าไม่มีเมฆ)</li><li>ฟูจิซัง</li><li>วิว + ม้านั่ง</li><li>วิวฟูจิ</li><li>วิว + ร้านอาหาร</li><li>วิวฟูจิครั้งแรก!</li><li>วิวจากห้อง</li><li>ขนม + อาหารเช้าพรุ่งนี้</li><li>ของ: โรงแรมช่วยสั่งอาหาร/ของใช้</li><li>ของกิน 7-Eleven: ก่อนไปโรงแรม</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Notes -->
+                    
+        <div class="day-section">
+            <h3>📝 หมายเหตุ</h3>
+            <div class="section-content">
+                <ul><li>ที่นั่งจำกัด ควรจองล่วงหน้า 1-2 สัปดาห์</li><li>ลมแรง ใส่เสื้อกันหนาว + หมวก</li><li>เคล็ดลับสำหรับวันนี้</li></ul>
+            </div>
+        </div>
+        
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="day-card birthday-day" id="day4">
+            <div class="day-header" onclick="toggleDay(4)">
+                <div class="day-number">🎂 Day 4</div>
+                <div class="day-title">วันที่ 4: 9 มีนาคม 2026 (จันทร์) - วันเกิดครบรอบ 11 ปี พอใจ! 🎂</div>
+                <div class="day-date"></div>
+                <div class="expand-indicator">▼</div>
+            </div>
+            
+            <div class="day-content" id="day-content-4">
+                <div class="day-sections">
+                    
+                    <!-- Activities Timeline -->
+                    <div class="day-section">
+                        <h3>📅 กิจกรรมประจำวัน</h3>
+                        <div class="section-content">
+                            <div class="activities-timeline">
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">06:30</div>
+                    <div class="activity-content">🌅 ตื่นรับแสงแรกของวันเกิด</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">07:30</div>
+                    <div class="activity-content">🎁 พิธี Birthday Surprise อย่างง่าย</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">08:30</div>
+                    <div class="activity-content">🚲 ปั่นจักรยานรอบทะเลสาบ Kawaguchi (Birthday Bike Tour)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">10:00</div>
+                    <div class="activity-content">🏛️ Kawaguchi-ko Museum + ของขวัญพิเศษ</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">11:30</div>
+                    <div class="activity-content">🗼 Chureito Pagoda - จุดถ่ายรูปฟูจิที่ดังที่สุด!</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">13:00</div>
+                    <div class="activity-content">🍽️ อาหารกลางวัน Birthday Lunch พิเศษ</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">14:30</div>
+                    <div class="activity-content">🎪 Oshino Hakkai - หมู่บ้านน้ำใสมหัศจรรย์</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">16:00</div>
+                    <div class="activity-content">🎂 Birthday Cake Celebration ที่ Local Cafe</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">17:30</div>
+                    <div class="activity-content">🚌 เดินทางกลับ Kawaguchiko + Sunset ที่ทะเลสาบ</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">19:00</div>
+                    <div class="activity-content">🍽️ Birthday Dinner พิเศษ + กิจกรรมปิดท้าย</div>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Accommodation -->
+                    
+                    
+                    <!-- Transportation -->
+                    
+        <div class="day-section">
+            <h3>🚊 การเดินทาง</h3>
+            <div class="section-content">
+                <ul><li>เดินทางกลับ Kawaguchiko + Sunset ที่ทะเลสาบ</li><li>รถบัสหรือแท็กซี่จาก Museum (15 นาที)</li><li>รถบัสจาก Chureito ไป Oshino Hakkai (20 นาที)</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Food -->
+                    
+        <div class="day-section">
+            <h3>🍽️ อาหาร</h3>
+            <div class="section-content">
+                <ul><li>อาหารกลางวัน Birthday Lunch พิเศษ</li><li>Birthday Dinner พิเศษ + กิจกรรมปิดท้าย</li><li>เช้าเบาๆ (ผลไม้ + ชา)</li><li>กลางวัน Birthday Lunch พิเศษ</li><li>ญี่ปุ่นระดับพรีเมียม ใกล้โรงแรม</li><li>พิเศษ)</li><li>พิเศษสุดท้าย)</li><li>พิเศษ |</li><li>ค่ำพิเศษ |</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Highlights -->
+                    
+        <div class="day-section">
+            <h3>⭐ ไฮไลต์</h3>
+            <div class="section-content">
+                <ul><li>: ผู้ใหญ่ ¥300, เด็ก ¥100</li><li>sunset ฟูจิซังจากฝั่งทะเลสาบ</li><li>+ ของที่ระลึก |</li><li>|</li><li>Fuji-san postcard + ของที่ระลึกพิเศษ</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Notes -->
+                    
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="day-card" id="day5">
+            <div class="day-header" onclick="toggleDay(5)">
+                <div class="day-number"> Day 5</div>
+                <div class="day-title">วันที่ 5: 10 มีนาคม 2026 (อังคาร) - Kawaguchiko ต่อ & เดินทางกลับโตเกียว</div>
+                <div class="day-date"></div>
+                <div class="expand-indicator">▼</div>
+            </div>
+            
+            <div class="day-content" id="day-content-5">
+                <div class="day-sections">
+                    
+                    <!-- Activities Timeline -->
+                    <div class="day-section">
+                        <h3>📅 กิจกรรมประจำวัน</h3>
+                        <div class="section-content">
+                            <div class="activities-timeline">
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">07:00</div>
+                    <div class="activity-content">🌅 ตื่นนอน + ชมฟูจิครั้งสุดท้าย</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">08:30</div>
+                    <div class="activity-content">🍜 อาหารเช้าสุดท้ายใน Kawaguchiko</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">09:30</div>
+                    <div class="activity-content">🏛️ Fujisan World Heritage Centre</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">11:00</div>
+                    <div class="activity-content">🏨 เช็คเอาท์ Kawaguchiko Country Cottage Ban</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">11:30</div>
+                    <div class="activity-content">🛍️ ช้อปปิ้งของฝากสุดท้าย</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">12:30</div>
+                    <div class="activity-content">🚌 ขึ้นรถบัสกลับโตเกียว (Ueno)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">15:10</div>
+                    <div class="activity-content">🚃 ถึง Shinjuku + เดินทางไป Ueno</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">15:45</div>
+                    <div class="activity-content">🏨 เช็คอิน Mitsui Garden Hotel Ueno</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">16:30</div>
+                    <div class="activity-content">🐼 สำรวจ Ueno Park + พิพิธภัณฑ์</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">18:30</div>
+                    <div class="activity-content">🛍️ ช้อปปิ้ง Ameyoko Market</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">20:00</div>
+                    <div class="activity-content">🍽️ อาหารเย็นใกล้โรงแรม</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">21:30</div>
+                    <div class="activity-content">📱 เตรียมพร้อมสำหรับ Gala Yuzawa พรุ่งนี้</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">22:30</div>
+                    <div class="activity-content">😴 พักผ่อนเตรียมตัวเล่นหิมะ</div>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Accommodation -->
+                    
+                    
+                    <!-- Transportation -->
+                    
+        <div class="day-section">
+            <h3>🚊 การเดินทาง</h3>
+            <div class="section-content">
+                <ul><li>ขึ้นรถบัสกลับโตเกียว (Ueno)</li><li>รายละเอียด: รถบัสกลับโตเกียว</li><li>รถบัสกลับโตเกียว</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Food -->
+                    
+        <div class="day-section">
+            <h3>🍽️ อาหาร</h3>
+            <div class="section-content">
+                <ul><li>อาหารเช้าสุดท้ายใน Kawaguchiko</li><li>ราเมนโซ่ดัง</li><li>อาหารเย็นใกล้โรงแรม</li><li>ร้านอาหารแนะนำ Ueno</li><li>Ueno Seiyoken - ร้านเก่าแก่</li><li>อาหารเย็นร้านดัง Ueno</li><li>เช้าสุดท้ายใน Kawaguchiko</li><li>เย็นใกล้โรงแรม</li><li>แนะนำ Ueno</li><li>ตะวันตกแห่งแรก)</li><li>เย็นร้านดัง Ueno</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Highlights -->
+                    
+        <div class="day-section">
+            <h3>⭐ ไฮไลต์</h3>
+            <div class="section-content">
+                <ul><li>#### 🏛️ พิพิธภัณฑ์ (เลือกอย่างใดอย่างหนึ่ง)</li><li>- ✅ ใช้ JR Pass (ถ้ามี) สำหรับ Ueno-Shinjuku</li><li>Fujisan World Heritage Centre</li><li>Ueno Park + เลือก Museum/Zoo</li><li>ฟูจิครั้งสุดท้าย</li><li>: ผู้ใหญ่ ¥420, เด็ก ¥200</li><li>สวน (ซากุระอาจจะเริ่มผลิใบ)</li><li>Shinobazu Pond + ห่านป่า</li><li>: ผู้ใหญ่ ¥420, เด็ก (15-18 ปี) ¥210, เด็กเล็ก ¥200</li><li>: ¥1,000/คน</li><li>: ¥630/คน</li><li>: ¥600/คน</li><li>ฟูจิครั้งสุดท้าย</li><li>:</li><li>#### 🍭 ขนม/อาหาร</li><li>)</li><li>ขนมใน convenience store ถูกกว่าร้านท่องเที่ยว</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Notes -->
+                    
+        <div class="day-section">
+            <h3>📝 หมายเหตุ</h3>
+            <div class="section-content">
+                <ul><li>เคล็ดลับสำหรับวันนี้</li></ul>
+            </div>
+        </div>
+        
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="day-card" id="day6">
+            <div class="day-header" onclick="toggleDay(6)">
+                <div class="day-number"> Day 6</div>
+                <div class="day-title">วันที่ 6: 11 มีนาคม 2026 (พุธ) - Gala Yuzawa เล่นหิมะครั้งแรก! ⛷️❄️</div>
+                <div class="day-date"></div>
+                <div class="expand-indicator">▼</div>
+            </div>
+            
+            <div class="day-content" id="day-content-6">
+                <div class="day-sections">
+                    
+                    <!-- Activities Timeline -->
+                    <div class="day-section">
+                        <h3>📅 กิจกรรมประจำวัน</h3>
+                        <div class="section-content">
+                            <div class="activities-timeline">
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">06:30</div>
+                    <div class="activity-content">🌅 ตื่นเช้าพิเศษ + เตรียมตัวเล่นหิมะ</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">07:30</div>
+                    <div class="activity-content">🍜 อาหารเช้าแบบญี่ปุ่น</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">08:00</div>
+                    <div class="activity-content">🚃 เดินทางไป Gala Yuzawa ด้วย Joetsu Shinkansen</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">09:45</div>
+                    <div class="activity-content">🚡 ถึง Echigo-Yuzawa + ขึ้น Gondola ไป Gala Yuzawa</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">10:00</div>
+                    <div class="activity-content">❄️ เดินทางถึง Gala Yuzawa Snow Resort!</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">10:15</div>
+                    <div class="activity-content">🎿 เช่าอุปกรณ์เล่นหิมะ</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">16:30</div>
+                    <div class="activity-content">🍫 พักเครื่องดื่มร้อน + ขนมหวาม</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">17:00</div>
+                    <div class="activity-content">🚡 กลับลงมา Echigo-Yuzawa Station</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">17:45</div>
+                    <div class="activity-content">🚃 เดินทางกลับโตเกียว</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">19:30</div>
+                    <div class="activity-content">🏨 กลับถึง Ueno + ไปโรงแรม</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">20:00</div>
+                    <div class="activity-content">🍽️ อาหารเย็นฉลองสำเร็จ "เล่นหิมะครั้งแรก"</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">21:30</div>
+                    <div class="activity-content">📱 จัดระเบียบรูปถ่าย + เตรียมส่งของกลับไทย</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">22:30</div>
+                    <div class="activity-content">😴 นอนหลับพักผ่อน + เตรียมแผนพรุ่งนี้</div>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Accommodation -->
+                    
+                    
+                    <!-- Transportation -->
+                    
+                    
+                    <!-- Food -->
+                    
+        <div class="day-section">
+            <h3>🍽️ อาหาร</h3>
+            <div class="section-content">
+                <ul><li>อาหารเช้าแบบญี่ปุ่น</li><li>Restaurant: 8 ร้านอาหาร หลากหลายราคา</li><li>อาหารใน Gala Yuzawa</li><li>อาหารเช้าให้อิ่ม</li><li>อาหารเย็นฉลองสำเร็จ "เล่นหิมะครั้งแรก"</li><li>อาหารเย็นฉลองความสำเร็จ</li><li>เช้าให้อิ่ม (จะใช้พลังงานเยอะ)</li><li>เช้าแบบญี่ปุ่น</li><li>เย็นฉลองสำเร็จ "เล่นหิมะครั้งแรก"</li><li>หลากหลายราคา</li><li>ใน Gala Yuzawa</li><li>อุ่นๆ (เมนูแนะนำ)</li><li>อุ่นๆ ครบทุกมื้อ</li><li>ให้เพียงพอ: ใช้พลังงานเยอะ</li><li>เช้าให้อิ่ม</li><li>เย็นฉลองความสำเร็จ</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Highlights -->
+                    
+        <div class="day-section">
+            <h3>⭐ ไฮไลต์</h3>
+            <div class="section-content">
+                <ul><li>.)</li><li>.</li><li>วิวหิมะจากมุมสูง</li><li>มาแล้ว (สำหรับขนส่ง)</li><li>แล้ว)</li><li>ไว้ก่อนหน้า)</li><li>หลังส่งของแล้ว)</li><li>ติดไม้ติดมือ</li><li>สำเร็จ "เล่นหิมะครั้งแรก"</li><li>ความสำเร็จ + แบ่งปันประสบการณ์</li><li>ความสำเร็จ</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Notes -->
+                    
+        <div class="day-section">
+            <h3>📝 หมายเหตุ</h3>
+            <div class="section-content">
+                <ul><li>Shopping List รอบสุดท้าย (ซื้อหลังส่งของแล้ว)</li><li>เรียนยากกว่า (ขาติดกันบนบอร์ด)</li><li>ล้มบ่อยในช่วงแรก</li><li>เคล็ดลับสำหรับวันนี้</li></ul>
+            </div>
+        </div>
+        
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="day-card" id="day7">
+            <div class="day-header" onclick="toggleDay(7)">
+                <div class="day-number"> Day 7</div>
+                <div class="day-title">วันที่ 7: 12 มีนาคม 2026 (พฤหัสบดี) - ย้ายไป Shinjuku & ช้อปปิ้งสุดท้าย</div>
+                <div class="day-date"></div>
+                <div class="expand-indicator">▼</div>
+            </div>
+            
+            <div class="day-content" id="day-content-7">
+                <div class="day-sections">
+                    
+                    <!-- Activities Timeline -->
+                    <div class="day-section">
+                        <h3>📅 กิจกรรมประจำวัน</h3>
+                        <div class="section-content">
+                            <div class="activities-timeline">
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">08:00</div>
+                    <div class="activity-content">🌅 ตื่นนอน + เตรียมตัวย้ายที่พัก</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">09:00</div>
+                    <div class="activity-content">🏨 เช็คเอาท์ Mitsui Garden Hotel Ueno + ส่งของกลับไทย</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">10:30</div>
+                    <div class="activity-content">🛍️ ช้อปปิ้งเช้า: Don Quijote Ueno (กระเป๋าเบาแล้ว!)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">11:00</div>
+                    <div class="activity-content">🚃 เดินทางจาก Ueno ไป Shinjuku</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">11:30</div>
+                    <div class="activity-content">🏨 เช็คอิน Hotel Gracery Shinjuku 🦖</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">12:00</div>
+                    <div class="activity-content">🍜 อาหารกลางวันใน Shinjuku</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">13:30</div>
+                    <div class="activity-content">🏬 ช้อปปิ้งใหญ่: Takashimaya Times Square + รองเท้าใหม่</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">15:30</div>
+                    <div class="activity-content">🎮 Yodobashi Camera Shinjuku West (อิเล็กทรอนิกส์ + รองเท้า)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">17:00</div>
+                    <div class="activity-content">🌆 ชม Godzilla Head + ถ่ายรูป</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">18:00</div>
+                    <div class="activity-content">🛍️ ช้อปปิ้งครั้งสุดท้าย: GU + UNIQLO Shinjuku + Ghibli Store</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">19:30</div>
+                    <div class="activity-content">🍽️ อาหารเย็นพิเศษ: Robot Restaurant (ถ้าเปิด)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">21:00</div>
+                    <div class="activity-content">🌃 ชมวิวเมืองยามค่ำ + ช้อปปิ้งสุดท้าย</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">22:30</div>
+                    <div class="activity-content">🏨 กลับโรงแรม + เตรียมกระเป๋ากลับบ้าน</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">23:30</div>
+                    <div class="activity-content">😴 นอนพักผ่อนคืนสุดท้าย</div>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Accommodation -->
+                    
+                    
+                    <!-- Transportation -->
+                    
+        <div class="day-section">
+            <h3>🚊 การเดินทาง</h3>
+            <div class="section-content">
+                <ul><li></li><li>JR Okachimachi Station (นอกเส้นทาง - ถ้ามีเวลา)</li><li>เดิน 10 นาที จาก JR Shinjuku</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Food -->
+                    
+        <div class="day-section">
+            <h3>🍽️ อาหาร</h3>
+            <div class="section-content">
+                <ul><li>อาหารกลางวันใน Shinjuku</li><li>ร้านอาหารแนะนำ Shinjuku</li><li>อาหาร 3 มื้อ | 6,000 | 1,408 |</li><li>อาหารกลางวัน Omoide Yokocho</li><li>อาหารเย็นพิเศษ: Robot Restaurant (ถ้าเปิด)</li><li>อาหารเย็นพิเศษ</li><li>เช้าแบบง่ายๆ</li><li>กลางวันใน Shinjuku</li><li>เล็กๆ</li><li>Restaurant Floor</li><li>เย็นพิเศษ: Robot Restaurant (ถ้าเปิด)</li><li>+ ช้อปปิ้งเยอะมาก</li><li>(50+ ร้าน)</li><li>ที่ Donki</li><li>แบรนด์เนม (ถ้าต้องการ)</li><li>แนะนำ Shinjuku</li><li>: Yakitori, Ramen, เบียร์</li><li>)</li><li>3 มื้อ | 6,000 | 1,408 |</li><li>ว่าง/เครื่องดื่ม: ¥2,000-3,000</li><li>กลางวัน Omoide Yokocho</li><li>เย็นพิเศษ</li><li>| 6,000 | 1,408 |</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Highlights -->
+                    
+        <div class="day-section">
+            <h3>⭐ ไฮไลต์</h3>
+            <div class="section-content">
+                <ul><li>ในญี่ปุ่นได้</li><li>Godzilla Head + ถ่ายรูป</li><li>วิวเมืองยามค่ำ + ช้อปปิ้งสุดท้าย</li><li>: ฟรี!</li><li>Godzilla Head + ถ่ายรูป</li><li>วิว Tokyo Metropolitan Building</li><li>มาแล้ว (จาก Kawaguchiko + ของฝากต่างๆ)</li><li>:</li><li>Max Cushioning Performance ฿3,900 ที่ไทย</li><li>ในญี่ปุ่น:</li><li>เกิน ¥5,500</li><li>เลย!</li><li>Skechers Foamy (รองเท้าแตะนุ่มๆ)</li><li>ของในญี่ปุ่นแทน! 😄</li><li>:</li><li>เกิน ¥5,000</li><li>ขนม</li><li>มา + เช็คน้ำหนักกระเป๋า</li><li>ของลืมหรือเพิ่มเติมได้</li><li>เพื่อไม่ลืม</li><li>ของหนักก่อน แล้วส่งกลับโรงแรม</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Notes -->
+                    
+        <div class="day-section">
+            <h3>📝 หมายเหตุ</h3>
+            <div class="section-content">
+                <ul><li>อากาศเย็น บนดาดฟ้า หิวเสื้อกันลม</li><li>ของเหลวใส่ carry-on: ขนาดไม่เกิน 100ml/ขวด</li><li>แบตเตอรี่ lithium: ต้องใส่ carry-on (ไม่ใส่ check-in)</li><li>ของมีคม: ต้องใส่ check-in</li><li>ข้อดีของซื้อในญี่ปุ่น:</li><li>ข้อดีรองเท้าแตะ:</li><li>เคล็ดลับสำหรับวันนี้</li></ul>
+            </div>
+        </div>
+        
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="day-card" id="day8">
+            <div class="day-header" onclick="toggleDay(8)">
+                <div class="day-number"> Day 8</div>
+                <div class="day-title">วันที่ 8: 13 มีนาคม 2026 (ศุกร์) - เดินทางกลับบ้าน ✈️🇹🇭</div>
+                <div class="day-date"></div>
+                <div class="expand-indicator">▼</div>
+            </div>
+            
+            <div class="day-content" id="day-content-8">
+                <div class="day-sections">
+                    
+                    <!-- Activities Timeline -->
+                    <div class="day-section">
+                        <h3>📅 กิจกรรมประจำวัน</h3>
+                        <div class="section-content">
+                            <div class="activities-timeline">
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">07:00</div>
+                    <div class="activity-content">🌅 ตื่นเช้าเพื่อเตรียมกลับบ้าน</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">08:00</div>
+                    <div class="activity-content">🍜 อาหารเช้าสุดท้ายในญี่ปุ่น</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">09:00</div>
+                    <div class="activity-content">🏨 เช็คเอาท์ Hotel Gracery Shinjuku</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">09:30</div>
+                    <div class="activity-content">🚃 เดินทางไปสนามบินนาริตะ</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">10:50</div>
+                    <div class="activity-content">🛬 ถึงสนามบินนาริตะ Terminal 2</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">11:00</div>
+                    <div class="activity-content">✈️ เช็คอินเที่ยวบิน SL393</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">11:45</div>
+                    <div class="activity-content">🛃 ผ่านตรวจคนออกเมือง + ความปลอดภัย</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">12:15</div>
+                    <div class="activity-content">🛍️ ช้อปปิ้งสุดท้าย Duty Free</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">12:30</div>
+                    <div class="activity-content">✈️ ขึ้นเครื่องบิน SL393</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">17:30</div>
+                    <div class="activity-content">🛬 ถึงสนามบินดอนเมือง (เวลาไทย)</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">18:30</div>
+                    <div class="activity-content">🚗 เดินทางกลับบ้าน</div>
+                </div>
+            
+                <div class="activity-item activity-scheduled">
+                    <div class="activity-time">20:00</div>
+                    <div class="activity-content">🏠 ถึงบ้าน - จบการเดินทาง!</div>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Accommodation -->
+                    
+                    
+                    <!-- Transportation -->
+                    
+        <div class="day-section">
+            <h3>🚊 การเดินทาง</h3>
+            <div class="section-content">
+                <ul><li>เดินทางกลับบ้าน</li><li>เดินทางกลับบ้าน</li><li>🇹🇭</li><li>เช็คอินเที่ยวบิน SL393</li><li>ขึ้นเครื่องบิน SL393</li><li>รายละเอียด: เที่ยวบิน SL393</li><li>บนเครื่องบิน: กิจกรรมระหว่างบิน</li><li>เช็คอิน Thai Lion Air</li><li>ขึ้นเครื่องบิน SL393</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Food -->
+                    
+        <div class="day-section">
+            <h3>🍽️ อาหาร</h3>
+            <div class="section-content">
+                <ul><li>อาหารเช้าสุดท้ายในญี่ปุ่น</li><li>อาหารเช้าสุดท้ายในญี่ปุ่น</li><li>มื้อบนเครื่อง</li><li>รับประทานมื้อบนเครื่อง</li><li>เช้าสุดท้ายในญี่ปุ่น</li><li>เช้าสุดท้าย!</li><li>กลางวัน + ขนม</li><li>กลางวัน + ขนม</li><li>หลากหลาย ได้ประสบการณ์ใหม่</li><li>ดังล่วงหน้า</li><li>ญี่ปุ่นแท้</li><li>Kansai, Universal Studios</li><li>เช้าสุดท้ายในญี่ปุ่น</li><li>บนเครื่อง: อาหารกลางวัน + ขนม</li><li>อาหารกลางวัน + ขนม</li><li>บนเครื่อง</li><li>บนเครื่อง</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Highlights -->
+                    
+        <div class="day-section">
+            <h3>⭐ ไฮไลต์</h3>
+            <div class="section-content">
+                <ul><li>บิน SL393</li><li>บิน SL393</li><li>บิน</li><li>บิน: SL393</li><li>สุดท้าย</li><li>บินแบบ real-time</li><li>บิน (12:45-17:30)</li><li>:</li><li>ได้หน้างาน หรือ online</li><li>มาจากญี่ปุ่น</li><li>มา</li><li>กล้องวันแรก ได้ใช้ตลอดทริป</li><li>JR Pass อาจจะคุ้มกว่า (ถ้าเดินทางเยอะ)</li></ul>
+            </div>
+        </div>
+        
+                    
+                    <!-- Notes -->
+                    
+        <div class="day-section">
+            <h3>📝 หมายเหตุ</h3>
+            <div class="section-content">
+                <ul><li>เขียน travel diary บันทึกความทรงจำ</li><li>ศึกษาภาษาญี่ปุ่นพื้นฐาน มากกว่านี้</li><li>จองร้านอาหารดังล่วงหน้า</li><li>ซื้อ JR Pass อาจจะคุ้มกว่า (ถ้าเดินทางเยอะ)</li><li>เตรียมเงินสดให้เพียงพอ ร้านเล็กใช้เงินสดเยอะ</li><li>บทเรียนและเคล็ดลับ</li></ul>
+            </div>
+        </div>
+        
+                    
+                </div>
+            </div>
+        </div>
+        
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>Generated on 23/08/2025 13:38</p>
+            <p>🎉 Happy 11th Birthday น้องพอใจ! 🎂</p>
+        </div>
+    </div>
+    
+    <script>
+        function toggleDay(dayNum) {
+            const dayCard = document.getElementById('day' + dayNum);
+            const dayContent = document.getElementById('day-content-' + dayNum);
+            
+            if (dayContent.style.display === 'none' || !dayContent.style.display) {
+                dayContent.style.display = 'block';
+                dayContent.classList.add('expanded');
+                dayCard.classList.add('expanded');
+            } else {
+                dayContent.style.display = 'none';
+                dayContent.classList.remove('expanded');
+                dayCard.classList.remove('expanded');
+            }
+        }
+
+        function expandAll() {
+            const dayContents = document.querySelectorAll('.day-content');
+            const dayCards = document.querySelectorAll('.day-card');
+            
+            dayContents.forEach(content => {
+                content.style.display = 'block';
+                content.classList.add('expanded');
+            });
+            
+            dayCards.forEach(card => {
+                card.classList.add('expanded');
+            });
+        }
+
+        function collapseAll() {
+            const dayContents = document.querySelectorAll('.day-content');
+            const dayCards = document.querySelectorAll('.day-card');
+            
+            dayContents.forEach(content => {
+                content.style.display = 'none';
+                content.classList.remove('expanded');
+            });
+            
+            dayCards.forEach(card => {
+                card.classList.remove('expanded');
+            });
+        }
+
+        function togglePrintMode() {
+            document.body.classList.toggle('print-mode');
+            
+            if (document.body.classList.contains('print-mode')) {
+                expandAll();
+            }
+        }
+
+        // Auto-open Day 1 on load
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleDay(1);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'e':
+                        e.preventDefault();
+                        expandAll();
+                        break;
+                    case 'c':
+                        e.preventDefault(); 
+                        collapseAll();
+                        break;
+                    case 'p':
+                        e.preventDefault();
+                        togglePrintMode();
+                        break;
+                }
+            }
+        });
+        </script>
+</body>
+</html>
