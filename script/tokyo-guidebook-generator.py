@@ -72,6 +72,16 @@ class TokyoGuidebookGenerator:
                     'th': self.read_file(md_file),
                     'en': ''
                 }
+        
+        # อ่านไฟล์ guide-book.txt ที่มีข้อมูลสมบูรณ์
+        guide_book_path = self.th_dir / "guide-book.txt"
+        if guide_book_path.exists():
+            guide_book_content = self.read_file(guide_book_path)
+            content_data['guide-book'] = {
+                'th': guide_book_content,
+                'en': ''
+            }
+            print(f"   - Added comprehensive guide-book.txt content")
 
         # อ่านไฟล์ภาษาอังกฤษ (ถ้ามี)
         if self.en_dir.exists():
@@ -89,7 +99,9 @@ class TokyoGuidebookGenerator:
         
         guidebook_data = {
             'overview': {'title': '🗼 ภาพรวมการเดินทาง', 'content': ''},
+            'itinerary': {'title': '🗓️ แผนการเดินทาง 8 วัน', 'content': ''},
             'accommodation': {'title': '🏨 ที่พัก', 'content': ''},
+            'places': {'title': '📍 สถานที่ท่องเที่ยว', 'content': ''},
             'food': {'title': '🍽️ ร้านอาหารแนะนำ', 'content': ''},
             'shopping': {'title': '🛍️ ช้อปปิ้ง', 'content': ''},
             'camera': {'title': '📷 การซื้อกล้อง', 'content': ''},
@@ -99,37 +111,100 @@ class TokyoGuidebookGenerator:
             'tips': {'title': '💡 เคล็ดลับการเดินทาง', 'content': ''}
         }
 
+        # Process guide-book.txt content if available
+        if 'guide-book' in content_data:
+            self._extract_from_guidebook(content_data['guide-book']['th'], guidebook_data)
+
+        # Fallback to existing content structure
         # Overview
-        if '001-overview' in content_data:
+        if '001-overview' in content_data and not guidebook_data['overview']['content']:
             guidebook_data['overview']['content'] = content_data['001-overview']['th']
 
         # Accommodation  
-        if '002-accommodation' in content_data:
+        if '002-accommodation' in content_data and not guidebook_data['accommodation']['content']:
             guidebook_data['accommodation']['content'] = content_data['002-accommodation']['th']
 
         # Transportation
-        if '011-transportation' in content_data:
+        if '011-transportation' in content_data and not guidebook_data['transportation']['content']:
             guidebook_data['transportation']['content'] = content_data['011-transportation']['th']
 
         # Weather
-        if '012-weather' in content_data:
+        if '012-weather' in content_data and not guidebook_data['weather']['content']:
             guidebook_data['weather']['content'] = content_data['012-weather']['th']
 
         # Budget
-        if '013-budget' in content_data:
+        if '013-budget' in content_data and not guidebook_data['budget']['content']:
             guidebook_data['budget']['content'] = content_data['013-budget']['th']
 
         # Tips
-        if '014-tips' in content_data:
+        if '014-tips' in content_data and not guidebook_data['tips']['content']:
             guidebook_data['tips']['content'] = content_data['014-tips']['th']
 
-        # Extract food, shopping, camera info from day files
+        # Extract food, shopping, camera info from day files (if not already extracted)
         self._extract_special_sections(content_data, guidebook_data)
 
         return guidebook_data
 
+    def _extract_from_guidebook(self, guide_content, guidebook_data):
+        """Extract sections from the comprehensive guide-book.txt"""
+        print("📝 Extracting content from comprehensive guidebook...")
+        
+        # Extract overview section (beginning until first major section)
+        overview_match = re.search(r'^(.*?)(?=🗺️|$)', guide_content, re.DOTALL)
+        if overview_match:
+            guidebook_data['overview']['content'] = overview_match.group(1).strip()
+
+        # Extract itinerary section
+        itinerary_match = re.search(r'🗺️ แผนการเดินทาง.*?\n(.*?)(?=🏨|$)', guide_content, re.DOTALL)
+        if itinerary_match:
+            guidebook_data['itinerary']['content'] = "🗺️ " + itinerary_match.group(1).strip()
+
+        # Extract accommodation section
+        accommodation_match = re.search(r'🏨 ที่พัก.*?\n(.*?)(?=🚄|$)', guide_content, re.DOTALL)
+        if accommodation_match:
+            guidebook_data['accommodation']['content'] = "🏨 " + accommodation_match.group(1).strip()
+
+        # Extract transportation section
+        transport_match = re.search(r'🚄 คู่มือการเดินทาง.*?\n(.*?)(?=🛍️|$)', guide_content, re.DOTALL)
+        if transport_match:
+            guidebook_data['transportation']['content'] = "🚄 " + transport_match.group(1).strip()
+
+        # Extract shopping section
+        shopping_match = re.search(r'🛍️ คู่มือช้อปปิ้งและของฝาก.*?\n(.*?)(?=☀️|$)', guide_content, re.DOTALL)
+        if shopping_match:
+            guidebook_data['shopping']['content'] = "🛍️ " + shopping_match.group(1).strip()
+
+        # Extract weather section
+        weather_match = re.search(r'☀️ คู่มือเอาตัวรอดจากสภาพอากาศ.*?\n(.*?)(?=💰|$)', guide_content, re.DOTALL)
+        if weather_match:
+            guidebook_data['weather']['content'] = "☀️ " + weather_match.group(1).strip()
+
+        # Extract budget section
+        budget_match = re.search(r'💰 สรุปงบประมาณ.*?\n(.*?)(?=📍|$)', guide_content, re.DOTALL)
+        if budget_match:
+            guidebook_data['budget']['content'] = "💰 " + budget_match.group(1).strip()
+
+        # Extract places section
+        places_match = re.search(r'📍 รายละเอียดสถานที่ท่องเที่ยวและแหล่งช้อปปิ้ง.*?\n(.*?)(?=🍽️|$)', guide_content, re.DOTALL)
+        if places_match:
+            guidebook_data['places']['content'] = "📍 " + places_match.group(1).strip()
+
+        # Extract food section
+        food_match = re.search(r'🍽️ คู่มือร้านอาหาร.*?\n(.*?)(?=💡|$)', guide_content, re.DOTALL)
+        if food_match:
+            guidebook_data['food']['content'] = "🍽️ " + food_match.group(1).strip()
+
+        # Extract tips section
+        tips_match = re.search(r'💡 ทิปส์และข้อมูลสำคัญ.*?\n(.*?)$', guide_content, re.DOTALL)
+        if tips_match:
+            guidebook_data['tips']['content'] = "💡 " + tips_match.group(1).strip()
+
     def _extract_special_sections(self, content_data, guidebook_data):
-        """แยกข้อมูลพิเศษจากไฟล์วันต่างๆ"""
+        """แยกข้อมูลพิเศษจากไฟล์วันต่างๆ (only if sections are empty)"""
+        # Only extract if sections are still empty (fallback)
+        if guidebook_data['food']['content'] and guidebook_data['shopping']['content']:
+            return
+            
         food_sections = []
         shopping_sections = []
         camera_sections = []
@@ -164,16 +239,16 @@ class TokyoGuidebookGenerator:
             clothing_matches = re.findall(r'## 👔 ([^#]+?)\n(.*?)(?=\n## |\Z)', content, re.DOTALL)
             shopping_sections.extend(clothing_matches)
 
-        # Combine sections
-        if food_sections:
+        # Combine sections (only if not already set)
+        if food_sections and not guidebook_data['food']['content']:
             combined_food = '\n\n'.join([f'## {title}\n{content}' for title, content in food_sections])
             guidebook_data['food']['content'] = combined_food
 
-        if shopping_sections:
+        if shopping_sections and not guidebook_data['shopping']['content']:
             combined_shopping = '\n\n'.join([f'## {title}\n{content}' for title, content in shopping_sections])
             guidebook_data['shopping']['content'] = combined_shopping
 
-        if camera_sections:
+        if camera_sections and not guidebook_data['camera']['content']:
             combined_camera = '\n\n'.join([f'## {title}\n{content}' for title, content in camera_sections])
             guidebook_data['camera']['content'] = combined_camera
 
@@ -185,13 +260,13 @@ class TokyoGuidebookGenerator:
         html = md_text
         
         # Headers
-        html = re.sub(r'^### (.*)', r'<h3>\\1</h3>', html, flags=re.MULTILINE)
-        html = re.sub(r'^## (.*)', r'<h2>\\1</h2>', html, flags=re.MULTILINE)
-        html = re.sub(r'^# (.*)', r'<h1>\\1</h1>', html, flags=re.MULTILINE)
+        html = re.sub(r'^### (.*)', r'<h3>\1</h3>', html, flags=re.MULTILINE)
+        html = re.sub(r'^## (.*)', r'<h2>\1</h2>', html, flags=re.MULTILINE)
+        html = re.sub(r'^# (.*)', r'<h1>\1</h1>', html, flags=re.MULTILINE)
         
         # Bold and italic
-        html = re.sub(r'\\*\\*(.*?)\\*\\*', r'<strong>\\1</strong>', html)
-        html = re.sub(r'\\*(.*?)\\*', r'<em>\\1</em>', html)
+        html = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', html)
+        html = re.sub(r'\*(.*?)\*', r'<em>\1</em>', html)
         
         # Lists
         html = self._convert_lists(html)
@@ -209,7 +284,7 @@ class TokyoGuidebookGenerator:
 
     def _convert_lists(self, text):
         """Convert markdown lists to HTML"""
-        lines = text.split('\\n')
+        lines = text.split('\n')
         result = []
         in_list = False
         
@@ -235,11 +310,11 @@ class TokyoGuidebookGenerator:
         if in_list:
             result.append('</ul>')
         
-        return '\\n'.join(result)
+        return '\n'.join(result)
 
     def _convert_tables(self, text):
         """Convert markdown tables to HTML"""
-        lines = text.split('\\n')
+        lines = text.split('\n')
         result = []
         in_table = False
         
@@ -275,17 +350,17 @@ class TokyoGuidebookGenerator:
         if in_table:
             result.append('</tbody></table></div>')
         
-        return '\\n'.join(result)
+        return '\n'.join(result)
 
     def _convert_info_boxes(self, text):
         """Convert info boxes (> **Note:** pattern) to HTML"""
         # Pattern for info boxes starting with > **Type:**
-        pattern = r'> \\*\\*(\\w+):\\*\\*([^\\n]+)\\n((?:> [^\\n]*\\n?)*)'
+        pattern = r'> \*\*(\w+):\*\*([^\n]+)\n((?:> [^\n]*\n?)*)'
         
         def replace_info_box(match):
             box_type = match.group(1).lower()
             title = match.group(2).strip()
-            content_lines = match.group(3).strip().split('\\n')
+            content_lines = match.group(3).strip().split('\n')
             
             # Remove > prefix from content lines
             content = []
@@ -295,7 +370,7 @@ class TokyoGuidebookGenerator:
                 elif line.startswith('>'):
                     content.append(line[1:])
             
-            content_text = '\\n'.join(content).strip()
+            content_text = '\n'.join(content).strip()
             
             box_class = 'info-box'
             if 'note' in box_type:
@@ -314,7 +389,7 @@ class TokyoGuidebookGenerator:
 
     def _convert_paragraphs(self, text):
         """Convert text blocks to paragraphs"""
-        paragraphs = text.split('\\n\\n')
+        paragraphs = text.split('\n\n')
         result = []
         
         for para in paragraphs:
@@ -327,7 +402,7 @@ class TokyoGuidebookGenerator:
                 result.append(para)
             else:
                 # Handle single lines vs multi-lines
-                lines = para.split('\\n')
+                lines = para.split('\n')
                 if len(lines) == 1:
                     result.append(f'<p>{para}</p>')
                 else:
@@ -339,9 +414,9 @@ class TokyoGuidebookGenerator:
                             line_paragraphs.append(f'<p>{line}</p>')
                         elif line:
                             line_paragraphs.append(line)
-                    result.append('\\n'.join(line_paragraphs))
+                    result.append('\n'.join(line_paragraphs))
         
-        return '\\n\\n'.join(result)
+        return '\n\n'.join(result)
 
     def generate_guidebook_html(self, guidebook_data):
         """Generate complete guidebook HTML"""
